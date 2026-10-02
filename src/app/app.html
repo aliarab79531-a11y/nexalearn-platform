@@ -1,0 +1,11 @@
+    @if (isPublic()) {
+      <app-navbar />
+    } @else {
+      <button class="mobile-nav-toggle" type="button" [attr.aria-expanded]="sidebarOpen" aria-label="Toggle navigation" (click)="sidebarOpen = !sidebarOpen">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <app-sidebar [class.mobile-open]="sidebarOpen" (click)="sidebarOpen = false" />
+    }
+    <main [class.public-main]="isPublic()" [class.app-main]="!isPublic()">
+      <router-outlet />
+    </main>
