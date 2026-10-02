@@ -3,7 +3,7 @@ main { min-height: 100vh; }
 .public-main { padding-top: 80px; }
 .app-main { margin-left: 280px; padding: 32px; }
 .mobile-nav-toggle { display: none; }
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .app-main { margin-left: 0; padding: 68px 16px 40px; }
   .public-main { padding-top: 68px; }
   .mobile-nav-toggle { display: grid; place-items: center; position: fixed; top: 12px; left: 12px; z-index: 21; width: 42px; height: 42px; border: 0; border-radius: 10px; color: white; background: var(--primary); box-shadow: 0 4px 14px #004ac640; }

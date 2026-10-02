@@ -6,4 +6,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './navbar.component.html',
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+  mobileMenuOpen = false;
+
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+  }
+}
