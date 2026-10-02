@@ -32,12 +32,6 @@
 .workspace .progress { height: 7px; background: var(--surface-high); }
 .workspace .progress-bar { background: linear-gradient(90deg, var(--primary), var(--purple)); }
 .empty-icon { font-size: 38px; color: var(--primary); margin-bottom: 10px; }
-.path-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; padding: 20px; background: white; border-radius: 14px; }
-.path-summary strong { font: 700 22px Manrope, sans-serif; }
-.path-summary small { color: var(--muted); }
-.path-step { border-left: 3px solid transparent; }
-.path-step.current { border-left-color: var(--primary); background: #f8f9ff; }
-.step-marker { display: inline-flex; justify-content: center; align-items: center; width: 42px; height: 42px; flex: 0 0 42px; border-radius: 50%; color: var(--primary); background: #e9edff; }
 .lesson-video { background: #121a2b; padding: 14px; }
 .video-screen { min-height: 310px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; background: radial-gradient(ellipse at center, #374365, #161e31 68%); border-radius: 9px; }
 .video-screen .material-symbols-outlined { color: #fff; font-size: 58px; }
@@ -95,3 +89,4 @@
   .course-velocity .progress { grid-column: 1; }
   .course-velocity strong { grid-column: 2; grid-row: 2; }
 }
+

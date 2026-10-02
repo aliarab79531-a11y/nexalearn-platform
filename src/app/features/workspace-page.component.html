@@ -76,18 +76,53 @@
         }
 
         @case ('roadmap') {
-          <section class="row g-4">
-            <div class="col-xl-8"><article class="workspace-card p-4 p-lg-5 mb-4">
-              <div class="row align-items-center g-4"><div class="col-md-7"><span class="badge text-bg-primary-subtle text-primary mb-3">Tier 1 · Elite track</span><h2 class="display-6 fw-bold">Full-Stack AI Engineer Path</h2><p class="text-secondary">A personalized roadmap connecting your skills to your career goals.</p><div class="progress mb-2" role="progressbar" aria-label="Learning path progress" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:64%"></div></div><small class="text-secondary">64% complete · 6 milestones</small></div><div class="col-md-5"><div class="path-summary"><strong>Dec 15</strong><small>Estimated completion</small><strong>6.5 hrs</strong><small>Weekly commitment</small></div></div></div>
-            </article>
-              <h2 class="h4 mb-3">Curriculum trajectory</h2>
-              @for (step of pathSteps; track step.title) {
-                <article class="path-step workspace-card p-3 p-md-4 mb-3" [class.current]="step.state === 'In progress'">
-                  <div class="d-flex gap-3"><span class="step-marker"><span class="material-symbols-outlined">{{ step.icon }}</span></span><div class="flex-grow-1"><div class="d-flex justify-content-between gap-2"><small class="eyebrow mb-1">{{ step.label }}</small><span class="badge" [class.text-bg-success]="step.state === 'Complete'" [class.text-bg-primary]="step.state === 'In progress'" [class.text-bg-light]="step.state === 'Up next'">{{ step.state }}</span></div><h3 class="h5">{{ step.title }}</h3><p class="text-secondary mb-0">{{ step.detail }}</p></div></div>
-                </article>
-              }
+          <section class="roadmap-layout">
+            <div class="roadmap-main">
+              <article class="roadmap-hero mb-4">
+                <div class="roadmap-hero-copy">
+                  <span class="roadmap-kicker"><span class="material-symbols-outlined">route</span> Your personalized track</span>
+                  <h2>Full-Stack AI Engineer</h2>
+                  <p>A focused path from web foundations to production-ready AI applications.</p>
+                  <div class="roadmap-progress-label"><span>Overall progress</span><strong>64%</strong></div>
+                  <div class="roadmap-progress" role="progressbar" aria-label="Learning path progress" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><span></span></div>
+                  <div class="roadmap-hero-foot"><span>4 of 6 milestones complete</span><a routerLink="/learning/angular-signals">Continue current module <span class="material-symbols-outlined">arrow_forward</span></a></div>
+                </div>
+                <div class="roadmap-stats" aria-label="Learning plan summary">
+                  <div><span class="material-symbols-outlined">event</span><strong>Dec 15</strong><small>Target finish</small></div>
+                  <div><span class="material-symbols-outlined">schedule</span><strong>6.5 hrs</strong><small>Per week</small></div>
+                  <div><span class="material-symbols-outlined">local_fire_department</span><strong>21 days</strong><small>Current streak</small></div>
+                </div>
+              </article>
+              <div class="roadmap-section-heading"><div><p class="eyebrow">THE JOURNEY</p><h2>Milestones</h2></div><span>4 milestones remaining</span></div>
+              <div class="roadmap-timeline">
+                @for (step of pathSteps; track step.title) {
+                  <article class="path-step" [class.current]="step.state === 'In progress'" [class.completed]="step.state === 'Complete'">
+                    <span class="step-marker"><span class="material-symbols-outlined">{{ step.icon }}</span></span>
+                    <div class="path-step-content">
+                      <div class="path-step-meta"><small class="eyebrow">{{ step.label }}</small><span class="path-state" [class.done]="step.state === 'Complete'" [class.active]="step.state === 'In progress'">{{ step.state }}</span></div>
+                      <h3>{{ step.title }}</h3><p>{{ step.detail }}</p>
+                      @if (step.state === 'In progress') { <a routerLink="/learning/angular-signals">Resume this milestone <span class="material-symbols-outlined">arrow_forward</span></a> }
+                    </div>
+                  </article>
+                }
+              </div>
             </div>
-            <aside class="col-xl-4"><article class="workspace-card p-4 mb-4"><p class="eyebrow">PATH CUSTOMIZATION</p><h2 class="h5">Target career role</h2><select class="form-select mb-3" aria-label="Target career role"><option>Full-Stack AI Engineer</option><option>Frontend Engineer</option><option>Data Scientist</option></select><label class="form-label">Weekly commitment <strong>6.5 hrs</strong></label><input class="form-range" type="range" min="2" max="20" value="7"><button class="btn btn-primary w-100">Rebalance trajectory with AI</button></article><article class="workspace-card p-4"><h2 class="h5">Skills acquired</h2><div class="d-flex flex-wrap gap-2"><span class="badge text-bg-primary-subtle text-primary">Closures</span><span class="badge text-bg-primary-subtle text-primary">Component architecture</span><span class="badge text-bg-primary-subtle text-primary">Signals & RxJS</span><span class="badge text-bg-primary-subtle text-primary">HTTP & WebSockets</span></div></article></aside>
+            <aside class="roadmap-sidebar">
+              <article class="workspace-card roadmap-customize">
+                <p class="eyebrow">MAKE IT YOURS</p><h2>Career target</h2>
+                <label class="visually-hidden" for="career-target">Target career role</label>
+                <select id="career-target" class="form-select" aria-label="Target career role"><option>Full-Stack AI Engineer</option><option>Frontend Engineer</option><option>Data Scientist</option></select>
+                <div class="commitment-heading"><label for="weekly-commitment">Weekly commitment</label><strong>6.5 hrs</strong></div>
+                <input id="weekly-commitment" class="form-range" type="range" min="2" max="20" value="7" aria-label="Weekly commitment in hours">
+                <button class="btn btn-primary w-100"><span class="material-symbols-outlined">auto_awesome</span> Update my path</button>
+              </article>
+              <article class="workspace-card roadmap-skills">
+                <div class="skills-heading"><div><p class="eyebrow">MOMENTUM</p><h2>Skills unlocked</h2></div><span class="material-symbols-outlined">verified</span></div>
+                <div class="roadmap-skill-list"><span>Closures</span><span>Component architecture</span><span>Signals &amp; RxJS</span><span>HTTP &amp; WebSockets</span></div>
+                <a routerLink="/progress">View skill progress <span class="material-symbols-outlined">arrow_forward</span></a>
+              </article>
+              <div class="roadmap-note"><span class="material-symbols-outlined">lightbulb</span><p><strong>Small sessions add up.</strong> Your current pace keeps you on track for your target date.</p></div>
+            </aside>
           </section>
         }
 
