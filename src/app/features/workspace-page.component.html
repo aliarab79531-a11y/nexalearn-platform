@@ -12,8 +12,84 @@
           <a class="btn btn-primary" routerLink="/instructor/course-builder">Create a course</a>
         }
       </header>
+      @if (actionFeedback) {
+        <div class="alert alert-primary action-feedback" role="status" aria-live="polite">{{ actionFeedback }}</div>
+      }
 
       @switch (view) {
+        @case ('student') {
+          <section class="welcome-banner rounded-4 p-4 p-lg-5 mb-4">
+            <div class="row align-items-center g-4">
+              <div class="col-lg-7">
+                <span class="badge text-bg-primary-subtle text-primary mb-3">Student account active</span>
+                <h2 class="h2 fw-bold">Welcome back, Alex <span aria-hidden="true">👋</span></h2>
+                <p class="mb-0">Your student portal is enabled. Jump into your learning workspace, course library, and progress pages to keep moving.</p>
+              </div>
+              <div class="col-lg-5">
+                <div class="row g-3">
+                  <div class="col-4"><div class="mini-stat"><strong>14</strong><small>Day streak</small></div></div>
+                  <div class="col-4"><div class="mini-stat"><strong>68%</strong><small>Curriculum</small></div></div>
+                  <div class="col-4"><div class="mini-stat"><strong>4.5h</strong><small>Weekly goal</small></div></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="row g-4 mb-4">
+            <div class="col-md-6 col-xl-3">
+              <article class="workspace-card p-4 h-100">
+                <p class="eyebrow mb-2">Student dashboard</p>
+                <h3 class="h5 mb-2">Current momentum</h3>
+                <p class="text-secondary mb-3">Resume your active course and review the latest milestones.</p>
+                <a class="btn btn-outline-primary w-100" routerLink="/dashboard">Open dashboard</a>
+              </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <article class="workspace-card p-4 h-100">
+                <p class="eyebrow mb-2">My courses</p>
+                <h3 class="h5 mb-2">Course library</h3>
+                <p class="text-secondary mb-3">Browse enrolled courses, statuses, and continue where you left off.</p>
+                <a class="btn btn-outline-primary w-100" routerLink="/my-courses">View courses</a>
+              </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <article class="workspace-card p-4 h-100">
+                <p class="eyebrow mb-2">Learning path</p>
+                <h3 class="h5 mb-2">Roadmap</h3>
+                <p class="text-secondary mb-3">Track milestones and plan the next steps in your career path.</p>
+                <a class="btn btn-outline-primary w-100" routerLink="/learning-paths">Open roadmap</a>
+              </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <article class="workspace-card p-4 h-100">
+                <p class="eyebrow mb-2">Progress</p>
+                <h3 class="h5 mb-2">Analytics</h3>
+                <p class="text-secondary mb-3">Review study time, skill validation, and performance trends.</p>
+                <a class="btn btn-outline-primary w-100" routerLink="/progress">Review progress</a>
+              </article>
+            </div>
+          </section>
+
+          <section class="workspace-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <p class="eyebrow mb-1">Student pages</p>
+                <h3 class="h4 mb-0">Quick access</h3>
+              </div>
+              <span class="badge text-bg-primary-subtle text-primary">Live access</span>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6 col-xl-4"><a class="tool-link" routerLink="/dashboard"><span class="material-symbols-outlined">dashboard</span><div><strong>Dashboard</strong><small class="d-block text-secondary">View activity, deadlines, and course momentum.</small></div></a></div>
+              <div class="col-md-6 col-xl-4"><a class="tool-link" routerLink="/my-courses"><span class="material-symbols-outlined">menu_book</span><div><strong>My Courses</strong><small class="d-block text-secondary">Continue enrolled learning journeys.</small></div></a></div>
+              <div class="col-md-6 col-xl-4"><a class="tool-link" routerLink="/assignments"><span class="material-symbols-outlined">assignment</span><div><strong>Assignments</strong><small class="d-block text-secondary">Track submissions and deadlines.</small></div></a></div>
+              <div class="col-md-6 col-xl-4"><a class="tool-link" routerLink="/progress"><span class="material-symbols-outlined">insights</span><div><strong>Progress Analytics</strong><small class="d-block text-secondary">Understand performance over time.</small></div></a></div>
+              <div class="col-md-6 col-xl-4"><a class="tool-link" routerLink="/ai-tutor"><span class="material-symbols-outlined">auto_awesome</span><div><strong>AI Tutor</strong><small class="d-block text-secondary">Ask for explanations and learning guidance.</small></div></a></div>
+              <div class="col-md-6 col-xl-4"><a class="tool-link" routerLink="/ai/quiz-generator"><span class="material-symbols-outlined">quiz</span><div><strong>Quizzes</strong><small class="d-block text-secondary">Generate practice checks and confidence reviews.</small></div></a></div>
+            </div>
+          </section>
+        }
+
         @case ('dashboard') {
           <section class="welcome-banner rounded-4 p-4 p-lg-5 mb-4">
             <div class="row align-items-center g-4">
@@ -60,17 +136,22 @@
           <section class="workspace-card p-3 p-md-4 mb-4">
             <div class="row align-items-center g-3">
               <div class="col-lg-5"><div class="input-group"><span class="input-group-text bg-white"><span class="material-symbols-outlined">search</span></span><input class="form-control" [(ngModel)]="query" placeholder="Search enrolled courses" aria-label="Search enrolled courses"></div></div>
-              <div class="col-lg-7 d-flex flex-wrap gap-2 justify-content-lg-end"><span class="chip active">All courses ({{ filteredCourses().length }})</span><span class="chip">In progress</span><span class="chip">Completed</span><span class="chip">Saved</span></div>
+              <div class="col-lg-7 d-flex flex-wrap gap-2 justify-content-lg-end" role="group" aria-label="Filter courses">
+                <button class="chip" [class.active]="courseFilter === 'all'" [attr.aria-pressed]="courseFilter === 'all'" type="button" (click)="courseFilter = 'all'">All ({{ courseCount('all') }})</button>
+                <button class="chip" [class.active]="courseFilter === 'in-progress'" [attr.aria-pressed]="courseFilter === 'in-progress'" type="button" (click)="courseFilter = 'in-progress'">In progress ({{ courseCount('in-progress') }})</button>
+                <button class="chip" [class.active]="courseFilter === 'completed'" [attr.aria-pressed]="courseFilter === 'completed'" type="button" (click)="courseFilter = 'completed'">Completed ({{ courseCount('completed') }})</button>
+                <button class="chip" [class.active]="courseFilter === 'saved'" [attr.aria-pressed]="courseFilter === 'saved'" type="button" (click)="courseFilter = 'saved'">Saved ({{ courseCount('saved') }})</button>
+              </div>
             </div>
           </section>
           <section class="row g-4">
             @for (course of filteredCourses(); track course.id) {
               <div class="col-md-6 col-xl-4"><article class="workspace-card course-workspace-card h-100 overflow-hidden">
-                <div class="course-banner" [style.background]="course.color"><span class="material-symbols-outlined">{{ course.icon }}</span><span class="badge text-bg-light">{{ course.category }}</span></div>
+                <div class="course-banner" [style.background]="course.color"><span class="material-symbols-outlined">{{ course.icon }}</span><span class="badge text-bg-light">{{ course.category }}</span><button class="course-save" type="button" [class.saved]="savedCourseIds.has(course.id)" [attr.aria-pressed]="savedCourseIds.has(course.id)" [attr.aria-label]="savedCourseIds.has(course.id) ? 'Remove ' + course.title + ' from saved courses' : 'Save ' + course.title" (click)="toggleSavedCourse(course.id)"><span class="material-symbols-outlined">{{ savedCourseIds.has(course.id) ? 'bookmark' : 'bookmark_add' }}</span></button></div>
                 <div class="p-3 p-lg-4"><div class="d-flex justify-content-between text-secondary small mb-2"><span>Course</span><span>{{ course.progress ?? 0 }}% complete</span></div><h2 class="h5">{{ course.title }}</h2><p class="text-secondary small">{{ course.lessons }} lessons · {{ course.duration }}</p><div class="progress mb-3" role="progressbar" [attr.aria-valuenow]="course.progress ?? 0" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" [style.width.%]="course.progress ?? 0"></div></div><a class="btn btn-outline-primary w-100" [routerLink]="'/course/' + course.id">Continue learning</a></div>
               </article></div>
             } @empty {
-              <div class="col-12"><div class="workspace-card text-center p-5"><span class="material-symbols-outlined empty-icon">search_off</span><h2 class="h4">No courses found</h2><p class="text-secondary">Try another search, or explore the course catalog.</p><a class="btn btn-primary" routerLink="/courses">Explore courses</a></div></div>
+              <div class="col-12"><div class="workspace-card text-center p-5"><span class="material-symbols-outlined empty-icon">{{ courseFilter === 'saved' ? 'bookmark_border' : 'search_off' }}</span><h2 class="h4">{{ courseFilter === 'saved' ? 'No saved courses yet' : courseFilter === 'completed' ? 'No completed courses yet' : 'No courses found' }}</h2><p class="text-secondary">Save courses with the bookmark button, or adjust your search and filters.</p><button class="btn btn-outline-primary me-2" type="button" (click)="resetCourseFilters()">Reset filters</button><a class="btn btn-primary" routerLink="/courses">Explore courses</a></div></div>
             }
           </section>
         }
@@ -111,10 +192,10 @@
               <article class="workspace-card roadmap-customize">
                 <p class="eyebrow">MAKE IT YOURS</p><h2>Career target</h2>
                 <label class="visually-hidden" for="career-target">Target career role</label>
-                <select id="career-target" class="form-select" aria-label="Target career role"><option>Full-Stack AI Engineer</option><option>Frontend Engineer</option><option>Data Scientist</option></select>
-                <div class="commitment-heading"><label for="weekly-commitment">Weekly commitment</label><strong>6.5 hrs</strong></div>
-                <input id="weekly-commitment" class="form-range" type="range" min="2" max="20" value="7" aria-label="Weekly commitment in hours">
-                <button class="btn btn-primary w-100"><span class="material-symbols-outlined">auto_awesome</span> Update my path</button>
+                <select id="career-target" class="form-select" aria-label="Target career role" [(ngModel)]="careerTarget"><option>Full-Stack AI Engineer</option><option>Frontend Engineer</option><option>Data Scientist</option></select>
+                <div class="commitment-heading"><label for="weekly-commitment">Weekly commitment</label><strong>{{ weeklyCommitment }} hrs</strong></div>
+                <input id="weekly-commitment" class="form-range" type="range" min="2" max="20" [(ngModel)]="weeklyCommitment" aria-label="Weekly commitment in hours">
+                <button class="btn btn-primary w-100" type="button" (click)="updateLearningPath()"><span class="material-symbols-outlined">auto_awesome</span> Update my path</button>
               </article>
               <article class="workspace-card roadmap-skills">
                 <div class="skills-heading"><div><p class="eyebrow">MOMENTUM</p><h2>Skills unlocked</h2></div><span class="material-symbols-outlined">verified</span></div>
@@ -129,54 +210,97 @@
         @case ('lesson') {
           <section class="row g-4">
             <div class="col-xl-8"><article class="workspace-card overflow-hidden">
-              <div class="lesson-video"><div class="video-screen"><span class="material-symbols-outlined">play_circle</span><p>Lesson video · Angular Signals</p></div><div class="video-controls d-flex justify-content-between"><span>▶ &nbsp; 08:24 / 18:40</span><span>1.25× &nbsp; CC &nbsp; 1080p</span></div></div>
-              <div class="p-4 p-lg-5"><span class="badge text-bg-primary-subtle text-primary mb-2">Module 6 · Core</span><h2 class="h3">Understanding reactive primitives</h2><p class="text-secondary">Learn how signals, computed values, and effects work together to build responsive Angular interfaces.</p><div class="row g-3 my-3"><div class="col-md-6"><div class="tip-card"><strong>1. Create state</strong><p class="mb-0">Use signals to hold values that update reactively.</p></div></div><div class="col-md-6"><div class="tip-card"><strong>2. Derive values</strong><p class="mb-0">Use computed state for values derived from your signals.</p></div></div></div><pre class="code-block"><code>const count = signal(0);&#10;const doubled = computed(() =&gt; count() * 2);&#10;count.set(count() + 1);</code></pre><button class="btn btn-primary">Mark complete &amp; continue</button></div>
+              <div class="lesson-video"><div class="video-screen"><span class="material-symbols-outlined">play_circle</span><p>Lesson video · {{ learningCourse?.title ?? 'Angular Signals' }}</p></div><div class="video-controls d-flex justify-content-between"><span>▶ &nbsp; 08:24 / 18:40</span><span>1.25× &nbsp; CC &nbsp; 1080p</span></div></div>
+              <div class="p-4 p-lg-5"><span class="badge text-bg-primary-subtle text-primary mb-2">{{ learningCourse?.modules[0]?.title ?? 'Module 6 · Core' }}</span><h2 class="h3">{{ learningCourse?.modules[0]?.topics[0] ?? 'Understanding reactive primitives' }}</h2><p class="text-secondary">{{ learningCourse?.description ?? 'Learn how signals, computed values, and effects work together to build responsive Angular interfaces.' }}</p><div class="row g-3 my-3"><div class="col-md-6"><div class="tip-card"><strong>1. Start with the concept</strong><p class="mb-0">{{ learningCourse?.modules[0]?.topics[0] ?? 'Use signals to hold values that update reactively.' }}</p></div></div><div class="col-md-6"><div class="tip-card"><strong>2. Build on the foundation</strong><p class="mb-0">{{ learningCourse?.modules[0]?.topics[1] ?? 'Use computed state for values derived from your signals.' }}</p></div></div></div><pre class="code-block"><code>const count = signal(0);&#10;const doubled = computed(() =&gt; count() * 2);&#10;count.set(count() + 1);</code></pre><button class="btn btn-primary" type="button" (click)="lessonCompleted = true; showActionFeedback('Lesson marked complete. Your course progress is ready to sync.')">{{ lessonCompleted ? 'Lesson complete' : 'Mark complete &amp; continue' }}</button></div>
             </article></div>
-            <aside class="col-xl-4"><article class="workspace-card p-4"><div class="d-flex justify-content-between"><h2 class="h5">Course syllabus</h2><span class="badge text-bg-primary-subtle text-primary">34 lessons</span></div>@for (lesson of lessonList; track lesson) {<a class="syllabus-row" routerLink="/learning/angular-signals"><span class="material-symbols-outlined">play_circle</span>{{ lesson }}<span class="material-symbols-outlined ms-auto">chevron_right</span></a>}</article></aside>
+            <aside class="col-xl-4"><article class="workspace-card p-4"><div class="d-flex justify-content-between"><h2 class="h5">Course syllabus</h2><span class="badge text-bg-primary-subtle text-primary">{{ learningCourse?.lessons ?? 34 }} lessons</span></div>
+              @if (learningCourse) {
+                @for (module of learningCourse.modules; track module.title) {
+                  @for (lesson of module.topics; track lesson) {
+                    <a class="syllabus-row" [routerLink]="'/learning/' + learningCourse.id"><span class="material-symbols-outlined">play_circle</span>{{ lesson }}<span class="material-symbols-outlined ms-auto">chevron_right</span></a>
+                  }
+                }
+              } @else {
+                @for (lesson of lessonList; track lesson) {<a class="syllabus-row" routerLink="/learning/angular-signals"><span class="material-symbols-outlined">play_circle</span>{{ lesson }}<span class="material-symbols-outlined ms-auto">chevron_right</span></a>}
+              }
+            </article></aside>
           </section>
         }
 
         @case ('tutor') {
           <section class="row g-4">
             <div class="col-xl-8"><article class="workspace-card tutor-chat p-3 p-md-4">
-              <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4"><div><span class="badge text-bg-primary-subtle text-primary me-2">Adaptive tutor</span><strong>Synced with Angular Signals</strong></div><button class="btn btn-sm btn-outline-secondary">New dialogue</button></div>
-              <div class="chat-user">I’m confused about computed signals and when they update. Could you explain?</div>
-              <div class="chat-answer"><div class="d-flex align-items-center gap-2 mb-2"><span class="brand-mark"><span class="material-symbols-outlined">auto_awesome</span></span><strong>AI Tutor</strong><small class="text-secondary">· Context aware</small></div><h2 class="h5">Computed signals: derived, cached state</h2><p>A <code>computed()</code> signal recalculates when one of the signals it reads changes. Angular caches the value until a dependency changes, so it avoids unnecessary work.</p><div class="tip-card"><strong>Think of it as a spreadsheet cell</strong><p class="mb-0">Change a referenced cell and the formula updates. If nothing it depends on changes, the previous result is reused.</p></div><pre class="code-block mt-3"><code>const price = signal(10);&#10;const total = computed(() =&gt; price() * 1.2);</code></pre></div>
+              <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4"><div><span class="badge text-bg-primary-subtle text-primary me-2">Adaptive tutor</span><strong>Synced with Angular Signals</strong></div><button class="btn btn-sm btn-outline-secondary" type="button" (click)="startNewDialogue()">New dialogue</button></div>
+              @if (!newDialogue) {
+                <div class="chat-user">I’m confused about computed signals and when they update. Could you explain?</div>
+                <div class="chat-answer"><div class="d-flex align-items-center gap-2 mb-2"><span class="brand-mark"><span class="material-symbols-outlined">auto_awesome</span></span><strong>AI Tutor</strong><small class="text-secondary">· Context aware</small></div><h2 class="h5">Computed signals: derived, cached state</h2><p>A <code>computed()</code> signal recalculates when one of the signals it reads changes. Angular caches the value until a dependency changes, so it avoids unnecessary work.</p><div class="tip-card"><strong>Think of it as a spreadsheet cell</strong><p class="mb-0">Change a referenced cell and the formula updates. If nothing it depends on changes, the previous result is reused.</p></div><pre class="code-block mt-3"><code>const price = signal(10);&#10;const total = computed(() =&gt; price() * 1.2);</code></pre></div>
+              } @else {
+                <div class="chat-answer"><h2 class="h5">New dialogue</h2><p class="mb-0">Ask a question about your current course or paste a code snippet below.</p></div>
+              }
               @if (lastMessage) {
                 <div class="chat-user mt-4">{{ lastMessage }}</div>
                 <div class="alert alert-primary mb-0" role="status">This is a frontend preview. AI responses will be connected in the backend phase.</div>
               }
-              <div class="input-group mt-4"><input class="form-control" [(ngModel)]="message" placeholder="Ask about your course, lesson, or code..." aria-label="Message for AI tutor"><button class="btn btn-primary" [disabled]="!message.trim()" (click)="sendMessage()">Send <span class="material-symbols-outlined">arrow_forward</span></button></div>
+              <div class="input-group mt-4"><input class="form-control" [(ngModel)]="message" (keydown.enter)="sendMessage()" placeholder="Ask about your course, lesson, or code..." aria-label="Message for AI tutor"><button class="btn btn-primary" type="button" (click)="sendMessage()">Send <span class="material-symbols-outlined">arrow_forward</span></button></div>
             </article></div>
-            <aside class="col-xl-4"><article class="workspace-card p-4 mb-4"><p class="eyebrow">LIVE LEARNING CONTEXT</p><h2 class="h5">Angular: Zero to Hero</h2><div class="progress my-3" role="progressbar" aria-label="Course progress" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:68%"></div></div><p class="text-secondary">Current lesson · Signals &amp; effects</p><a routerLink="/learning/angular-signals">Resume lesson <span class="material-symbols-outlined">arrow_forward</span></a></article><article class="workspace-card p-4"><h2 class="h5">AI study coach</h2><p class="text-secondary">Daily focus goal: 45 minutes</p><button class="btn btn-outline-primary w-100">Start a targeted exercise</button></article></aside>
+            <aside class="col-xl-4"><article class="workspace-card p-4 mb-4"><p class="eyebrow">LIVE LEARNING CONTEXT</p><h2 class="h5">Angular: Zero to Hero</h2><div class="progress my-3" role="progressbar" aria-label="Course progress" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:68%"></div></div><p class="text-secondary">Current lesson · Signals &amp; effects</p><a routerLink="/learning/angular-signals">Resume lesson <span class="material-symbols-outlined">arrow_forward</span></a></article><article class="workspace-card p-4"><h2 class="h5">AI study coach</h2><p class="text-secondary">Daily focus goal: 45 minutes</p><button class="btn btn-outline-primary w-100" type="button" (click)="exerciseStarted = !exerciseStarted; showActionFeedback(exerciseStarted ? 'Targeted 10-minute signals exercise started.' : 'Targeted exercise paused.')">{{ exerciseStarted ? 'Pause exercise' : 'Start a targeted exercise' }}</button></article></aside>
           </section>
         }
 
         @case ('quiz') {
           <section class="row g-4"><div class="col-xl-8"><article class="workspace-card p-4 p-lg-5">
-            <div class="d-flex justify-content-between flex-wrap gap-2 mb-4"><span class="badge text-bg-primary-subtle text-primary">Question 04 of 10 · Single choice</span><span class="text-secondary">⏱ 12:45</span></div>
-            <p class="eyebrow">ANGULAR 20 · REACTIVE PRIMITIVES</p><h2 class="h4 mb-4">When does a computed signal recalculate its value?</h2>
-            @for (option of quizOptions; track option.id) {
-              <label class="quiz-option d-flex align-items-start gap-3 p-3 mb-2" [class.selected]="selectedAnswer === option.id">
-                <input class="form-check-input mt-1" type="radio" name="answer" [value]="option.id" [(ngModel)]="selectedAnswer"><span><strong>{{ option.title }}</strong><small class="d-block text-secondary">{{ option.detail }}</small></span>
-              </label>
+            @if (quizComplete) {
+              <div class="text-center py-4">
+                <span class="metric-icon purple mx-auto mb-3"><span class="material-symbols-outlined">task_alt</span></span>
+                <p class="eyebrow">PRACTICE COMPLETE</p>
+                <h2 class="h3">You scored {{ correctQuizAnswers }} / {{ quizQuestions.length }}</h2>
+                <p class="text-secondary">Your answers stay in this preview and are not sent to a server.</p>
+                <button class="btn btn-primary" type="button" (click)="restartQuiz()">Try again</button>
+              </div>
+            } @else {
+              <div class="d-flex justify-content-between flex-wrap gap-2 mb-4"><span class="badge text-bg-primary-subtle text-primary">Question {{ quizQuestion }} of {{ quizQuestions.length }} · Single choice</span><span class="text-secondary">Practice preview</span></div>
+              <p class="eyebrow">ANGULAR 20 · REACTIVE PRIMITIVES</p><h2 class="h4 mb-4">{{ currentQuiz.prompt }}</h2>
+              @for (option of currentQuiz.options; track option.id) {
+                <label class="quiz-option d-flex align-items-start gap-3 p-3 mb-2" [class.selected]="selectedAnswer === option.id">
+                  <input class="form-check-input mt-1" type="radio" name="answer" [value]="option.id" [(ngModel)]="selectedAnswer"><span><strong>{{ option.title }}</strong><small class="d-block text-secondary">{{ option.detail }}</small></span>
+                </label>
+              }
+              <div class="tip-card mt-4"><strong>Need conceptual guidance?</strong><p class="mb-0">Ask the AI Tutor for a hint without revealing the answer.</p></div>
+              <div class="d-flex justify-content-between mt-4"><button class="btn btn-outline-secondary" type="button" [disabled]="quizQuestion === 1" (click)="previousQuizQuestion()">Previous</button><button class="btn btn-primary" type="button" (click)="submitQuiz()">{{ quizQuestion === quizQuestions.length ? 'Finish quiz' : 'Save & next' }}</button></div>
             }
-            <div class="tip-card mt-4"><strong>Need conceptual guidance?</strong><p class="mb-0">Ask the AI Tutor for a hint without revealing the answer.</p></div>
-            <div class="d-flex justify-content-between mt-4"><button class="btn btn-outline-secondary">Previous</button><button class="btn btn-primary" [disabled]="!selectedAnswer">Save &amp; next</button></div>
-          </article></div><aside class="col-xl-4"><article class="workspace-card p-4"><h2 class="h5">Cognitive diagnostics</h2><p class="text-secondary">Continuous synthesis of your quiz telemetry</p><div class="diagnostic-score"><strong>85%</strong><span>17 / 20 correct</span></div><p class="eyebrow mt-4">KNOWLEDGE GAP</p><p class="mb-0">Review dependency tracking and signal equality checks.</p></article></aside></section>
+            @if (quizNotice) { <p class="alert alert-info mt-3 mb-0" role="status">{{ quizNotice }}</p> }
+          </article></div><aside class="col-xl-4"><article class="workspace-card p-4"><h2 class="h5">Practice progress</h2><p class="text-secondary">Your answers are kept in this local preview.</p><div class="diagnostic-score"><strong>{{ correctQuizAnswers }} / {{ quizQuestions.length }}</strong><span>correct so far</span></div><p class="eyebrow mt-4">REVIEW TOPIC</p><p class="mb-0">Computed signal dependencies and cached values.</p></article></aside></section>
         }
 
         @case ('code') {
           <section class="row g-4"><div class="col-xl-8"><article class="workspace-card p-4 p-lg-5">
-            <div class="d-flex flex-wrap justify-content-between gap-3 mb-4"><div><span class="badge text-bg-primary-subtle text-primary mb-2">Neural AST Engine v4.2</span><h2 class="h3 mb-1">AI Code Explainer &amp; Debugging Assistant</h2><p class="text-secondary">Review, understand, and improve code with guided explanations.</p></div><button class="btn btn-outline-primary">Load from course</button></div>
-            <div class="code-block"><div class="code-toolbar">TypeScript · Angular <span>TS Strict Mode</span></div><pre><code>async loadUserProfile(userId: string) &#123;&#10;  const response = await fetch('/api/users/' + userId);&#10;  const data = response.json();&#10;  localStorage.setItem('cached_user', data);&#10;  return data;&#10;&#125;</code></pre></div>
-            <div class="analysis-card mt-4"><p class="eyebrow">PRIMARY ISSUE · HIGH SEVERITY</p><h3 class="h5">The response body is not awaited</h3><p class="text-secondary">Calling <code>response.json()</code> returns a promise. Await it before storing or returning the parsed user data.</p><pre class="code-block"><code>const data = await response.json();&#10;localStorage.setItem('cached_user', JSON.stringify(data));</code></pre></div>
-          </article></div><aside class="col-xl-4"><article class="workspace-card p-4"><p class="eyebrow">ANALYSIS COMPLETE</p><h2 class="h4">2 issues detected</h2><div class="diagnostic-score"><strong>02</strong><span>Recommendations</span></div><a class="btn btn-primary w-100 mt-3" routerLink="/ai-tutor">Ask AI Tutor</a></article></aside></section>
+            <div class="d-flex flex-wrap justify-content-between gap-3 mb-4"><div><span class="badge text-bg-primary-subtle text-primary mb-2">Neural AST Engine v4.2</span><h2 class="h3 mb-1">AI Code Explainer &amp; Debugging Assistant</h2><p class="text-secondary">Review, understand, and improve code with guided explanations.</p></div><button class="btn btn-outline-primary" type="button" (click)="codeLoaded = true; showActionFeedback('Angular Signals sample loaded from your course.')">Load from course</button></div>
+            <div class="code-block"><div class="code-toolbar">TypeScript · Angular <span>TS Strict Mode</span></div><pre><code>@if (codeLoaded) {const total = computed(() =&gt; count() * 2);&#10;effect(() =&gt; console.log(total()));&#10;count.set(count() + 1);} @else {async loadUserProfile(userId: string) &#123;&#10;  const response = await fetch('/api/users/' + userId);&#10;  const data = response.json();&#10;  localStorage.setItem('cached_user', data);&#10;  return data;&#10;&#125;}</code></pre></div>
+            @if (codeLoaded) {
+              <div class="analysis-card mt-4"><p class="eyebrow">SAMPLE REVIEW</p><h3 class="h5">Computed values derive from tracked signals</h3><p class="text-secondary">Angular recomputes this value when a signal read inside the computation changes. The example depends on <code>count()</code> and logs the derived value through an effect.</p><pre class="code-block"><code>const total = computed(() =&gt; count() * 2);</code></pre></div>
+            } @else {
+              <div class="analysis-card mt-4"><p class="eyebrow">PRIMARY ISSUE · HIGH SEVERITY</p><h3 class="h5">The response body is not awaited</h3><p class="text-secondary">Calling <code>response.json()</code> returns a promise. Await it before storing or returning the parsed user data.</p><pre class="code-block"><code>const data = await response.json();&#10;localStorage.setItem('cached_user', JSON.stringify(data));</code></pre></div>
+            }
+          </article></div><aside class="col-xl-4"><article class="workspace-card p-4">
+            @if (codeLoaded) {
+              <p class="eyebrow">SAMPLE REVIEW READY</p><h2 class="h4">1 concept explained</h2><div class="diagnostic-score"><strong>01</strong><span>Learning note</span></div>
+            } @else {
+              <p class="eyebrow">ANALYSIS COMPLETE</p><h2 class="h4">1 issue detected</h2><div class="diagnostic-score"><strong>01</strong><span>Recommendation</span></div>
+            }
+            <a class="btn btn-primary w-100 mt-3" routerLink="/ai-tutor">Ask AI Tutor</a></article></aside></section>
         }
 
         @case ('assignments') {
-          <section class="row g-4"><div class="col-xl-8"><div class="d-flex flex-wrap gap-2 mb-3"><button class="btn btn-primary">Upcoming (3)</button><button class="btn btn-outline-primary">Submitted &amp; graded</button><button class="btn btn-outline-primary">Drafts</button></div>
-            @for (assignment of assignmentList; track assignment.title) {<article class="workspace-card p-4 mb-3"><div class="d-flex flex-wrap justify-content-between gap-3"><div><span class="badge text-bg-primary-subtle text-primary mb-2">{{ assignment.course }}</span><span class="badge text-bg-warning-subtle text-warning-emphasis ms-2">{{ assignment.due }}</span><h2 class="h4 mt-2">{{ assignment.title }}</h2><p class="text-secondary">{{ assignment.description }}</p><div class="d-flex gap-4 small text-secondary"><span>Difficulty: {{ assignment.level }}</span><span>Reward: {{ assignment.reward }}</span></div></div><a class="btn btn-primary align-self-end" routerLink="/learning/angular-signals">Open assignment</a></div></article>}
+          <section class="row g-4"><div class="col-xl-8"><div class="d-flex flex-wrap gap-2 mb-3">
+            @for (tab of ['Upcoming', 'Submitted & graded', 'Drafts']; track tab) {
+              <button class="btn" [class.btn-primary]="selectedAssignmentTab === tab" [class.btn-outline-primary]="selectedAssignmentTab !== tab" type="button" (click)="setAssignmentTab(tab)">{{ tab }}{{ tab === 'Upcoming' ? ' (' + assignmentList.length + ')' : '' }}</button>
+            }
+          </div>
+            @if (selectedAssignmentTab === 'Upcoming') {
+              @for (assignment of assignmentList; track assignment.title) {<article class="workspace-card p-4 mb-3"><div class="d-flex flex-wrap justify-content-between gap-3"><div><span class="badge text-bg-primary-subtle text-primary mb-2">{{ assignment.course }}</span><span class="badge text-bg-warning-subtle text-warning-emphasis ms-2">{{ assignment.due }}</span><h2 class="h4 mt-2">{{ assignment.title }}</h2><p class="text-secondary">{{ assignment.description }}</p><div class="d-flex gap-4 small text-secondary"><span>Difficulty: {{ assignment.level }}</span><span>Reward: {{ assignment.reward }}</span></div></div><a class="btn btn-primary align-self-end" routerLink="/learning/angular-signals">Open assignment</a></div></article>}
+            } @else {
+              <article class="workspace-card p-4 text-center"><h2 class="h5">{{ selectedAssignmentTab }}</h2><p class="text-secondary mb-0">There are no {{ selectedAssignmentTab.toLowerCase() }} assignments in this preview.</p></article>
+            }
           </div><aside class="col-xl-4"><article class="workspace-card p-4"><p class="eyebrow">RECENTLY GRADED</p><h2 class="h4">Assignment 3: Async scheduler</h2><div class="grade-score">96<small> / 100</small></div><p class="text-secondary">Excellent handling of async edge cases and test coverage.</p><a routerLink="/progress">View evaluation breakdown</a></article></aside></section>
         }
 
@@ -184,26 +308,327 @@
           <section class="row g-3 mb-4">
             @for (metric of progressMetrics; track metric.label) {<div class="col-6 col-xl-3"><article class="workspace-card progress-metric p-3 p-lg-4"><small>{{ metric.label }}</small><strong>{{ metric.value }}</strong><span class="positive">{{ metric.detail }}</span></article></div>}
           </section>
-          <section class="row g-4"><div class="col-xl-8"><article class="workspace-card p-4"><div class="d-flex justify-content-between"><div><h2 class="h4">Daily velocity &amp; focus allocation</h2><p class="text-secondary">Aggregated study minutes across the past week</p></div><button class="btn btn-outline-secondary btn-sm">Last 7 days</button></div><div class="bar-chart" aria-label="Weekly study chart">@for (bar of chartBars; track $index) {<div class="chart-column"><div class="bar" [style.height.%]="bar"></div><small>W{{ $index + 1 }}</small></div>}</div></article></div><div class="col-xl-4"><article class="workspace-card p-4"><h2 class="h4">Skills acquired</h2><p class="text-secondary">Mastered skills mapped to your curriculum</p>@for (skill of skills; track skill.name) {<div class="skill-row"><div class="d-flex justify-content-between"><span>{{ skill.name }}</span><strong>{{ skill.value }}%</strong></div><div class="progress"><div class="progress-bar" [style.width.%]="skill.value"></div></div></div>}</article></div></section>
+          <section class="row g-4"><div class="col-xl-8"><article class="workspace-card p-4"><div class="d-flex justify-content-between"><div><h2 class="h4">Daily velocity &amp; focus allocation</h2><p class="text-secondary">Aggregated study minutes across the past {{ reportRange }}</p></div><button class="btn btn-outline-secondary btn-sm" type="button" (click)="toggleReportRange()">Last {{ reportRange }}</button></div><div class="bar-chart" aria-label="Weekly study chart">@for (bar of chartBars; track $index) {<div class="chart-column"><div class="bar" [style.height.%]="bar"></div><small>W{{ $index + 1 }}</small></div>}</div></article></div><div class="col-xl-4"><article class="workspace-card p-4"><h2 class="h4">Skills acquired</h2><p class="text-secondary">Mastered skills mapped to your curriculum</p>@for (skill of skills; track skill.name) {<div class="skill-row"><div class="d-flex justify-content-between"><span>{{ skill.name }}</span><strong>{{ skill.value }}%</strong></div><div class="progress"><div class="progress-bar" [style.width.%]="skill.value"></div></div></div>}</article></div></section>
           <section class="workspace-card p-4 mt-4"><h2 class="h4">Enrolled courses velocity breakdown</h2>@for (course of service.courses; track course.id) {<div class="course-velocity"><span>{{ course.title }}</span><div class="progress"><div class="progress-bar" [style.width.%]="course.progress ?? 0"></div></div><strong>{{ course.progress ?? 0 }}%</strong></div>}</section>
         }
 
         @case ('instructor') {
-          <section class="row g-3 mb-4">@for (metric of instructorMetrics; track metric.label) {<div class="col-sm-6 col-xl"><article class="workspace-card p-3 p-xl-4 h-100"><small class="eyebrow">{{ metric.label }}</small><strong class="display-6 fw-bold d-block">{{ metric.value }}</strong><span class="positive">{{ metric.detail }}</span></article></div>}</section>
-          <section class="row g-4"><div class="col-xl-8"><article class="workspace-card p-4"><div class="d-flex justify-content-between"><div><h2 class="h4">Priority grading feed</h2><p class="text-secondary">Recent learner submissions and reviews</p></div><a routerLink="/assignments">View all</a></div>@for (submission of submissions; track submission.name) {<div class="submission-row"><span class="avatar">{{ submission.initials }}</span><div class="flex-grow-1"><strong>{{ submission.name }}</strong><small>{{ submission.course }}</small></div><span class="badge text-bg-warning-subtle text-warning-emphasis">{{ submission.status }}</span><button class="btn btn-sm btn-outline-primary">Review</button></div>}</article></div><aside class="col-xl-4"><article class="workspace-card p-4"><p class="eyebrow">INSTRUCTOR SHORTCUTS</p><h2 class="h4">Course tools</h2><a class="tool-link" routerLink="/instructor/course-builder"><span class="material-symbols-outlined">edit_note</span> Curriculum builder</a><a class="tool-link" routerLink="/ai/quiz-generator"><span class="material-symbols-outlined">quiz</span> Question &amp; coding bank</a><a class="tool-link" routerLink="/progress"><span class="material-symbols-outlined">insights</span> Learner analytics</a></article></aside></section>
+          <section class="teacher-panel">
+            <header class="teacher-header d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+              <div>
+                <p class="eyebrow mb-2">Instructor dashboard</p>
+                <h2 class="mb-0">Welcome back, Dr. Sarah Chen</h2>
+              </div>
+              <div class="teacher-actions d-flex flex-wrap gap-2">
+                <button class="btn btn-outline-primary" type="button" (click)="navigateTo('/ai/quiz-generator')">AI Quiz Generator</button>
+                <button class="btn btn-primary" type="button" (click)="navigateTo('/instructor/course-builder')">Create Course</button>
+              </div>
+            </header>
+
+            <section class="row g-3 mb-4">
+              <div class="col-6 col-xl-3">
+                <article class="workspace-card teacher-kpi h-100">
+                  <small class="eyebrow">Total students</small>
+                  <strong>8,450</strong>
+                  <span class="positive">+12.4% this month</span>
+                </article>
+              </div>
+              <div class="col-6 col-xl-3">
+                <article class="workspace-card teacher-kpi h-100">
+                  <small class="eyebrow">Active courses</small>
+                  <strong>6</strong>
+                  <span class="positive">2 pending review</span>
+                </article>
+              </div>
+              <div class="col-6 col-xl-3">
+                <article class="workspace-card teacher-kpi h-100">
+                  <small class="eyebrow">Course completion</small>
+                  <strong>76.4%</strong>
+                  <span class="positive">+3.2% vs last month</span>
+                </article>
+              </div>
+              <div class="col-6 col-xl-3">
+                <article class="workspace-card teacher-kpi h-100">
+                  <small class="eyebrow">Pending reviews</small>
+                  <strong>14</strong>
+                  <span class="positive">AI flagged 4 urgent</span>
+                </article>
+              </div>
+            </section>
+
+            <section class="row g-4">
+              <div class="col-xl-8">
+                <article class="workspace-card p-4">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                      <p class="eyebrow mb-1">Telemetric analytics</p>
+                      <h3 class="h4 mb-0">Course performance</h3>
+                    </div>
+                    <span class="badge text-bg-primary-subtle text-primary">30 days</span>
+                  </div>
+
+                  <div class="teacher-graph">
+                    <div class="graph-bar"><span style="height: 42%"></span><small>Jan</small></div>
+                    <div class="graph-bar"><span style="height: 58%"></span><small>Feb</small></div>
+                    <div class="graph-bar"><span style="height: 76%"></span><small>Mar</small></div>
+                    <div class="graph-bar"><span style="height: 65%"></span><small>Apr</small></div>
+                    <div class="graph-bar"><span style="height: 88%"></span><small>May</small></div>
+                    <div class="graph-bar"><span style="height: 70%"></span><small>Jun</small></div>
+                    <div class="graph-bar"><span style="height: 94%"></span><small>Jul</small></div>
+                  </div>
+
+                  <div class="teacher-legend d-flex flex-wrap gap-3 mt-3 text-secondary small">
+                    <span><span class="legend-dot blue"></span> Enrolled</span>
+                    <span><span class="legend-dot purple"></span> Started</span>
+                    <span><span class="legend-dot orange"></span> Active</span>
+                    <span><span class="legend-dot green"></span> Completed</span>
+                  </div>
+                </article>
+
+                <article class="workspace-card p-4 mt-4">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                      <p class="eyebrow mb-1">Verification queue</p>
+                      <h3 class="h4 mb-0">Interactive AI-assisted grading</h3>
+                    </div>
+                    <span class="badge text-bg-warning-subtle text-warning-emphasis">Pending review</span>
+                  </div>
+
+                  <div class="submission-row">
+                    <span class="avatar">AR</span>
+                    <div class="flex-grow-1"><strong>Alex Rivera</strong><small>Submitted assignment: AI product strategy · 4.5h ago</small></div>
+                    <span class="badge text-bg-warning-subtle text-warning-emphasis">AI-assisted</span>
+                    <button class="btn btn-sm btn-outline-primary" type="button" (click)="showActionFeedback('Review opened for Alex Rivera’s AI product strategy submission.')">Review</button>
+                  </div>
+
+                  <div class="submission-row">
+                    <span class="avatar">MB</span>
+                    <div class="flex-grow-1"><strong>Marina Bell</strong><small>Submitted capstone rubric · 1.2h ago</small></div>
+                    <span class="badge text-bg-warning-subtle text-warning-emphasis">Needs check</span>
+                    <button class="btn btn-sm btn-outline-primary" type="button" (click)="showActionFeedback('Review opened for Marina Bell’s capstone rubric.')">Review</button>
+                  </div>
+
+                  <div class="teacher-feedback mt-3">
+                    <div class="feedback-header d-flex justify-content-between align-items-center mb-2">
+                      <strong>AI suggestion — Review before final score</strong>
+                      <span class="badge text-bg-primary-subtle text-primary">Confidence 93.1%</span>
+                    </div>
+                    <div class="d-flex flex-wrap gap-3 text-secondary small">
+                      <span>Architecture 40/40</span>
+                      <span>Test coverage 28/30</span>
+                      <span>Memory safety 28/30</span>
+                    </div>
+                    <p class="mb-0 mt-3 text-secondary">Excellent insight into microservice guardrails and security tradeoffs. Consider tightening the deployment strategy notes before final sign-off.</p>
+                  </div>
+                </article>
+              </div>
+
+              <aside class="col-xl-4">
+                <article class="workspace-card p-4">
+                  <p class="eyebrow mb-2">AI teaching assistant</p>
+                  <h3 class="h4 mb-3">Cognitive Prompt · Active</h3>
+                  <div class="teacher-assistant-box">
+                    <div class="teacher-assistant-head">
+                      <span class="material-symbols-outlined">auto_awesome</span>
+                      <span>AI Guidance</span>
+                    </div>
+                    <p>"Create 5 intermediate TypeScript script questions that help learners identify common type errors and prevent invalid assumptions."</p>
+                  </div>
+                  <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-primary flex-grow-1" type="button" (click)="showActionFeedback('The AI teaching prompt was added to the question bank preview.')">Add to bank</button>
+                    <button class="btn btn-outline-primary flex-grow-1" type="button" (click)="showActionFeedback('Prompt editing is ready. Connect an instructor content service to save changes.')">Edit prompt</button>
+                  </div>
+                </article>
+
+                <article class="workspace-card p-4 mt-4">
+                  <p class="eyebrow mb-2">Live student activity</p>
+                  <h3 class="h5 mb-3">Recent engagement</h3>
+
+                  <div class="activity-list">
+                    <div class="activity-item">
+                      <span class="avatar small">MT</span>
+                      <div>
+                        <strong>Marcus Young</strong>
+                        <small>Completed Quiz 3 · 96% score</small>
+                      </div>
+                    </div>
+                    <div class="activity-item">
+                      <span class="avatar small">PS</span>
+                      <div>
+                        <strong>Priya Sharma</strong>
+                        <small>Submitted Capstone 2 · awaiting review</small>
+                      </div>
+                    </div>
+                    <div class="activity-item">
+                      <span class="avatar small">EC</span>
+                      <div>
+                        <strong>Elena Kost</strong>
+                        <small>Enrolled in Full-Stack Reactive Architecture</small>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </aside>
+            </section>
+          </section>
         }
 
         @case ('builder') {
-          <section class="row g-4"><div class="col-xl-8"><article class="workspace-card p-4 p-lg-5"><div class="d-flex justify-content-between align-items-center mb-4"><div><span class="badge text-bg-primary-subtle text-primary">Step 2 of 6</span><h2 class="h3 mt-2">Curriculum &amp; content structure</h2></div><button class="btn btn-outline-secondary">Preview learner view</button></div><div class="progress mb-4" role="progressbar" aria-label="Builder progress" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:34%"></div></div>@for (module of builderModules; track module.title) {<article class="builder-module p-3 mb-3"><div class="d-flex align-items-center gap-3"><span class="material-symbols-outlined text-primary">drag_indicator</span><div class="flex-grow-1"><small class="eyebrow">{{ module.label }}</small><h3 class="h5 mb-0">{{ module.title }}</h3><small class="text-secondary">{{ module.lessons }} lessons · {{ module.duration }}</small></div><span class="badge text-bg-success-subtle text-success">{{ module.status }}</span><button class="btn btn-sm btn-outline-secondary">Edit</button></div></article>}<button class="btn btn-outline-primary">+ Add lesson</button></article></div><aside class="col-xl-4"><article class="workspace-card p-4"><p class="eyebrow">AI CURRICULUM ASSISTANT</p><h2 class="h4">Course health score</h2><div class="diagnostic-score"><strong>98%</strong><span>Optimal structure</span></div><button class="btn btn-primary w-100 mt-3">Generate lesson quiz</button></article></aside></section>
+          <section class="row g-4"><div class="col-xl-8"><article class="workspace-card p-4 p-lg-5"><div class="d-flex justify-content-between align-items-center mb-4"><div><span class="badge text-bg-primary-subtle text-primary">Step 2 of 6</span><h2 class="h3 mt-2">Curriculum &amp; content structure</h2></div>          <button class="btn btn-outline-secondary" type="button" (click)="navigateTo('/course/javascript-mastery')">Preview learner view</button></div><div class="progress mb-4" role="progressbar" aria-label="Builder progress" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:34%"></div></div>@for (module of builderModules; track module.title; let i = $index) {<article class="builder-module p-3 mb-3"><div class="d-flex align-items-center gap-3"><span class="material-symbols-outlined text-primary">drag_indicator</span><div class="flex-grow-1"><small class="eyebrow">{{ module.label }}</small><h3 class="h5 mb-0">{{ module.title }}</h3><small class="text-secondary">{{ module.lessons }} lessons · {{ module.duration }}</small></div><span class="badge text-bg-success-subtle text-success">{{ module.status }}</span><button class="btn btn-sm btn-outline-secondary" type="button" (click)="editModule(i)">Edit</button></div></article>}<button class="btn btn-outline-primary" type="button" (click)="addLesson()">+ Add lesson</button></article></div><aside class="col-xl-4"><article class="workspace-card p-4"><p class="eyebrow">AI CURRICULUM ASSISTANT</p><h2 class="h4">Course health score</h2><div class="diagnostic-score"><strong>98%</strong><span>Optimal structure</span></div><button class="btn btn-primary w-100 mt-3" type="button" (click)="navigateTo('/ai/quiz-generator')">Generate lesson quiz</button></article></aside></section>
         }
 
         @case ('admin') {
-          <section class="row g-3 mb-4">@for (metric of adminMetrics; track metric.label) {<div class="col-sm-6 col-xl-3"><article class="workspace-card p-3 p-lg-4 h-100"><small class="eyebrow">{{ metric.label }}</small><strong class="display-6 fw-bold d-block">{{ metric.value }}</strong><span class="text-secondary small">{{ metric.detail }}</span></article></div>}</section>
-          <section class="row g-4"><div class="col-xl-7"><article class="workspace-card p-4"><div class="d-flex justify-content-between align-items-center mb-3"><div><p class="eyebrow">DIRECTORY &amp; ACCOUNT OVERSIGHT</p><h2 class="h4">Platform users</h2></div><button class="btn btn-primary">Invite user</button></div><div class="table-responsive"><table class="table align-middle"><thead><tr><th>User</th><th>Role</th><th>Status</th><th>Joined</th></tr></thead><tbody>@for (user of users; track user.email) {<tr><td><strong>{{ user.name }}</strong><small class="d-block text-secondary">{{ user.email }}</small></td><td><span class="badge text-bg-primary-subtle text-primary">{{ user.role }}</span></td><td><span class="badge text-bg-success-subtle text-success">{{ user.status }}</span></td><td>{{ user.joined }}</td></tr>}</tbody></table></div></article></div><div class="col-xl-5"><article class="workspace-card p-4 mb-4"><p class="eyebrow">SYSTEM HEALTH</p><h2 class="h4">AI telemetry &amp; pipeline load</h2><div class="telemetry-total">1,420,188 <small>tokens</small></div>@for (system of systemHealth; track system.name) {<div class="skill-row d-flex justify-content-between"><span>{{ system.name }}</span><strong>{{ system.status }}</strong></div>}</article><article class="workspace-card p-4"><p class="eyebrow">GOVERNANCE</p><h2 class="h5">Review queue</h2><p class="text-secondary">3 flagged learner responses need review.</p><button class="btn btn-outline-primary">Open moderation queue</button></article></div></section>
+          <section class="admin-panel">
+            <header class="admin-header d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+              <div>
+                <p class="eyebrow mb-2">System overview</p>
+                <h2 class="mb-0">Admin Management &amp; Platform Governance</h2>
+              </div>
+              <div class="admin-actions d-flex flex-wrap gap-2">
+                <button class="btn btn-outline-primary" type="button" (click)="safeguardsLocked = !safeguardsLocked; showActionFeedback(safeguardsLocked ? 'Platform safeguards are locked in this preview.' : 'Platform safeguards are unlocked in this preview.')">{{ safeguardsLocked ? 'Unlock safeguards' : 'Lock down safeguards' }}</button>
+                <button class="btn btn-primary" type="button" (click)="showActionFeedback('Enterprise tenant invitation opened. Connect the admin service to send invitations.')">Invite enterprise tenant</button>
+              </div>
+            </header>
+
+            <section class="row g-3 mb-4">
+              <div class="col-6 col-xl-3"><article class="workspace-card admin-kpi h-100"><small class="eyebrow">Total registered users</small><strong>42,850</strong><span class="positive">+9.1% this quarter</span></article></div>
+              <div class="col-6 col-xl-3"><article class="workspace-card admin-kpi h-100"><small class="eyebrow">AI inferences</small><strong>1.42M</strong><span class="positive">avg latency 240ms</span></article></div>
+              <div class="col-6 col-xl-3"><article class="workspace-card admin-kpi h-100"><small class="eyebrow">Course catalog</small><strong>120</strong><span class="positive">108 published</span></article></div>
+              <div class="col-6 col-xl-3"><article class="workspace-card admin-kpi h-100"><small class="eyebrow">Platform ARR</small><strong>$482.5K</strong><span class="positive">+14.2% YoY</span></article></div>
+            </section>
+
+            <section class="row g-4">
+              <div class="col-xl-8">
+                <article class="workspace-card p-4">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                      <p class="eyebrow mb-1">Identity &amp; tenant verification</p>
+                      <h3 class="h4 mb-0">User directory</h3>
+                    </div>
+                    <button class="btn btn-primary btn-sm" type="button" (click)="showActionFeedback('User invitation opened. Connect the admin service to send invitations.')">Invite user</button>
+                  </div>
+
+                  <div class="admin-tabs d-flex flex-wrap gap-2 mb-3">
+                    @for (role of ['All', 'Student', 'Instructor', 'Admin']; track role) {
+                      <button class="btn btn-sm" [class.btn-primary]="selectedUserRole === role" [class.btn-outline-primary]="selectedUserRole !== role" type="button" (click)="selectedUserRole = role">{{ role }}</button>
+                    }
+                  </div>
+
+                  <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                      <thead>
+                        <tr>
+                          <th>User</th>
+                          <th>Role</th>
+                          <th>Status</th>
+                          <th>Joined</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @for (user of filteredUsers(); track user.email) {
+                          <tr>
+                            <td><strong>{{ user.name }}</strong><small class="d-block text-secondary">{{ user.email }}</small></td>
+                            <td><span class="badge text-bg-primary-subtle text-primary">{{ user.role }}</span></td>
+                            <td>
+                              <span class="badge" [class.text-bg-success-subtle]="user.status === 'Active'" [class.text-bg-warning-subtle]="user.status === 'Pending activation'" [class.text-bg-secondary-subtle]="user.status === 'Suspended'" [class.text-success]="user.status === 'Active'" [class.text-warning-emphasis]="user.status === 'Pending activation'" [class.text-secondary]="user.status === 'Suspended'">
+                                {{ user.status }}
+                              </span>
+                            </td>
+                            <td>{{ user.joined }}</td>
+                            <td>
+                              <button class="btn btn-sm" [class.btn-primary]="user.status !== 'Active'" [class.btn-outline-secondary]="user.status === 'Active'" type="button" (click)="activateUser(user.email)">
+                                {{ user.status === 'Active' ? 'Suspend access' : 'Activate account' }}
+                              </button>
+                            </td>
+                          </tr>
+                        } @empty {
+                          <tr><td colspan="5" class="text-center text-secondary py-4">No users match this role.</td></tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </article>
+
+                <article class="workspace-card p-4 mt-4">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                      <p class="eyebrow mb-1">Curriculum moderation</p>
+                      <h3 class="h4 mb-0">Pedagogical audit</h3>
+                    </div>
+                    <span class="badge text-bg-danger-subtle text-danger">3 critical</span>
+                  </div>
+
+                  <div class="audit-list">
+                    <div class="audit-item">
+                      <div class="audit-copy">
+                        <strong>CS-302: Quiz Builder</strong>
+                        <p>Generates synthesized content from audit data and flags unverified outcomes.</p>
+                      </div>
+                      <div class="audit-actions d-flex gap-2">
+                        <button class="btn btn-sm btn-primary" type="button" (click)="updateModeration(0, 'Approved')">Approve</button>
+                        <button class="btn btn-sm btn-outline-secondary" type="button" (click)="updateModeration(0, 'Revision requested')">Request revision</button>
+                      </div>
+                    </div>
+                    <div class="audit-item">
+                      <div class="audit-copy">
+                        <strong>ML-101: Content Lab</strong>
+                        <p>Identifies missing explanations and weak rubric definitions in ML content.</p>
+                      </div>
+                      <div class="audit-actions d-flex gap-2">
+                        <button class="btn btn-sm btn-primary" type="button" (click)="updateModeration(1, 'Approved')">Approve</button>
+                        <button class="btn btn-sm btn-outline-secondary" type="button" (click)="updateModeration(1, 'Revision requested')">Request revision</button>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <aside class="col-xl-4">
+                <article class="workspace-card p-4">
+                  <p class="eyebrow mb-2">Security overview</p>
+                  <h3 class="h5 mb-3">AI compute &amp; telemetry</h3>
+                  <div class="security-chart">
+                    <div class="chart-row"><span>AI security</span><strong>92%</strong></div>
+                    <div class="chart-row"><span>Model integrity</span><strong>98%</strong></div>
+                    <div class="chart-row"><span>Token protection</span><strong>87%</strong></div>
+                  </div>
+                </article>
+
+                <article class="workspace-card p-4 mt-4">
+                  <p class="eyebrow mb-2">Platform alerts</p>
+                  <h3 class="h5 mb-3">Live system feed</h3>
+                  <div class="alert-feed">
+                    <div><span class="status-dot success"></span><div><strong>Role escalation</strong><small>Auto-approved for educational staff.</small></div></div>
+                    <div><span class="status-dot warning"></span><div><strong>SecOps audit</strong><small>1 flagged anomaly in tenant activity.</small></div></div>
+                    <div><span class="status-dot info"></span><div><strong>API latency</strong><small>Average response time improved by 8%.</small></div></div>
+                  </div>
+                </article>
+              </aside>
+            </section>
+          </section>
         }
 
         @case ('about') {
           <section class="workspace-card p-4 p-lg-5"><span class="badge text-bg-primary-subtle text-primary mb-3">Our mission</span><h2 class="display-6 fw-bold">Education that adapts to every learner.</h2><p class="text-secondary fs-5">We combine thoughtful curriculum, practical projects, and adaptive learning tools to make high-quality technology education more accessible.</p><div class="row g-3 mt-3">@for (feature of aboutFeatures; track feature.title) {<div class="col-md-6"><article class="feature-card h-100"><span class="feature-icon"><span class="material-symbols-outlined">{{ feature.icon }}</span></span><h3>{{ feature.title }}</h3><p>{{ feature.text }}</p></article></div>}</div><a class="btn btn-primary mt-4" routerLink="/courses">Explore courses</a></section>
         }
+      }
+      @if (pageDetails; as details) {
+        <section class="page-guide workspace-page-guide" aria-labelledby="workspace-guide-heading">
+          <div class="page-guide-intro">
+            <p class="eyebrow">{{ details.eyebrow }}</p>
+            <h2 id="workspace-guide-heading">{{ details.heading }}</h2>
+            <p>{{ details.summary }}</p>
+          </div>
+          <div class="page-guide-grid">
+            @for (highlight of details.highlights; track highlight.title) {
+              <article class="page-guide-card">
+                <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
+                <h3>{{ highlight.title }}</h3>
+                <p>{{ highlight.detail }}</p>
+              </article>
+            }
+          </div>
+        </section>
       }
     </div>

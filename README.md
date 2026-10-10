@@ -1,6 +1,6 @@
 # NexaLearn AI
 
-Angular learning platform frontend built with standalone components, Bootstrap 5, and server-side rendering (SSR). This first phase uses local sample data; the planned Node.js, Express, and MongoDB backend belongs to the next phase.
+NexaLearn is an Angular learning platform with server-side rendering (SSR), an Express API, and MongoDB-backed accounts, courses, enrollments, progress, and administration. The frontend's existing course and workspace screens still contain sample data; the API client in `src/app/core/learning-api.service.ts` provides the typed integration surface for connecting those screens.
 
 ## Development server
 
@@ -60,7 +60,7 @@ For more information on using the Angular CLI, including detailed command refere
 
 ## Production SSR
 
-Build the browser and server bundles, then run the generated server:
+Build the browser and server bundles, then run the generated SSR server. In production, the API and application are served from the same origin:
 
 ```bash
 npm run build
@@ -69,4 +69,79 @@ npm run serve:ssr:ai-learning-platform
 
 The SSR host allowlist in `angular.json` includes local development hosts. Add the production hostname to `security.allowedHosts` before deploying.
 
-Feature screens live under `src/app/features`, reusable UI under `src/app/shared`, application-wide services and models under `src/app/core`, and navigation components under `src/app/layout`.
+## Local backend setup
+
+1. Install and start MongoDB locally, or create an Atlas database.
+2. Copy `.env.example` to `.env`. Set `MONGODB_URI` and create a unique authentication secret (at least 32 bytes), for example:
+
+   ```bash
+   node -e "console.log(require('node:crypto').randomBytes(48).toString('base64url'))"
+   ```
+
+   Put the generated value in `AUTH_JWT_SECRET`. Keep `.env` private; it is ignored by Git.
+3. In one terminal, start the API:
+
+   ```bash
+   npm run backend:dev
+   ```
+
+4. In another terminal, start Angular:
+
+   ```bash
+   npm start
+   ```
+
+   Angular proxies `/api` to the local API at port 4301. The `/api/health` endpoint checks the MongoDB connection and authentication-secret configuration.
+
+Students and teachers can register through `/api/auth/register`. Passwords must be 12–128 characters. Admins cannot self-register; provision an initial admin account from the same `.env` configuration:
+
+```bash
+$env:ADMIN_NAME="Platform Admin"
+$env:ADMIN_EMAIL="admin@example.com"
+$env:ADMIN_PASSWORD="use-a-unique-password-of-12-characters-minimum"
+npm run create:admin
+```
+
+Account sessions use signed, HTTP-only, same-site cookies; the API never returns or stores a browser-readable token. `/api/auth/me` restores the current account, and role-aware route guards restrict student, teacher, and admin workspaces. Backend endpoints must still enforce authorization before exposing or changing data; frontend guards are only a user-experience layer.
+
+### API endpoints
+
+All API responses use JSON. Successful collection responses return `{ "data": [...], "meta": { "page", "limit", "total", "pages" } }`; single-resource responses use `{ "data": ... }`. Errors use `{ "error": { "code": "...", "message": "..." } }`. Session cookies are HTTP-only and same-site. Protected endpoints require a valid session and enforce the listed role on the server.
+
+| Method | Endpoint | Access | Purpose |
+| --- | --- | --- | --- |
+| `GET` | `/api/health/live` | Public | Process liveness check |
+| `GET` | `/api/health` | Public | Readiness check for MongoDB and auth configuration |
+| `POST` | `/api/auth/register` | Public | Create a student or teacher account |
+| `POST` | `/api/auth/login` | Public | Sign in (optional `remember: true`) |
+| `GET` | `/api/auth/me` | Session | Restore the current account |
+| `POST` | `/api/auth/logout` | Public | Clear the session cookie |
+| `GET` | `/api/courses` | Public | List published courses; accepts `page`, `limit`, `q`, `category`, and `level` |
+| `GET` | `/api/courses/:courseId` | Public | Read a published course |
+| `GET` | `/api/me/enrollments` | Student | List the signed-in student's enrollments |
+| `POST` | `/api/me/enrollments` | Student | Enroll using `{ "courseId": "..." }` |
+| `PATCH` | `/api/me/enrollments/:enrollmentId/progress` | Student | Set progress using `{ "progress": 0 }` (integer 0–100) |
+| `GET` | `/api/me/progress` | Student | Get enrollment and completion totals |
+| `GET` | `/api/teacher/courses` | Teacher | List the signed-in teacher's courses |
+| `GET` | `/api/teacher/overview` | Teacher | Get course and learner totals |
+| `POST` | `/api/teacher/courses` | Teacher | Create a draft course |
+| `PUT` | `/api/teacher/courses/:courseId` | Course owner | Replace course details; saves as a draft |
+| `PATCH` | `/api/teacher/courses/:courseId/status` | Course owner | Publish or unpublish with `{ "status": "published" }` or `"draft"` |
+| `DELETE` | `/api/teacher/courses/:courseId` | Course owner | Delete only a draft course with no enrollments |
+| `GET` | `/api/admin/overview` | Admin | Get account, course, and enrollment totals |
+| `GET` | `/api/admin/users` | Admin | Paginated/filterable user list (`page`, `limit`, `role`, `status`, `q`) |
+| `PATCH` | `/api/admin/users/:userId/status` | Admin | Set `{ "status": "active" }` or `"suspended"` |
+| `PATCH` | `/api/admin/users/:userId/role` | Admin | Set `{ "role": "student" }` or `"teacher"` |
+| `GET` | `/api/admin/audit-log` | Admin | Read the paginated user-administration audit log |
+
+Course creation/update accepts `title`, `description`, `category`, `level` (`Beginner`, `Intermediate`, or `Advanced`), `duration`, and `modules`. Each module has `title`, integer `lessons`, `duration`, and `topics`. Curriculum size is bounded by the API. Pagination defaults to 20 records and is capped at 100 per page.
+
+Run the backend validation tests with:
+
+```bash
+npm run test:api
+```
+
+The backend currently targets a modest, long-running Node.js deployment and uses the MongoDB driver's default connection pool settings. Monitor API latency, MongoDB connection counts, and request logs before tuning pool limits for a specific deployment.
+
+Feature screens live under `src/app/features`, reusable UI under `src/app/shared`, application-wide services and models under `src/app/core`, API routes under `src/server`, and navigation components under `src/app/layout`.

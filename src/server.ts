@@ -4,25 +4,64 @@ import {
   isMainModule,
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
-import express from 'express';
+import express, { type ErrorRequestHandler } from 'express';
+import helmet from 'helmet';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { randomUUID } from 'node:crypto';
 
-const browserDistFolder = join(import.meta.dirname, '../browser');
+const browserDistFolder = (() => {
+  const candidates = [
+    join(process.cwd(), 'dist', 'ai-learning-platform', 'browser'),
+    join(process.cwd(), 'browser'),
+    join(import.meta.dirname ?? process.cwd(), '../browser'),
+  ];
+
+  return candidates.find((candidate) => existsSync(candidate)) ?? candidates[0];
+})();
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+let authRouterPromise: Promise<express.Router> | undefined;
+let domainRouterPromise: Promise<express.Router> | undefined;
+const lazyApiErrorHandler: ErrorRequestHandler = (error, request, response, next) => {
+  void import('./server/api-errors')
+    .then(({ apiErrorHandler }) => apiErrorHandler(error, request, response, next))
+    .catch(next);
+};
 
-/**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/{*splat}', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
+app.use(helmet({ contentSecurityPolicy: false }));
+app.use('/api', (request, response, next) => {
+  const startedAt = performance.now();
+  const requestId = randomUUID();
+  response.setHeader('X-Request-Id', requestId);
+  response.setHeader('Cache-Control', 'no-store');
+  response.on('finish', () => {
+    console.info(JSON.stringify({
+      level: 'info',
+      event: 'api.request',
+      requestId,
+      method: request.method,
+      path: request.path,
+      status: response.statusCode,
+      durationMs: Math.round(performance.now() - startedAt),
+    }));
+  });
+  next();
+});
+app.use('/api', express.json({ limit: '32kb', strict: true }));
+app.use('/api', (request, response, next) => {
+  authRouterPromise ??= import('./server/auth-api').then(({ createAuthRouter }) => createAuthRouter());
+  void authRouterPromise.then(router => router(request, response, next)).catch(next);
+});
+app.use('/api', (request, response, next) => {
+  domainRouterPromise ??= import('./server/domain-api').then(({ createDomainRouter }) => createDomainRouter());
+  void domainRouterPromise.then(router => router(request, response, next)).catch(next);
+});
+app.use('/api', (_request, response) => {
+  response.status(404).json({ error: { code: 'NOT_FOUND', message: 'API endpoint not found.' } });
+});
+app.use('/api', lazyApiErrorHandler);
 
 /**
  * Serve static files from /browser

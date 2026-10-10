@@ -1,1 +1,32 @@
-<article class="course-card"><div class="course-thumb" [style.background]="course.color"><span class="material-symbols-outlined">{{course.icon}}</span><span class="level-tag">{{course.level}}</span></div><div class="course-content"><small>{{course.category}}</small><h3>{{course.title}}</h3><div class="course-stats"><span><span class="material-symbols-outlined">menu_book</span>{{course.lessons}} lessons</span><span><span class="material-symbols-outlined">schedule</span>{{course.duration}}</span></div>@if (course.progress) {<div class="progress-label"><span>Your progress</span><strong>{{course.progress}}%</strong></div><div class="progress"><span [style.width.%]="course.progress"></span></div>}<a class="course-link" [routerLink]="'/course/' + course.id">{{ continue ? 'Continue learning' : 'View course' }} <span class="material-symbols-outlined">arrow_forward</span></a></div></article>
+<article class="course-card">
+  <div class="course-thumb" [style.background]="course.color">
+    <span class="material-symbols-outlined">{{ course.icon }}</span>
+    <span class="level-tag">{{ course.level }}</span>
+  </div>
+  <div class="course-content">
+    <div class="course-card-category">
+      <small>{{ course.category }}</small>
+      <span><span class="material-symbols-outlined">star</span>{{ course.rating }}</span>
+    </div>
+    <h3>{{ course.title }}</h3>
+    <p class="course-description">{{ course.description }}</p>
+    <div class="course-stats">
+      <span><span class="material-symbols-outlined">menu_book</span>{{ course.lessons }} lessons</span>
+      <span><span class="material-symbols-outlined">schedule</span>{{ course.duration }}</span>
+      <span><span class="material-symbols-outlined">deployed_code</span>{{ course.projects.length }} projects</span>
+    </div>
+    <div class="course-instructor-card">
+      <span class="material-symbols-outlined">person</span>
+      <span>{{ course.instructor }}</span>
+      <span class="course-review-count">{{ course.reviews }} reviews</span>
+    </div>
+    @if (course.progress !== undefined && course.progress > 0) {
+      <div class="progress-label"><span>Your progress</span><strong>{{ course.progress }}%</strong></div>
+      <div class="progress"><span [style.width.%]="course.progress"></span></div>
+    }
+    <div class="course-card-actions">
+      <a class="course-link" [routerLink]="'/course/' + course.id">Course details <span class="material-symbols-outlined">arrow_forward</span></a>
+      <a class="course-start-link" [routerLink]="'/learning/' + course.id">{{ continue ? 'Continue' : 'Start course' }} <span class="material-symbols-outlined">play_arrow</span></a>
+    </div>
+  </div>
+</article>

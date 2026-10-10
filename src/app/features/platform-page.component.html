@@ -1,9 +1,252 @@
     @switch (view) {
-      @case ('home') { <section class="hero container"><div class="hero-copy"><span class="pill"><span class="material-symbols-outlined">psychology</span> Intelligent Learning Ecosystem</span><h1>Learn Smarter.<br>Learn Faster.<br><span>Learn With AI.</span></h1><p>Build production-grade engineering and data skills through personalized adaptive curricula, real-time code synthesis, and intelligent tutoring agents.</p><div class="hero-actions"><a class="gradient-btn large" routerLink="/courses">Explore Courses <span class="material-symbols-outlined">arrow_forward</span></a><a class="text-btn" routerLink="/auth/register"><span class="material-symbols-outlined">play_circle</span> See how it works</a></div><div class="trust-row"><strong>50K+</strong><span>learners building<br>their future</span><strong>4.9/5</strong><span>average learner<br>rating</span></div></div><div class="hero-visual"><div class="orb orb-one"></div><div class="orb orb-two"></div><div class="ai-preview"><div class="preview-head"><span class="brand-mark"><span class="material-symbols-outlined">terminal</span></span><div><strong>Neural Code Co-Pilot</strong><small>Diagnostics: 99.8% precision</small></div><span class="status-dot"></span></div><div class="code-window"><span class="code-purple">const</span> <span class="code-blue">learning</span> = <span class="code-green">await</span> cognitiveAI.<span class="code-yellow">adapt</span>(&#123;<br>&nbsp;&nbsp;goal: <span class="code-orange">'mastery'</span>,<br>&nbsp;&nbsp;pace: <span class="code-orange">'your own'</span><br>&#125;);</div><div class="preview-footer"><span class="material-symbols-outlined">auto_awesome</span> Realtime AST Review <b>99.8%</b></div></div></div></section>
+      @case ('home') {
+        <section class="hero container"><div class="hero-copy"><span class="pill"><span class="material-symbols-outlined">psychology</span> Intelligent Learning Ecosystem</span><h1>Learn Smarter.<br>Learn Faster.<br><span>Learn With AI.</span></h1><p>Build production-grade engineering and data skills through personalized adaptive curricula, real-time code synthesis, and intelligent tutoring agents.</p><div class="hero-actions"><a class="gradient-btn large" routerLink="/courses">Explore Courses <span class="material-symbols-outlined">arrow_forward</span></a><a class="text-btn" routerLink="/auth/register"><span class="material-symbols-outlined">play_circle</span> See how it works</a><button class="btn btn-primary" type="button" (click)="translation.toggleLanguage()" aria-label="Translate to and from Arabic and English"><span class="material-symbols-outlined" aria-hidden="true">translate</span> Translate to and from Arabic and English</button></div><div class="trust-row"><strong>50K+</strong><span>learners building<br>their future</span><strong>4.9/5</strong><span>average learner<br>rating</span></div></div><div class="hero-visual"><div class="orb orb-one"></div><div class="orb orb-two"></div><div class="ai-preview"><div class="preview-head"><span class="brand-mark"><span class="material-symbols-outlined">terminal</span></span><div><strong>Neural Code Co-Pilot</strong><small>Diagnostics: 99.8% precision</small></div><span class="status-dot"></span></div><div class="code-window"><span class="code-purple">const</span> <span class="code-blue">learning</span> = <span class="code-green">await</span> cognitiveAI.<span class="code-yellow">adapt</span>(&#123;<br>&nbsp;&nbsp;goal: <span class="code-orange">'mastery'</span>,<br>&nbsp;&nbsp;pace: <span class="code-orange">'your own'</span><br>&#125;);</div><div class="preview-footer"><span class="material-symbols-outlined">auto_awesome</span> Realtime AST Review <b>99.8%</b></div></div></div></section>
         <section class="section muted"><div class="container"><p class="eyebrow centered">A COMPLETE LEARNING ECOSYSTEM</p><h2 class="centered">Everything you need to <span>level up</span></h2><div class="feature-grid">@for (feature of features; track feature.title) {<article class="feature-card"><span class="feature-icon"><span class="material-symbols-outlined">{{feature.icon}}</span></span><h3>{{feature.title}}</h3><p>{{feature.text}}</p></article>}</div></div></section> }
-      @case ('catalog') { <section class="page-header container"><span class="pill"><span class="material-symbols-outlined">school</span> Curated for your growth</span><h1>Explore courses that <span>move you forward.</span></h1><p>Learn from industry experts and build skills that compound over time.</p><div class="search-box"><span class="material-symbols-outlined">search</span><input [(ngModel)]="query" placeholder="Search courses, topics, or skills..."></div></section><section class="container section-top"><div class="filter-row"><strong>{{ filteredCourses().length }} courses</strong><span class="chip active">All courses</span><span class="chip">Development</span><span class="chip">Data Science</span><span class="chip">AI & ML</span></div><div class="course-grid">@for (course of filteredCourses(); track course.id) { <app-course-card [course]="course" /> }</div></section> }
+      @case ('catalog') {
+        <section class="page-header container">
+          <span class="pill"><span class="material-symbols-outlined">school</span> Curated for your growth</span>
+          <h1>Explore courses that <span>move you forward.</span></h1>
+          <p>Learn from industry experts and build skills that compound over time.</p>
+          <div class="search-box">
+            <span class="material-symbols-outlined">search</span>
+            <input [(ngModel)]="query" placeholder="Search courses, topics, or skills..." aria-label="Search courses">
+          </div>
+        </section>
+        <section class="container section-top">
+          <div class="filter-row">
+            <strong>{{ filteredCourses().length }} courses</strong>
+            @for (category of categories; track category) {
+              <button type="button" class="chip" [class.active]="selectedCategory === category" [attr.aria-pressed]="selectedCategory === category" (click)="selectedCategory = category">{{ category }}</button>
+            }
+          </div>
+          @if (filteredCourses().length) {
+            <div class="course-grid">
+              @for (course of filteredCourses(); track course.id) { <app-course-card [course]="course" /> }
+            </div>
+          } @else {
+            <div class="empty-courses">
+              <span class="material-symbols-outlined">search_off</span>
+              <h2>No courses match your search</h2>
+              <p>Try another title, skill, or category.</p>
+              <button type="button" class="gradient-btn" (click)="query = ''; selectedCategory = 'All courses'">Show all courses</button>
+            </div>
+          }
+        </section>
+      }
       @case ('dashboard') { <section class="container dashboard"><div class="welcome"><div><p class="eyebrow">MONDAY, SEPTEMBER 22, 2026</p><h1>Good morning, Alex <span>✦</span></h1><p>Keep the momentum going. You're doing great.</p></div><a class="gradient-btn" routerLink="/courses">Explore courses <span class="material-symbols-outlined">arrow_forward</span></a></div><div class="metric-grid">@for (metric of service.metrics; track metric.label) {<article class="metric-card"><span class="metric-icon {{metric.tone}}"><span class="material-symbols-outlined">{{metric.icon}}</span></span><small>{{metric.label}}</small><strong>{{metric.value}}</strong><span class="positive">{{metric.detail}}</span></article>}</div><div class="dashboard-grid"><section class="panel"><div class="panel-heading"><div><p class="eyebrow">CONTINUE LEARNING</p><h2>Pick up where you left off</h2></div><a routerLink="/my-courses">View all <span class="material-symbols-outlined">arrow_forward</span></a></div><app-course-card [course]="service.courses[0]" [continue]="true" /></section><section class="panel today"><div class="panel-heading"><div><p class="eyebrow">YOUR DAY</p><h2>Learning activity</h2></div></div><div class="activity"><span class="activity-icon blue"><span class="material-symbols-outlined">play_arrow</span></span><div><strong>Modern Array Methods</strong><small>JavaScript Mastery · 28 min</small></div><span class="check">✓</span></div><div class="activity"><span class="activity-icon purple"><span class="material-symbols-outlined">quiz</span></span><div><strong>Module 3 quiz</strong><small>Due today · 10 questions</small></div><span class="material-symbols-outlined">chevron_right</span></div></section></div></section> }
-      @case ('course') { <section class="container course-detail"><a class="back-link" routerLink="/courses"><span class="material-symbols-outlined">arrow_back</span> Back to courses</a><div class="course-hero"><div><span class="pill light">Development · Intermediate</span><h1>JavaScript Mastery & Modern ES6+</h1><p>Master modern JavaScript from fundamentals to production-ready applications.</p><div class="course-meta"><span>★ 4.9 (2,480 reviews)</span><span><span class="material-symbols-outlined">schedule</span> 18h 30m</span><span><span class="material-symbols-outlined">menu_book</span> 42 lessons</span></div></div><div class="course-hero-icon"><span class="material-symbols-outlined">code</span></div></div><div class="detail-grid"><section class="panel"><h2>What you'll learn</h2><div class="learn-grid"><span>✓ Modern ES6+ syntax & patterns</span><span>✓ Async JavaScript & APIs</span><span>✓ Build scalable applications</span><span>✓ Testing and debugging workflows</span></div><h2 class="mt-5">Course curriculum</h2>@for (module of modules; track module) {<div class="module-row"><span class="module-number">{{ $index + 1 }}</span><div><strong>{{module}}</strong><small>{{ $index + 4 }} lessons · 42 min</small></div><span class="material-symbols-outlined">expand_more</span></div>}</section><aside class="enroll-card"><div class="enroll-art"><span class="material-symbols-outlined">javascript</span></div><h3>Ready to start learning?</h3><p>Join 12,400+ learners mastering JavaScript.</p><a class="gradient-btn full" routerLink="/learning/javascript-mastery">Start learning <span class="material-symbols-outlined">arrow_forward</span></a><small>30-day money-back guarantee</small></aside></div></section> }
-      @case ('login') { <section class="auth-page"><div class="auth-card"><a class="brand centered-brand" routerLink="/"><span class="brand-mark"><span class="material-symbols-outlined">auto_awesome</span></span> NexaLearn AI</a>@if (title === 'Sign in') { <h1>Welcome back</h1><p>Continue your learning journey.</p> } @else { <h1>Create your account</h1><p>Start building your future with AI-powered learning.</p> }<form (submit)="$event.preventDefault()"><label>Email address<input type="email" placeholder="you@example.com"></label><label>Password<input type="password" placeholder="Enter your password"></label><div class="form-row"><label class="check-label"><input type="checkbox"> Remember me</label><a href="#">Forgot password?</a></div><button class="gradient-btn full">{{ title === 'Sign in' ? 'Sign in' : 'Create account' }} <span class="material-symbols-outlined">arrow_forward</span></button></form><div class="divider"><span>or continue with</span></div><button class="sso-btn"><span class="material-symbols-outlined">account_circle</span> Continue with Google</button><p class="auth-foot">@if (title === 'Sign in') { Don't have an account? <a routerLink="/auth/register">Create one free</a> } @else { Already have an account? <a routerLink="/auth/login">Sign in</a> }</p></div></section> }
+      @case ('course') {
+        @if (course; as selectedCourse) {
+          <section class="container course-detail">
+            <a class="back-link" routerLink="/courses"><span class="material-symbols-outlined">arrow_back</span> Back to courses</a>
+            <div class="course-hero" [style.background]="'linear-gradient(135deg, #ffffff, ' + selectedCourse.color + '55)'">
+              <div>
+                <span class="pill light">{{ selectedCourse.category }} · {{ selectedCourse.level }}</span>
+                <h1>{{ selectedCourse.title }}</h1>
+                <p>{{ selectedCourse.description }}</p>
+                <div class="course-meta">
+                  <span><span class="material-symbols-outlined">star</span>{{ selectedCourse.rating }} ({{ selectedCourse.reviews }} reviews)</span>
+                  <span><span class="material-symbols-outlined">schedule</span>{{ selectedCourse.duration }}</span>
+                  <span><span class="material-symbols-outlined">menu_book</span>{{ selectedCourse.lessons }} lessons</span>
+                  <span><span class="material-symbols-outlined">groups</span>{{ selectedCourse.students }} learners</span>
+                </div>
+                <p class="course-instructor"><span class="material-symbols-outlined">person</span> Taught by <strong>{{ selectedCourse.instructor }}</strong>, {{ selectedCourse.instructorTitle }}</p>
+              </div>
+              <div class="course-hero-icon" [style.background]="'linear-gradient(135deg, ' + selectedCourse.color + ', #ffffff)'">
+                <span class="material-symbols-outlined">{{ selectedCourse.icon }}</span>
+              </div>
+            </div>
+            <div class="detail-grid">
+              <section class="panel course-information">
+                <h2>What you'll learn</h2>
+                <div class="learn-grid">
+                  @for (outcome of selectedCourse.outcomes; track outcome) {
+                    <span><span class="material-symbols-outlined">check_circle</span>{{ outcome }}</span>
+                  }
+                </div>
+                <h2 class="course-section-title">Hands-on projects</h2>
+                <div class="course-projects">
+                  @for (project of selectedCourse.projects; track project) {
+                    <div><span class="material-symbols-outlined">deployed_code</span><strong>{{ project }}</strong></div>
+                  }
+                </div>
+                <h2 class="course-section-title" id="curriculum">Course curriculum</h2>
+                <div class="course-curriculum">
+                  @for (module of selectedCourse.modules; track module.title) {
+                    <details class="module-row">
+                      <summary>
+                        <span class="module-number">{{ $index + 1 }}</span>
+                        <span class="module-summary"><strong>{{ module.title }}</strong><small>{{ module.lessons }} lessons · {{ module.duration }}</small></span>
+                        <span class="material-symbols-outlined module-chevron">expand_more</span>
+                      </summary>
+                      <ul>
+                        @for (topic of module.topics; track topic) { <li>{{ topic }}</li> }
+                      </ul>
+                    </details>
+                  }
+                </div>
+                <h2 class="course-section-title">Tools you'll use</h2>
+                <div class="course-tools">
+                  @for (tool of selectedCourse.tools; track tool) { <span>{{ tool }}</span> }
+                </div>
+              </section>
+              <aside class="enroll-card">
+                <div class="enroll-art" [style.background]="'linear-gradient(135deg, ' + selectedCourse.color + ', #ffffff)'">
+                  <span class="material-symbols-outlined">{{ selectedCourse.icon }}</span>
+                </div>
+                <p class="course-price">{{ selectedCourse.price }} <small>one-time</small></p>
+                <h3>Build a skill you can use</h3>
+                <p>Join {{ selectedCourse.students }} learners and work through a course designed by {{ selectedCourse.instructor }}.</p>
+                <a class="gradient-btn full" [routerLink]="'/learning/' + selectedCourse.id">{{ selectedCourse.callToAction }} <span class="material-symbols-outlined">arrow_forward</span></a>
+                <a class="course-outline-link" href="#curriculum">Preview the curriculum <span class="material-symbols-outlined">south</span></a>
+                <small>Learn at your own pace · Lifetime access</small>
+              </aside>
+            </div>
+          </section>
+        } @else {
+          <section class="container course-detail course-not-found">
+            <span class="material-symbols-outlined">school</span>
+            <h1>Course not found</h1>
+            <p>That course may have moved. Browse the catalog to find another learning path.</p>
+            <a class="gradient-btn" routerLink="/courses">Browse all courses <span class="material-symbols-outlined">arrow_forward</span></a>
+          </section>
+        }
+      }
+      @case ('about') {
+        <section class="about-page container">
+          <div class="about-hero">
+            <span class="pill"><span class="material-symbols-outlined">auto_awesome</span> Our mission</span>
+            <h1>Make ambitious learning feel <span>possible.</span></h1>
+            <p>NexaLearn helps people build practical technology skills through a clear learning path, hands-on work, and guidance that meets them where they are.</p>
+          </div>
+          <div class="about-principles">
+            <article class="feature-card">
+              <span class="feature-icon"><span class="material-symbols-outlined">person</span></span>
+              <h2>Start with people</h2>
+              <p>Good learning experiences respect different backgrounds, schedules, and ways of approaching a new subject. We aim to make the next step clear without making the journey feel rigid.</p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-icon"><span class="material-symbols-outlined">build</span></span>
+              <h2>Learn through practice</h2>
+              <p>Understanding grows when learners apply ideas. Courses connect foundational concepts to exercises, projects, and examples that resemble real technical work.</p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-icon"><span class="material-symbols-outlined">psychology</span></span>
+              <h2>Use AI thoughtfully</h2>
+              <p>AI can explain, suggest, and help learners get unstuck. It should support curiosity and independent judgment—not replace careful thinking or verification.</p>
+            </article>
+          </div>
+          <section class="about-journey">
+            <div><p class="eyebrow">A SIMPLE LEARNING LOOP</p><h2>Learn it. Try it. Reflect. Repeat.</h2><p>Start with a focused lesson, apply the idea in a small task, then use feedback to decide what to practice next. This cycle helps turn information into skills that are easier to remember and use.</p></div>
+            <a class="gradient-btn" routerLink="/courses">Explore the course catalog <span class="material-symbols-outlined">arrow_forward</span></a>
+          </section>
+        </section>
+      }
+      @case ('login') {
+        <section class="auth-page">
+          <div class="auth-layout">
+            <aside class="auth-aside">
+              <a class="auth-brand" routerLink="/">
+                <span class="brand-mark"><span class="material-symbols-outlined">auto_awesome</span></span>
+                <span>NexaLearn AI</span>
+              </a>
+              <div class="auth-aside-copy">
+                <p class="auth-eyebrow"><span></span> YOUR NEXT CHAPTER STARTS HERE</p>
+                <h2>Small steps.<br>Remarkable progress.</h2>
+                <p>Build skills that move you forward, one focused learning session at a time.</p>
+              </div>
+              <div class="auth-benefits" aria-label="NexaLearn benefits">
+                <div><span class="material-symbols-outlined">route</span><span>Learning paths shaped around your goals</span></div>
+                <div><span class="material-symbols-outlined">auto_awesome</span><span>Guidance when you need a hand</span></div>
+                <div><span class="material-symbols-outlined">track_changes</span><span>Progress you can see and celebrate</span></div>
+              </div>
+              <div class="auth-aside-note"><span class="material-symbols-outlined">lightbulb</span><span>Every expert was once a beginner.</span></div>
+            </aside>
+            <div class="auth-card">
+              <p class="auth-kicker">{{ title === 'Sign in' ? 'YOUR LEARNING, RIGHT WHERE YOU LEFT IT' : 'MAKE ROOM FOR WHAT’S NEXT' }}</p>
+              @if (title === 'Sign in') { <h1>Welcome back</h1><p class="auth-description">Sign in to pick up where your curiosity left off.</p> }
+              @else { <h1>Create your account</h1><p class="auth-description">A brighter learning journey starts with one small step.</p> }
+              <form (submit)="submitAuth($event)" [attr.aria-busy]="authPending">
+                @if (title !== 'Sign in') {
+                  <label for="auth-name">Full name</label>
+                  <input id="auth-name" name="name" [(ngModel)]="authName" type="text" autocomplete="name" placeholder="Your name" minlength="2" maxlength="80" required>
+                  <label for="auth-role">Account type</label>
+                  <select id="auth-role" name="role" [(ngModel)]="authRole" required>
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                  </select>
+                }
+                <label for="auth-email">Email address</label>
+                <input id="auth-email" name="email" [(ngModel)]="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+                <div class="auth-field-heading"><label for="auth-password">Password</label>
+                  @if (title === 'Sign in') { <button class="auth-text-button" type="button" (click)="showAuthMessage('Password reset is available when authentication is connected.')">Forgot password?</button> }
+                </div>
+                <input id="auth-password" name="password" [(ngModel)]="authPassword" type="password" [attr.autocomplete]="title === 'Sign in' ? 'current-password' : 'new-password'" minlength="12" maxlength="128" placeholder="Enter your password" required>
+                @if (title === 'Sign in') {
+                  <label class="check-label"><input name="remember" [(ngModel)]="rememberMe" type="checkbox"> Remember me</label>
+                }
+                <button class="gradient-btn full auth-submit" type="submit" [disabled]="authPending">{{ authPending ? 'Please wait…' : (title === 'Sign in' ? 'Sign in' : 'Create account') }} <span class="material-symbols-outlined">arrow_forward</span></button>
+              </form>
+              @if (authMessage || auth.sessionError()) { <p class="alert alert-info mt-3" role="status">{{ authMessage || auth.sessionError() }}</p> }
+              @if (title !== 'Sign in') {
+                <p class="auth-preview-note"><span class="material-symbols-outlined">info</span> Student and teacher accounts can register here. Admin accounts are provisioned securely by an administrator.</p>
+              }
+              <p class="auth-foot">
+                @if (title === 'Sign in') { New to NexaLearn? <a routerLink="/auth/register">Create a free account</a> }
+                @else { Already learning with us? <a routerLink="/auth/login">Sign in</a> }
+              </p>
+            </div>
+          </div>
+        </section>
+      }
+      @case ('logout') {
+        <section class="auth-page">
+          <div class="auth-layout">
+            <aside class="auth-aside">
+              <a class="auth-brand" routerLink="/">
+                <span class="brand-mark"><span class="material-symbols-outlined">auto_awesome</span></span>
+                <span>NexaLearn AI</span>
+              </a>
+              <div class="auth-aside-copy">
+                <p class="auth-eyebrow"><span></span> YOUR NEXT CHAPTER STARTS HERE</p>
+                <h2>Small steps.<br>Remarkable progress.</h2>
+                <p>Build skills that move you forward, one focused learning session at a time.</p>
+              </div>
+              <div class="auth-benefits" aria-label="NexaLearn benefits">
+                <div><span class="material-symbols-outlined">route</span><span>Learning paths shaped around your goals</span></div>
+                <div><span class="material-symbols-outlined">auto_awesome</span><span>Guidance when you need a hand</span></div>
+                <div><span class="material-symbols-outlined">track_changes</span><span>Progress you can see and celebrate</span></div>
+              </div>
+              <div class="auth-aside-note"><span class="material-symbols-outlined">lightbulb</span><span>Every expert was once a beginner.</span></div>
+            </aside>
+            <div class="auth-card">
+              <div class="logout-mark"><span class="material-symbols-outlined">check</span></div>
+              <p class="auth-kicker">SIGNING OUT</p>
+              <h1>You’re all set</h1>
+              <p class="auth-description">Your NexaLearn session is being securely ended.</p>
+              @if (authMessage || auth.sessionError()) { <p class="alert alert-danger mt-3" role="alert">{{ authMessage || auth.sessionError() }}</p> }
+              <a class="gradient-btn full auth-primary-link" routerLink="/auth/login">Back to sign in <span class="material-symbols-outlined">arrow_forward</span></a>
+              <a class="auth-home-link" routerLink="/">Return to the home page</a>
+            </div>
+          </div>
+        </section>
+      }
       @default { <section class="container empty-page"><span class="brand-mark large-mark"><span class="material-symbols-outlined">auto_awesome</span></span><h1>{{ title }}</h1><p>{{ description }}</p><a class="gradient-btn" routerLink="/courses">Explore the platform <span class="material-symbols-outlined">arrow_forward</span></a></section> }
+    }
+    @if (pageDetails; as details) {
+      <section class="page-guide container" aria-labelledby="page-guide-heading">
+        <div class="page-guide-intro">
+          <p class="eyebrow">{{ details.eyebrow }}</p>
+          <h2 id="page-guide-heading">{{ details.heading }}</h2>
+          <p>{{ details.summary }}</p>
+        </div>
+        <div class="page-guide-grid">
+          @for (highlight of details.highlights; track highlight.title) {
+            <article class="page-guide-card">
+              <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
+              <h3>{{ highlight.title }}</h3>
+              <p>{{ highlight.detail }}</p>
+            </article>
+          }
+        </div>
+      </section>
     }

@@ -1,6 +1,25 @@
-    <aside class="sidebar"><a class="side-brand" routerLink="/dashboard"><span class="brand-mark"><span class="material-symbols-outlined">auto_awesome</span></span><span>NexaLearn AI</span></a>
-      <div class="side-scroll"><p class="eyebrow">Main</p><nav>@for (item of items; track item.route) { <a [routerLink]="item.route" routerLinkActive="selected"><span class="material-symbols-outlined">{{ item.icon }}</span>{{ item.label }}</a> }</nav>
-      <p class="eyebrow section-label">Workspace</p><nav><a routerLink="/assignments" routerLinkActive="selected"><span class="material-symbols-outlined">assignment</span>Assignments</a><a routerLink="/progress" routerLinkActive="selected"><span class="material-symbols-outlined">insights</span>Progress Analytics</a></nav>
-      <p class="eyebrow section-label">Teaching</p><nav><a routerLink="/instructor" routerLinkActive="selected"><span class="material-symbols-outlined">cast_for_education</span>Instructor Dashboard</a><a routerLink="/instructor/course-builder" routerLinkActive="selected"><span class="material-symbols-outlined">edit_note</span>Curriculum Builder</a><a routerLink="/admin" routerLinkActive="selected"><span class="material-symbols-outlined">admin_panel_settings</span>Admin Console</a></nav></div>
-      <div class="side-user"><span class="avatar purple">AR</span><div><strong>Alex Rivera</strong><small>Student account</small></div><span class="material-symbols-outlined">more_vert</span></div>
+    <aside class="sidebar"><a class="side-brand" [routerLink]="accountHome"><span class="brand-mark"><span class="material-symbols-outlined">auto_awesome</span></span><span>NexaLearn AI</span></a>
+      <button class="btn btn-sm btn-outline-primary m-3" type="button" (click)="toggleLanguage()" aria-label="Switch language">{{ currentLanguageLabel }}</button>
+      <div class="side-scroll">
+      @if (auth.currentAccount()?.role === 'student') {
+        <p class="eyebrow">Main</p><nav>@for (item of studentItems; track item.route) { <a [routerLink]="item.route" routerLinkActive="selected"><span class="material-symbols-outlined">{{ item.icon }}</span>{{ item.label }}</a> }</nav>
+        <p class="eyebrow section-label">Workspace</p><nav><a routerLink="/assignments" routerLinkActive="selected"><span class="material-symbols-outlined">assignment</span>Assignments</a><a routerLink="/progress" routerLinkActive="selected"><span class="material-symbols-outlined">insights</span>Progress Analytics</a></nav>
+      }
+      @if (auth.currentAccount()?.role === 'teacher') {
+        <p class="eyebrow section-label">Teaching</p><nav><a routerLink="/instructor" routerLinkActive="selected"><span class="material-symbols-outlined">cast_for_education</span>Instructor Dashboard</a><a routerLink="/instructor/course-builder" routerLinkActive="selected"><span class="material-symbols-outlined">edit_note</span>Curriculum Builder</a></nav>
+      }
+      @if (auth.currentAccount()?.role === 'admin') {
+        <p class="eyebrow section-label">Administration</p><nav><a routerLink="/admin" routerLinkActive="selected"><span class="material-symbols-outlined">admin_panel_settings</span>Admin Console</a></nav>
+      }
+      </div>
+      <div class="side-user">
+        <span class="avatar purple">{{ accountInitials }}</span>
+        <div><strong>{{ auth.currentAccount()?.name ?? 'Guest account' }}</strong><small>{{ accountRoleLabel }}</small></div>
+        @if (auth.currentAccount()) {
+          <button class="side-user-logout" type="button" (click)="signOut()" aria-label="Sign out" title="Sign out"><span class="material-symbols-outlined">logout</span></button>
+        } @else {
+          <a class="side-user-logout" routerLink="/auth/login" aria-label="Sign in" title="Sign in"><span class="material-symbols-outlined">login</span></a>
+        }
+      </div>
+      @if (logoutError) { <p class="alert alert-danger m-2" role="alert">{{ logoutError }}</p> }
     </aside>
