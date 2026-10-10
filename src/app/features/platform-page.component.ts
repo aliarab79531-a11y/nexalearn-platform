@@ -11,6 +11,7 @@ import { SeoService } from '../core/seo.service';
 import { Course } from '../core/models';
 import { CourseCardComponent } from '../shared/course-card.component';
 import { TranslationService } from '../core/translation.service';
+import { LearningApiService, ApiCourse } from '../core/learning-api.service';
 
 interface PageHighlight {
   title: string;
@@ -33,6 +34,7 @@ export class PlatformPageComponent implements OnInit {
   readonly service = inject(CourseService);
   readonly translation = inject(TranslationService);
   readonly auth = inject(AuthService);
+  private readonly learningApi = inject(LearningApiService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly platformId = inject(PLATFORM_ID);
@@ -47,8 +49,16 @@ export class PlatformPageComponent implements OnInit {
   rememberMe = false;
   authMessage = '';
   authPending = false;
+  apiCourses: Course[] = [];
+  coursesLoading = false;
+  coursesError = '';
+  courseLoading = false;
+  enrollmentPending = false;
+  enrollmentMessage = '';
 
-  readonly categories = ['All courses', ...new Set(this.service.courses.map(course => course.category))];
+  get categories(): string[] {
+    return ['All courses', ...new Set(this.apiCourses.map(course => course.category))];
+  }
   readonly features = [{ icon: 'route', title: 'Adaptive Learning Paths', text: 'Personalized roadmaps that evolve with your goals and progress.' }, { icon: 'auto_awesome', title: 'AI-Powered Tutoring', text: 'Get unstuck faster with an intelligent learning companion.' }, { icon: 'terminal', title: 'Build Real Projects', text: 'Apply what you learn in production-style environments.' }];
   private readonly pageDetailsByView: Record<string, PageDetails> = {
     home: {
@@ -128,26 +138,91 @@ export class PlatformPageComponent implements OnInit {
       this.title = data['title'] ?? 'NexaLearn AI';
       this.description = data['description'] ?? 'A modern learning platform powered by AI.';
       this.seo.update(this.title, this.description);
+      if (this.view === 'catalog') this.loadCourses();
       if (this.view === 'logout' && isPlatformBrowser(this.platformId)) {
         void this.completeSignOut();
       }
     });
     this.route.paramMap.subscribe(params => {
-      this.course = this.service.getCourse(params.get('id') ?? '');
+      const courseId = params.get('id') ?? '';
+      this.course = this.service.getCourse(courseId);
       if (this.view === 'course') {
-        this.title = this.course?.title ?? 'Course not found';
-        this.description = this.course?.description ?? 'The course you requested is not available.';
-        this.seo.update(this.title, this.description);
+        this.courseLoading = true;
+        this.learningApi.getCourse(courseId).subscribe({
+          next: ({ data }) => {
+            this.course = this.mapCourse(data);
+            this.courseLoading = false;
+            this.title = this.course.title;
+            this.description = this.course.description;
+            this.seo.update(this.title, this.description);
+          },
+          error: () => {
+            this.course = undefined;
+            this.courseLoading = false;
+            this.title = 'Course not found';
+            this.description = 'The course you requested is not available.';
+            this.seo.update(this.title, this.description);
+          },
+        });
       }
     });
   }
 
   filteredCourses(): Course[] {
     const term = this.query.trim().toLowerCase();
-    return this.service.courses.filter(course =>
+    return this.apiCourses.filter(course =>
       (this.selectedCategory === 'All courses' || course.category === this.selectedCategory) &&
       `${course.title} ${course.category} ${course.description} ${course.tools.join(' ')}`.toLowerCase().includes(term)
     );
+  }
+
+  loadCourses(): void {
+    this.coursesLoading = true;
+    this.coursesError = '';
+    this.learningApi.listCourses({ limit: 100 }).subscribe({
+      next: ({ data }) => {
+        this.apiCourses = data.map(course => this.mapCourse(course));
+        this.coursesLoading = false;
+      },
+      error: () => {
+        this.apiCourses = [];
+        this.coursesLoading = false;
+        this.coursesError = 'The course catalog is temporarily unavailable. Please try again.';
+      },
+    });
+  }
+
+  async enrollInCourse(courseId: string): Promise<void> {
+    const account = this.auth.currentAccount();
+    if (!account) {
+      await this.router.navigate(['/auth/login'], { queryParams: { returnUrl: this.router.url } });
+      return;
+    }
+    if (account.role !== 'student') {
+      this.enrollmentMessage = 'Course enrollment is available to student accounts.';
+      return;
+    }
+    if (this.enrollmentPending) return;
+    this.enrollmentPending = true;
+    this.enrollmentMessage = '';
+    try {
+      await firstValueFrom(this.learningApi.enroll(courseId));
+      await this.router.navigateByUrl('/my-courses');
+    } catch (error) {
+      this.enrollmentMessage = this.authErrorMessage(error);
+    } finally {
+      this.enrollmentPending = false;
+    }
+  }
+
+  private mapCourse(course: ApiCourse): Course {
+    return {
+      id: course.id, title: course.title, category: course.category, level: course.level,
+      lessons: course.lessons, duration: course.duration, students: '', color: '#e8eaff',
+      icon: 'school', description: course.description, instructor: course.instructor,
+      instructorTitle: 'Course instructor', rating: '—', reviews: '0', price: 'Free',
+      callToAction: 'Start learning', outcomes: [], projects: [], tools: [], modules: course.modules,
+    };
   }
 
   async submitAuth(event: SubmitEvent): Promise<void> {

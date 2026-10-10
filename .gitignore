@@ -37,6 +37,7 @@ build-output.txt
 .env
 .env.*
 !.env.example
+/.demo-credentials.txt
 /libpeerconnection.log
 testem.log
 /typings

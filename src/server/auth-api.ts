@@ -1,11 +1,11 @@
 import { createHmac, randomBytes, scrypt, timingSafeEqual } from 'node:crypto';
 import { promisify } from 'node:util';
 import { rateLimit } from 'express-rate-limit';
-import { MongoServerError, ObjectId, type Collection } from 'mongodb';
+import { ObjectId } from './object-id';
 import express from 'express';
 import { Router, type Request, type RequestHandler, type Response } from 'express';
 import { ApiError, isRecord } from './api-errors';
-import { getDatabase } from './database';
+import { getDatabase, type Collection } from './database';
 
 const SESSION_COOKIE = 'nexalearn_session';
 const SESSION_DURATION_SECONDS = 24 * 60 * 60;
@@ -66,7 +66,7 @@ export async function getUsers(): Promise<Collection<UserRecord>> {
   try {
     await userIndexPromise;
   } catch (error) {
-    console.error('MongoDB user index initialization failed:', error);
+    console.error('PostgreSQL user index initialization failed:', error instanceof Error ? error.message : 'unknown error');
     throw new ApiError(503, 'The account database is not ready. Check its user collection and try again.');
   }
   return collection;
@@ -277,7 +277,7 @@ export function createAuthRouter(): Router {
       setSessionCookie(response, makeSession(user, REMEMBERED_SESSION_DURATION_SECONDS), REMEMBERED_SESSION_DURATION_SECONDS);
       response.status(201).json({ user });
     } catch (error) {
-      if (error instanceof MongoServerError && error.code === 11000) {
+      if (typeof error === 'object' && error !== null && 'code' in error && error.code === '23505') {
         throw new ApiError(409, 'An account with this email address already exists.');
       }
       throw error;

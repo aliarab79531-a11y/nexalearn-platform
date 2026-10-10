@@ -144,6 +144,11 @@
               </div>
             </div>
           </section>
+          @if (enrollmentsLoading) {
+            <div class="workspace-card p-4" role="status">Loading your enrolled courses…</div>
+          } @else if (enrollmentsError) {
+            <div class="workspace-card p-4" role="alert"><p>{{ enrollmentsError }}</p><button class="btn btn-outline-primary" type="button" (click)="loadEnrollments()">Try again</button></div>
+          } @else {
           <section class="row g-4">
             @for (course of filteredCourses(); track course.id) {
               <div class="col-md-6 col-xl-4"><article class="workspace-card course-workspace-card h-100 overflow-hidden">
@@ -154,6 +159,7 @@
               <div class="col-12"><div class="workspace-card text-center p-5"><span class="material-symbols-outlined empty-icon">{{ courseFilter === 'saved' ? 'bookmark_border' : 'search_off' }}</span><h2 class="h4">{{ courseFilter === 'saved' ? 'No saved courses yet' : courseFilter === 'completed' ? 'No completed courses yet' : 'No courses found' }}</h2><p class="text-secondary">Save courses with the bookmark button, or adjust your search and filters.</p><button class="btn btn-outline-primary me-2" type="button" (click)="resetCourseFilters()">Reset filters</button><a class="btn btn-primary" routerLink="/courses">Explore courses</a></div></div>
             }
           </section>
+          }
         }
 
         @case ('roadmap') {

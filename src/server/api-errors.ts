@@ -1,4 +1,3 @@
-import { MongoError, MongoServerError } from 'mongodb';
 import type { ErrorRequestHandler } from 'express';
 
 export class ApiError extends Error {
@@ -26,14 +25,15 @@ export const apiErrorHandler: ErrorRequestHandler = (error, _request, response, 
     });
     return;
   }
-  if (error instanceof MongoServerError && error.code === 11000) {
+  if (isRecord(error) && error['code'] === '23505') {
     response.status(409).json({
       error: { code: 'ALREADY_EXISTS', message: 'A record with these details already exists.' },
     });
     return;
   }
-  if (error instanceof MongoError) {
-    console.error('MongoDB API request failed:', error);
+  if (isRecord(error) && typeof error['code'] === 'string'
+    && (/^(08|23|28|3D)/.test(error['code']) || /^(ECONN|ETIMEDOUT|EAI_AGAIN)/.test(error['code']))) {
+    console.error('PostgreSQL API request failed:', error['code']);
     response.status(503).json({
       error: { code: 'DATABASE_UNAVAILABLE', message: 'The data service is temporarily unavailable.' },
     });

@@ -19,15 +19,19 @@
               <button type="button" class="chip" [class.active]="selectedCategory === category" [attr.aria-pressed]="selectedCategory === category" (click)="selectedCategory = category">{{ category }}</button>
             }
           </div>
-          @if (filteredCourses().length) {
+          @if (coursesLoading) {
+            <div class="empty-courses" role="status">Loading courses…</div>
+          } @else if (coursesError) {
+            <div class="empty-courses" role="alert"><h2>Catalog unavailable</h2><p>{{ coursesError }}</p><button type="button" class="gradient-btn" (click)="loadCourses()">Try again</button></div>
+          } @else if (filteredCourses().length) {
             <div class="course-grid">
               @for (course of filteredCourses(); track course.id) { <app-course-card [course]="course" /> }
             </div>
           } @else {
             <div class="empty-courses">
               <span class="material-symbols-outlined">search_off</span>
-              <h2>No courses match your search</h2>
-              <p>Try another title, skill, or category.</p>
+              <h2>{{ apiCourses.length ? 'No courses match your search' : 'No published courses yet' }}</h2>
+              <p>{{ apiCourses.length ? 'Try another title, skill, or category.' : 'Published courses will appear here when instructors add them.' }}</p>
               <button type="button" class="gradient-btn" (click)="query = ''; selectedCategory = 'All courses'">Show all courses</button>
             </div>
           }
@@ -35,7 +39,9 @@
       }
       @case ('dashboard') { <section class="container dashboard"><div class="welcome"><div><p class="eyebrow">MONDAY, SEPTEMBER 22, 2026</p><h1>Good morning, Alex <span>✦</span></h1><p>Keep the momentum going. You're doing great.</p></div><a class="gradient-btn" routerLink="/courses">Explore courses <span class="material-symbols-outlined">arrow_forward</span></a></div><div class="metric-grid">@for (metric of service.metrics; track metric.label) {<article class="metric-card"><span class="metric-icon {{metric.tone}}"><span class="material-symbols-outlined">{{metric.icon}}</span></span><small>{{metric.label}}</small><strong>{{metric.value}}</strong><span class="positive">{{metric.detail}}</span></article>}</div><div class="dashboard-grid"><section class="panel"><div class="panel-heading"><div><p class="eyebrow">CONTINUE LEARNING</p><h2>Pick up where you left off</h2></div><a routerLink="/my-courses">View all <span class="material-symbols-outlined">arrow_forward</span></a></div><app-course-card [course]="service.courses[0]" [continue]="true" /></section><section class="panel today"><div class="panel-heading"><div><p class="eyebrow">YOUR DAY</p><h2>Learning activity</h2></div></div><div class="activity"><span class="activity-icon blue"><span class="material-symbols-outlined">play_arrow</span></span><div><strong>Modern Array Methods</strong><small>JavaScript Mastery · 28 min</small></div><span class="check">✓</span></div><div class="activity"><span class="activity-icon purple"><span class="material-symbols-outlined">quiz</span></span><div><strong>Module 3 quiz</strong><small>Due today · 10 questions</small></div><span class="material-symbols-outlined">chevron_right</span></div></section></div></section> }
       @case ('course') {
-        @if (course; as selectedCourse) {
+        @if (courseLoading) {
+          <section class="container course-detail" role="status"><p>Loading course…</p></section>
+        } @else if (course; as selectedCourse) {
           <section class="container course-detail">
             <a class="back-link" routerLink="/courses"><span class="material-symbols-outlined">arrow_back</span> Back to courses</a>
             <div class="course-hero" [style.background]="'linear-gradient(135deg, #ffffff, ' + selectedCourse.color + '55)'">
@@ -96,7 +102,8 @@
                 <p class="course-price">{{ selectedCourse.price }} <small>one-time</small></p>
                 <h3>Build a skill you can use</h3>
                 <p>Join {{ selectedCourse.students }} learners and work through a course designed by {{ selectedCourse.instructor }}.</p>
-                <a class="gradient-btn full" [routerLink]="'/learning/' + selectedCourse.id">{{ selectedCourse.callToAction }} <span class="material-symbols-outlined">arrow_forward</span></a>
+                <button class="gradient-btn full" type="button" [disabled]="enrollmentPending" (click)="enrollInCourse(selectedCourse.id)">{{ enrollmentPending ? 'Enrolling…' : selectedCourse.callToAction }} <span class="material-symbols-outlined">arrow_forward</span></button>
+                @if (enrollmentMessage) { <p class="text-danger small mt-2" role="alert">{{ enrollmentMessage }}</p> }
                 <a class="course-outline-link" href="#curriculum">Preview the curriculum <span class="material-symbols-outlined">south</span></a>
                 <small>Learn at your own pace · Lifetime access</small>
               </aside>

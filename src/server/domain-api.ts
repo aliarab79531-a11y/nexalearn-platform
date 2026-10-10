@@ -1,8 +1,8 @@
-import { ObjectId, type Collection, type Db, type Document } from 'mongodb';
+import { ObjectId } from './object-id';
 import { Router, type RequestHandler } from 'express';
 import { ApiError, isRecord } from './api-errors';
 import { requireAccount, type AccountRole } from './auth-api';
-import { getDatabase } from './database';
+import { getDatabase, type Collection, type Db, type Document } from './database';
 import {
   parseOptionalDate,
   parsePagination,

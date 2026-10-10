@@ -1,6 +1,6 @@
 # NexaLearn AI
 
-NexaLearn is an Angular learning platform with server-side rendering (SSR), an Express API, and MongoDB-backed accounts, courses, enrollments, progress, and administration. The frontend's existing course and workspace screens still contain sample data; the API client in `src/app/core/learning-api.service.ts` provides the typed integration surface for connecting those screens.
+NexaLearn is an Angular learning platform with server-side rendering (SSR), an Express API, and Supabase PostgreSQL-backed accounts, courses, enrollments, progress, and administration. The API stores the existing record shapes in a PostgreSQL JSONB document table and applies filters, ordering, counts, uniqueness rules, and updates in PostgreSQL.
 
 ## Development server
 
@@ -71,8 +71,8 @@ The SSR host allowlist in `angular.json` includes local development hosts. Add t
 
 ## Local backend setup
 
-1. Install and start MongoDB locally, or create an Atlas database.
-2. Copy `.env.example` to `.env`. Set `MONGODB_URI` and create a unique authentication secret (at least 32 bytes), for example:
+1. Create a Supabase project and copy its PostgreSQL connection string (use the session pooler for a long-running backend). URL-encode special characters in the password, such as `@` as `%40`.
+2. Copy `.env.example` to `.env`. Set `DATABASE_URL` and create a unique authentication secret (at least 32 bytes), for example:
 
    ```bash
    node -e "console.log(require('node:crypto').randomBytes(48).toString('base64url'))"
@@ -85,13 +85,21 @@ The SSR host allowlist in `angular.json` includes local development hosts. Add t
    npm run backend:dev
    ```
 
+   For a disposable development database, load repeatable sample users, courses, and enrollments with:
+
+   ```bash
+   npm run seed:demo
+   ```
+
+   The script creates demo accounts for `demo.teacher@nexalearn.test` and `demo.student@nexalearn.test`, publishes three example courses, and gives the student active and completed enrollments. Newly generated passwords are saved to `.demo-credentials.txt`, which is ignored by Git. The seed script refuses to run when `NODE_ENV=production` unless `DEMO_SEED_ENABLED=true` is explicitly set.
+
 4. In another terminal, start Angular:
 
    ```bash
    npm start
    ```
 
-   Angular proxies `/api` to the local API at port 4301. The `/api/health` endpoint checks the MongoDB connection and authentication-secret configuration.
+   Angular proxies `/api` to the local API at port 4301. The API creates its PostgreSQL table and indexes on first connection. `/api/health` checks database connectivity and authentication-secret configuration.
 
 Students and teachers can register through `/api/auth/register`. Passwords must be 12–128 characters. Admins cannot self-register; provision an initial admin account from the same `.env` configuration:
 
@@ -111,7 +119,7 @@ All API responses use JSON. Successful collection responses return `{ "data": [.
 | Method | Endpoint | Access | Purpose |
 | --- | --- | --- | --- |
 | `GET` | `/api/health/live` | Public | Process liveness check |
-| `GET` | `/api/health` | Public | Readiness check for MongoDB and auth configuration |
+| `GET` | `/api/health` | Public | Readiness check for PostgreSQL and auth configuration |
 | `POST` | `/api/auth/register` | Public | Create a student or teacher account |
 | `POST` | `/api/auth/login` | Public | Sign in (optional `remember: true`) |
 | `GET` | `/api/auth/me` | Session | Restore the current account |
@@ -142,6 +150,6 @@ Run the backend validation tests with:
 npm run test:api
 ```
 
-The backend currently targets a modest, long-running Node.js deployment and uses the MongoDB driver's default connection pool settings. Monitor API latency, MongoDB connection counts, and request logs before tuning pool limits for a specific deployment.
+The backend currently targets a modest, long-running Node.js deployment. Tune `DATABASE_POOL_SIZE` for the deployment and monitor PostgreSQL connection counts and API latency. The initial PostgreSQL migration keeps existing API record shapes in JSONB; a future normalized relational schema can add foreign keys and database-level relationships as the data model grows.
 
 Feature screens live under `src/app/features`, reusable UI under `src/app/shared`, application-wide services and models under `src/app/core`, API routes under `src/server`, and navigation components under `src/app/layout`.

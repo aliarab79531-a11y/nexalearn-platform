@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CourseService } from '../core/course.service';
 import { Course } from '../core/models';
 import { SeoService } from '../core/seo.service';
+import { LearningApiService, ApiEnrollment } from '../core/learning-api.service';
 
 interface WorkspaceHighlight {
   title: string;
@@ -30,6 +31,7 @@ export class WorkspacePageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly seo = inject(SeoService);
+  private readonly learningApi = inject(LearningApiService);
   view = 'dashboard';
   learningCourse?: Course;
   title = '';
@@ -38,6 +40,9 @@ export class WorkspacePageComponent implements OnInit {
   query = '';
   courseFilter: 'all' | 'in-progress' | 'completed' | 'saved' = 'all';
   readonly savedCourseIds = new Set<string>();
+  enrolledCourses: Course[] = [];
+  enrollmentsLoading = false;
+  enrollmentsError = '';
   message = '';
   lastMessage = '';
   selectedAnswer = '';
@@ -305,6 +310,7 @@ export class WorkspacePageComponent implements OnInit {
       this.description = data['description'] ?? 'Continue your learning journey.';
       this.eyebrow = this.view === 'admin' ? 'PLATFORM GOVERNANCE' : this.view === 'instructor' || this.view === 'builder' ? 'INSTRUCTOR WORKSPACE' : this.view === 'student' ? 'STUDENT ACCOUNT' : 'LEARNING WORKSPACE';
       this.seo.update(this.title, this.description);
+      if (this.view === 'my-courses') this.loadEnrollments();
     });
     this.route.paramMap.subscribe((params) => {
       this.learningCourse = this.service.getCourse(params.get('id') ?? '');
@@ -333,12 +339,41 @@ export class WorkspacePageComponent implements OnInit {
 
   filteredCourses() {
     const term = this.query.trim().toLowerCase();
-    return this.service.courses.filter((course) => this.matchesCourseFilter(course, this.courseFilter, term));
+    return this.enrolledCourses.filter((course) => this.matchesCourseFilter(course, this.courseFilter, term));
   }
 
   courseCount(filter: 'all' | 'in-progress' | 'completed' | 'saved'): number {
     const term = this.query.trim().toLowerCase();
-    return this.service.courses.filter((course) => this.matchesCourseFilter(course, filter, term)).length;
+    return this.enrolledCourses.filter((course) => this.matchesCourseFilter(course, filter, term)).length;
+  }
+
+  loadEnrollments(): void {
+    this.enrollmentsLoading = true;
+    this.enrollmentsError = '';
+    this.learningApi.listEnrollments().subscribe({
+      next: ({ data }) => {
+        this.enrolledCourses = data.flatMap(enrollment => enrollment.course
+          ? [this.mapEnrollmentCourse(enrollment)]
+          : []);
+        this.enrollmentsLoading = false;
+      },
+      error: () => {
+        this.enrollmentsError = 'Your course library could not be loaded. Please try again.';
+        this.enrollmentsLoading = false;
+      },
+    });
+  }
+
+  private mapEnrollmentCourse(enrollment: ApiEnrollment): Course {
+    const course = enrollment.course!;
+    return {
+      id: course.id, title: course.title, category: course.category, level: course.level,
+      lessons: course.lessons, duration: course.duration, progress: enrollment.progress,
+      students: '', color: '#e8eaff', icon: 'school', description: course.description,
+      instructor: course.instructor, instructorTitle: 'Course instructor', rating: '—',
+      reviews: '0', price: 'Free', callToAction: 'Continue learning', outcomes: [],
+      projects: [], tools: [], modules: course.modules,
+    };
   }
 
   private matchesCourseFilter(course: Course, filter: 'all' | 'in-progress' | 'completed' | 'saved', term: string): boolean {
