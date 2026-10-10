@@ -52,7 +52,7 @@ function getPool(): Pool {
         : { rejectUnauthorized: false };
     pool = new Pool({
       connectionString,
-      max: Number(process.env['DATABASE_POOL_SIZE'] || 5),
+      max: Number(process.env['DATABASE_POOL_SIZE'] || (process.env['VERCEL'] ? 1 : 5)),
       connectionTimeoutMillis: 10_000,
       idleTimeoutMillis: 30_000,
       ssl,

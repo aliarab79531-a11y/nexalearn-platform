@@ -69,6 +69,20 @@ npm run serve:ssr:ai-learning-platform
 
 The SSR host allowlist in `angular.json` includes local development hosts. Add the production hostname to `security.allowedHosts` before deploying.
 
+## Deploy to Vercel
+
+This repository deploys the Angular browser build as a static site and the Express API as a Vercel Node.js Function. The `/api/*` function uses the same Express app as the local backend, and the SPA rewrite supports direct navigation to client-side routes. The function is placed in Vercel's Dublin region (`dub1`), close to the Supabase `eu-west-1` database.
+
+1. Push this repository to GitHub, then import it in Vercel. Keep the project root set to this repository's root. Vercel reads `vercel.json`; the build command is `npm run build` and the output directory is `dist/ai-learning-platform/browser`.
+2. In **Project Settings → Environment Variables**, add these for Production (and Preview if you want preview deployments to access a separate test database):
+   - `DATABASE_URL`: Supabase PostgreSQL connection string from the **Transaction pooler** section (port `6543`), designed for serverless functions. URL-encode special password characters. Keep the session pooler on port `5432` for a persistent local backend.
+   - `AUTH_JWT_SECRET`: a unique random secret of at least 32 bytes. Generate a value locally with `node -e "console.log(require('node:crypto').randomBytes(48).toString('base64url'))"`.
+   - `DATABASE_POOL_SIZE`: `1` to limit connections from serverless instances. The application defaults to one connection when it detects Vercel.
+3. Confirm the Supabase project's database network access permits connections from Vercel. Do not enable demo seeding in production. Set up the first administrator separately with the one-off `npm run create:admin` script pointed at the production database, or provision it through a secure database workflow.
+4. Deploy. Check `/api/health` on the deployed domain; it should report a healthy database and auth configuration. Vercel's function logs contain request IDs and errors for diagnosis.
+
+`.env` and `.demo-credentials.txt` are excluded from Git and Vercel uploads. Set secrets in Vercel's Environment Variables dashboard; never commit them to `vercel.json`. Preview deployments should use a non-production database and a separate auth secret. The API sets secure session cookies automatically when `NODE_ENV=production`.
+
 ## Local backend setup
 
 1. Create a Supabase project and copy its PostgreSQL connection string (use the session pooler for a long-running backend). URL-encode special characters in the password, such as `@` as `%40`.

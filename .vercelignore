@@ -1,0 +1,8 @@
+.env
+.env.*
+!.env.example
+.demo-credentials.txt
+node_modules
+dist
+.angular
+.git
