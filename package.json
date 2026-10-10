@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "backend:dev": "node --env-file-if-exists=.env --import tsx src/api-dev.ts",
-    "build": "ng build",
+    "build": "node --env-file-if-exists=.env ./node_modules/@angular/cli/bin/ng.js build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:api": "node --import tsx --test tests/api/validation.spec.ts",
