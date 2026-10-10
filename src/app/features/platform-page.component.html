@@ -187,7 +187,7 @@
                 <div class="auth-field-heading"><label for="auth-password">Password</label>
                   @if (title === 'Sign in') { <button class="auth-text-button" type="button" (click)="showAuthMessage('Password reset is available when authentication is connected.')">Forgot password?</button> }
                 </div>
-                <input id="auth-password" name="password" [(ngModel)]="authPassword" type="password" [attr.autocomplete]="title === 'Sign in' ? 'current-password' : 'new-password'" minlength="12" maxlength="128" placeholder="Enter your password" required>
+                <input id="auth-password" name="password" [(ngModel)]="authPassword" type="password" [attr.autocomplete]="title === 'Sign in' ? 'current-password' : 'new-password'" [attr.minlength]="title === 'Sign in' ? null : 12" maxlength="128" placeholder="Enter your password" required>
                 @if (title === 'Sign in') {
                   <label class="check-label"><input name="remember" [(ngModel)]="rememberMe" type="checkbox"> Remember me</label>
                 }
