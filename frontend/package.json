@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:static": "ng build --configuration production --output-mode static --ssr=false",
+    "build:render": "ng build --configuration production --output-mode static --ssr=false && node ../scripts/write-render-runtime-config.mjs",
     "test": "node test-runner.mjs",
     "test:ci": "node test-runner.mjs",
     "watch": "ng build --watch --configuration development"

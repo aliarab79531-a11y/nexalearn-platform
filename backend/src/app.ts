@@ -45,14 +45,15 @@ app.use((request, response, next) => {
     next();
     return;
   }
-  let isVercel = false;
+  let isPlatformCloud = false;
   try {
-    isVercel = /\.vercel\.app$/.test(new URL(origin).hostname);
+    const hostname = new URL(origin).hostname;
+    isPlatformCloud = /\.vercel\.app$/.test(hostname) || /\.onrender\.com$/.test(hostname);
   } catch {
-    isVercel = false;
+    isPlatformCloud = false;
   }
   const host = request.get('host');
-  if (allowedOrigins.has(origin.replace(/\/+$/, '')) || isVercel || origin === `https://${host}` || origin === `http://${host}`) {
+  if (allowedOrigins.has(origin.replace(/\/+$/, '')) || isPlatformCloud || origin === `https://${host}` || origin === `http://${host}`) {
     response.setHeader('Access-Control-Allow-Origin', origin);
     response.setHeader('Access-Control-Allow-Credentials', 'true');
     response.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');

@@ -205,7 +205,7 @@ export function requireAccount(...roles: AccountRole[]): RequestHandler {
 }
 
 function setSessionCookie(response: Response, token: string, durationSeconds: number): void {
-  const secure = process.env['NODE_ENV'] === 'production' ? '; Secure; SameSite=Lax' : '; SameSite=Lax';
+  const secure = process.env['NODE_ENV'] === 'production' ? '; Secure; SameSite=None; Partitioned' : '; SameSite=Lax';
   response.setHeader(
     'Set-Cookie',
     `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; Max-Age=${durationSeconds}${secure}`,
@@ -213,7 +213,7 @@ function setSessionCookie(response: Response, token: string, durationSeconds: nu
 }
 
 function clearSessionCookie(response: Response): void {
-  const secure = process.env['NODE_ENV'] === 'production' ? '; Secure; SameSite=Lax' : '; SameSite=Lax';
+  const secure = process.env['NODE_ENV'] === 'production' ? '; Secure; SameSite=None; Partitioned' : '; SameSite=Lax';
   response.setHeader(
     'Set-Cookie',
     `${SESSION_COOKIE}=; Path=/; HttpOnly; Max-Age=0${secure}`,

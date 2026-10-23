@@ -17,6 +17,7 @@
     "start:api": "npm --prefix backend start",
     "build": "npm --prefix frontend run build:static",
     "build:static": "npm --prefix frontend run build:static",
+    "build:render": "npm --prefix frontend run build:render",
     "test": "npm --prefix frontend run test:ci",
     "test:watch": "npm --prefix frontend test",
     "test:api": "npm --prefix backend test",

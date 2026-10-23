@@ -1,16 +1,28 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
+import { existsSync } from 'node:fs';
 
-const configuredApiBaseUrl = (process.env.API_BASE_URL || '').trim();
-if (!configuredApiBaseUrl) {
-  throw new Error('Set API_BASE_URL to the backend Render service URL before building the static frontend.');
+const rawUrl = (process.env.API_BASE_URL || '').trim();
+let apiBaseUrl = '';
+
+if (rawUrl) {
+  try {
+    const parsed = new URL(rawUrl);
+    apiBaseUrl = parsed.origin;
+  } catch {
+    apiBaseUrl = rawUrl.replace(/\/+$/, '');
+  }
 }
 
-const parsedApiBaseUrl = new URL(configuredApiBaseUrl);
-if (parsedApiBaseUrl.protocol !== 'https:' || parsedApiBaseUrl.pathname !== '/' || parsedApiBaseUrl.search || parsedApiBaseUrl.hash) {
-  throw new Error('API_BASE_URL must be an HTTPS origin with no path, query, or fragment.');
+// Find the dist directory whether script is run from project root or frontend/
+let targetDir = resolve('dist/ai-learning-platform/browser');
+if (!existsSync(targetDir) && existsSync(resolve('frontend/dist/ai-learning-platform/browser'))) {
+  targetDir = resolve('frontend/dist/ai-learning-platform/browser');
 }
 
-const output = resolve('dist/ai-learning-platform/browser/runtime-config.js');
-await mkdir(dirname(output), { recursive: true });
-await writeFile(output, `window.__NEXALEARN_CONFIG__ = ${JSON.stringify({ apiBaseUrl: parsedApiBaseUrl.origin })};\n`);
+await mkdir(targetDir, { recursive: true });
+const targetFile = resolve(targetDir, 'runtime-config.js');
+
+const config = `window.__NEXALEARN_CONFIG__ = ${JSON.stringify({ apiBaseUrl })};\n`;
+await writeFile(targetFile, config);
+console.log(`[Render Config] Wrote runtime-config.js to ${targetFile} (apiBaseUrl: "${apiBaseUrl || '(same origin)'}")`);

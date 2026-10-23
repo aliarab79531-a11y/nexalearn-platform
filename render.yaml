@@ -7,7 +7,7 @@ services:
     rootDir: backend
     buildCommand: npm ci --include=dev
     startCommand: npm start
-    healthCheckPath: /api/health
+    healthCheckPath: /api/health/live
     envVars:
       - key: NODE_ENV
         value: production
@@ -18,14 +18,17 @@ services:
       - key: MONGO_DB_NAME
         value: nexalearn
       - key: FRONTEND_URL
-        value: https://nexalearn-web.onrender.com
+        fromService:
+          type: web
+          name: nexalearn-web
+          envVarKey: RENDER_EXTERNAL_URL
 
   - type: web
     runtime: static
     name: nexalearn-web
     rootDir: frontend
-    buildCommand: npm ci --include=dev && npm run build:static
-    staticPublishPath: dist/ai-learning-platform
+    buildCommand: npm ci --include=dev && npm run build:render
+    staticPublishPath: dist/ai-learning-platform/browser
     routes:
       - type: rewrite
         source: /*
