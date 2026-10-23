@@ -52,7 +52,7 @@ export function requireRequestBody(value: unknown): Record<string, unknown> {
   if (!isRecord(value)) {
     throw new ApiError(400, 'A JSON object is required.', 'INVALID_BODY');
   }
-  return value;
+  return value as Record<string, unknown>;
 }
 
 export function parseOptionalDate(value: unknown, field: string): Date | undefined {

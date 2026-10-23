@@ -320,7 +320,7 @@ export function createDomainRouter(): Router {
     const courses = courseIds.length
       ? await (await getDomainCollection<CourseRecord>('courses')).find({ _id: { $in: courseIds } }).toArray()
       : [];
-    const courseMap = new Map(courses.map(course => [course._id.toHexString(), course]));
+    const courseMap = new Map<string, CourseRecord>(courses.map(course => [course._id.toHexString(), course]));
     const names = await getInstructorNames(courses);
     response.json({
       data: rows.map(enrollment => {
