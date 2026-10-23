@@ -5,9 +5,14 @@
   "buildCommand": "npm --prefix frontend run build:static",
   "outputDirectory": "frontend/dist/ai-learning-platform/browser",
   "regions": ["dub1"],
+  "functions": {
+    "api/*.ts": {
+      "maxDuration": 15
+    }
+  },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/api", "destination": "/api" },
-    { "source": "/:path((?!api/).*)", "destination": "/index.html" }
+    { "source": "/((?!api/|api$).*)", "destination": "/index.html" }
   ]
 }

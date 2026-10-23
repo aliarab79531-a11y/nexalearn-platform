@@ -23,10 +23,18 @@ const allowedOrigins = new Set([
 
 // Vercel serverless proxy rewrites /api/* to /api; restore original path from Vercel headers if present
 app.use((request, _response, next) => {
-  const matched = (request.headers['x-matched-path'] || request.headers['x-vercel-matched-path']) as string | undefined;
+  const matched = (
+    request.headers['x-matched-path'] ||
+    request.headers['x-vercel-matched-path'] ||
+    request.headers['x-invoke-path'] ||
+    request.headers['x-forwarded-uri'] ||
+    request.headers['x-original-url']
+  ) as string | undefined;
+
   if (matched && matched.startsWith('/api') && (request.url === '/api' || request.url === '/' || request.url.startsWith('/api?'))) {
-    const query = request.url.includes('?') ? '?' + request.url.split('?')[1] : '';
+    const query = !matched.includes('?') && request.url.includes('?') ? '?' + request.url.split('?')[1] : '';
     request.url = matched + query;
+    request.originalUrl = request.url;
   }
   next();
 });

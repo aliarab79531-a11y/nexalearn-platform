@@ -337,8 +337,8 @@ async function connect(): Promise<MongoDatabase> {
     const uri = process.env['MONGO_URI'];
     if (!uri) throw new ApiError(503, 'The data service is not configured. Set MONGO_URI.', 'DATABASE_NOT_CONFIGURED');
     
-    // Serverless functions have 10-15s timeouts; connect timeout must be well below that (4s)
-    const timeoutMs = Math.min(Number(process.env['MONGO_TIMEOUT_MS'] || 4000), 5000);
+    // Serverless functions have 10-15s timeouts; connect timeout default 9s
+    const timeoutMs = Math.min(Number(process.env['MONGO_TIMEOUT_MS'] || 9000), 12000);
     const mongoClient = new MongoClient(uri, {
       maxPoolSize: Number(process.env['MONGO_POOL_SIZE'] || 5),
       serverSelectionTimeoutMS: timeoutMs,
@@ -361,16 +361,19 @@ async function connect(): Promise<MongoDatabase> {
   return connectPromise;
 }
 
-let atlasFailed = false;
+let lastAtlasFailureTime = 0;
+const ATLAS_RETRY_INTERVAL_MS = 10_000;
 
 export async function getDatabase(): Promise<Db> {
   const uri = process.env['MONGO_URI'];
-  if (uri && uri.trim() && !atlasFailed) {
+  const canAttemptAtlas = Boolean(uri && uri.trim() && (Date.now() - lastAtlasFailureTime > ATLAS_RETRY_INTERVAL_MS));
+
+  if (canAttemptAtlas) {
     try {
       const mongo = await connect();
       return { collection: <T extends Document>(name: string) => mongo.collection(name) as unknown as Collection<T> };
     } catch (error) {
-      atlasFailed = true;
+      lastAtlasFailureTime = Date.now();
       console.warn('MongoDB connection failed, gracefully falling back to in-memory store:', error instanceof Error ? error.message : 'unknown error');
       return inMemoryDb;
     }
