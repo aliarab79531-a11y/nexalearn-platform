@@ -20,6 +20,7 @@
     "test": "npm --prefix frontend run test:ci",
     "test:watch": "npm --prefix frontend test",
     "test:api": "npm --prefix backend test",
+    "test:vercel": "node --import tsx --env-file-if-exists=.env scripts/test-api.mjs",
     "seed:demo": "npm --prefix backend run seed",
     "create:admin": "npm --prefix backend run create:admin"
   },
