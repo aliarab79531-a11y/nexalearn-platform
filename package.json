@@ -2,7 +2,7 @@
   "name": "nexalearn-ai",
   "version": "0.0.0",
   "engines": {
-    "node": "26.x"
+    "node": "24.x"
   },
   "workspaces": [
     "backend",
