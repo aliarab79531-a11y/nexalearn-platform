@@ -27,7 +27,13 @@ app.use((request, response, next) => {
     next();
     return;
   }
-  if (allowedOrigins.has(origin.replace(/\/+$/, ''))) {
+  let isVercel = false;
+  try {
+    isVercel = /\.vercel\.app$/.test(new URL(origin).hostname);
+  } catch {
+    isVercel = false;
+  }
+  if (allowedOrigins.has(origin.replace(/\/+$/, '')) || isVercel || origin === `https://${request.get('host')}`) {
     response.setHeader('Access-Control-Allow-Origin', origin);
     response.setHeader('Access-Control-Allow-Credentials', 'true');
     response.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
@@ -43,15 +49,9 @@ app.use((request, response, next) => {
   next();
 });
 
-// Normalize /api prefix if accessed via cloud serverless function
-app.use((request, _response, next) => {
-  if (!request.path.startsWith('/api')) {
-    request.url = `/api${request.url}`;
-  }
-  next();
-});
+const apiRouter = express.Router();
 
-app.use('/api', (request, response, next) => {
+apiRouter.use((request, response, next) => {
   const startedAt = performance.now();
   const requestId = randomUUID();
   response.setHeader('X-Request-Id', requestId);
@@ -69,13 +69,18 @@ app.use('/api', (request, response, next) => {
   });
   next();
 });
-app.use('/api', jsend);
-app.use('/api', express.json({ limit: '32kb', strict: true }));
-app.use('/api', createAuthRouter());
-app.use('/api', createDomainRouter());
-app.use('/api', (_request, response) => {
+
+apiRouter.use(jsend);
+apiRouter.use(express.json({ limit: '32kb', strict: true }));
+apiRouter.use(createAuthRouter());
+apiRouter.use(createDomainRouter());
+apiRouter.use((_request, response) => {
   response.status(404).json({ error: { code: 'NOT_FOUND', message: 'API endpoint not found.' } });
 });
-app.use('/api', apiErrorHandler);
+apiRouter.use(apiErrorHandler);
+
+// Mount router on both /api (when path retains prefix) and root / (when serverless proxy strips /api)
+app.use('/api', apiRouter);
+app.use(apiRouter);
 
 export default app;

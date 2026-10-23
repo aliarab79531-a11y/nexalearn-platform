@@ -6,6 +6,8 @@
   "outputDirectory": "frontend/dist/ai-learning-platform/browser",
   "regions": ["dub1"],
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/api", "destination": "/api" },
     { "source": "/:path((?!api/).*)", "destination": "/index.html" }
   ]
 }
