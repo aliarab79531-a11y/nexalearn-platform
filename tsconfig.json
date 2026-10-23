@@ -9,14 +9,7 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "api/**/*"
-  ],
-  "references": [
-    {
-      "path": "./backend"
-    },
-    {
-      "path": "./frontend"
-    }
+    "api/**/*",
+    "backend/src/**/*"
   ]
 }
