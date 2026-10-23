@@ -21,6 +21,16 @@ const allowedOrigins = new Set([
   'http://127.0.0.1:4200',
 ].map(origin => origin.trim().replace(/\/+$/, '')).filter(Boolean));
 
+// Vercel serverless proxy rewrites /api/* to /api; restore original path from Vercel headers if present
+app.use((request, _response, next) => {
+  const matched = (request.headers['x-matched-path'] || request.headers['x-vercel-matched-path']) as string | undefined;
+  if (matched && matched.startsWith('/api') && (request.url === '/api' || request.url === '/' || request.url.startsWith('/api?'))) {
+    const query = request.url.includes('?') ? '?' + request.url.split('?')[1] : '';
+    request.url = matched + query;
+  }
+  next();
+});
+
 app.use((request, response, next) => {
   const origin = request.get('origin');
   if (!origin) {
@@ -33,7 +43,8 @@ app.use((request, response, next) => {
   } catch {
     isVercel = false;
   }
-  if (allowedOrigins.has(origin.replace(/\/+$/, '')) || isVercel || origin === `https://${request.get('host')}`) {
+  const host = request.get('host');
+  if (allowedOrigins.has(origin.replace(/\/+$/, '')) || isVercel || origin === `https://${host}` || origin === `http://${host}`) {
     response.setHeader('Access-Control-Allow-Origin', origin);
     response.setHeader('Access-Control-Allow-Credentials', 'true');
     response.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');

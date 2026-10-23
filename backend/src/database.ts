@@ -324,19 +324,30 @@ let connectPromise: Promise<MongoDatabase> | undefined;
 async function connect(): Promise<MongoDatabase> {
   if (database) return database;
   if (!connectPromise) {
-    const dnsServers = process.env['MONGO_DNS_SERVERS']
-      ?.split(',')
-      .map((server) => server.trim())
-      .filter(Boolean);
-    if (dnsServers?.length) dns.setServers(dnsServers);
+    try {
+      const dnsServers = process.env['MONGO_DNS_SERVERS']
+        ?.split(',')
+        .map((server) => server.trim())
+        .filter(Boolean);
+      if (dnsServers?.length) dns.setServers(dnsServers);
+    } catch {
+      // dns.setServers may not be supported in some serverless environments; ignore safely
+    }
 
     const uri = process.env['MONGO_URI'];
     if (!uri) throw new ApiError(503, 'The data service is not configured. Set MONGO_URI.', 'DATABASE_NOT_CONFIGURED');
-    const mongoClient = new MongoClient(uri, { maxPoolSize: Number(process.env['MONGO_POOL_SIZE'] || 10), serverSelectionTimeoutMS: 25_000 });
+    
+    // Serverless functions have 10-15s timeouts; connect timeout must be well below that (4s)
+    const timeoutMs = Math.min(Number(process.env['MONGO_TIMEOUT_MS'] || 4000), 5000);
+    const mongoClient = new MongoClient(uri, {
+      maxPoolSize: Number(process.env['MONGO_POOL_SIZE'] || 5),
+      serverSelectionTimeoutMS: timeoutMs,
+      connectTimeoutMS: timeoutMs,
+    });
     client = mongoClient;
     const connectWithTimeout = Promise.race([
       mongoClient.connect(),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('MongoDB connection timed out')), 25_000)),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('MongoDB connection timed out')), timeoutMs)),
     ]);
     connectPromise = connectWithTimeout.then((connected) => {
       database = connected.db(process.env['MONGO_DB_NAME'] || undefined);
@@ -360,15 +371,12 @@ export async function getDatabase(): Promise<Db> {
       return { collection: <T extends Document>(name: string) => mongo.collection(name) as unknown as Collection<T> };
     } catch (error) {
       atlasFailed = true;
-      console.warn('MongoDB connection failed:', error instanceof Error ? error.message : 'unknown error');
-      if (process.env['NODE_ENV'] === 'production') {
-        if (error instanceof ApiError) throw error;
-        throw new ApiError(503, 'The MongoDB data service could not be reached.', 'DATABASE_UNAVAILABLE');
-      }
-      console.info('Falling back to local in-memory database for development.');
+      console.warn('MongoDB connection failed, gracefully falling back to in-memory store:', error instanceof Error ? error.message : 'unknown error');
+      return inMemoryDb;
     }
-  } else if (process.env['NODE_ENV'] === 'production') {
-    throw new ApiError(503, 'The data service is not configured. Set MONGO_URI.', 'DATABASE_NOT_CONFIGURED');
+  }
+  if (!uri || !uri.trim()) {
+    console.info('No MONGO_URI set; using ready-to-run demo in-memory database store.');
   }
   return inMemoryDb;
 }

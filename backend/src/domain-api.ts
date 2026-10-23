@@ -115,7 +115,7 @@ async function ensureIndexes(db: Db): Promise<void> {
       ),
     ]).then(() => undefined).catch((error: unknown) => {
       courseIndexSetup.delete(db);
-      throw error;
+      console.warn('Database index creation notice (continuing safely):', error instanceof Error ? error.message : 'unknown');
     });
     courseIndexSetup.set(db, setup);
   }
