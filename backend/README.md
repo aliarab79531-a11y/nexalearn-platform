@@ -1,130 +1,44 @@
-# AI Learning Platform - Backend API (Supabase & Express)
+# NexaLearn Backend API
 
-A high-performance, secure backend API for the **NexaLearn AI Learning Platform**, built with **Node.js, Express, and Supabase (PostgreSQL)**.
+Node.js + Express + TypeScript + MongoDB Atlas backend service for NexaLearn AI Platform.
 
----
+## 📁 Directory Structure
+- `src/`
+  - `server.ts` - Entrypoint, starts HTTP server & connects to MongoDB Atlas
+  - `app.ts` - Express application, CORS configuration, security headers (Helmet), JSend formatting
+  - `database.ts` - MongoDB connection pool, collections, models, demo data bootstrap
+  - `auth-api.ts` - Session authentication, registration, login, role RBAC
+  - `domain-api.ts` - Courses, enrollments, teacher overview, grading queue, quizzes
+  - `api-errors.ts` - Structured API error definitions & Express error handling
+  - `validation.ts` - Request validation helpers and pagination
+  - `jsend.ts` - JSend standard response wrapper
+- `scripts/`
+  - `seed-demo.mjs` - Demo user and courses seeding script
+  - `create-admin.mjs` - Admin user creation utility
+- `tests/`
+  - `http.spec.ts` - Node.js native test runner integration tests
+  - `validation.spec.ts` - Unit tests for validation functions
 
-## 🚀 Features
+## 🚀 Running the Backend
+From within the `backend/` directory:
 
-- **Database**: Connected to **Supabase PostgreSQL** via connection pooling (`pg`).
-- **Authentication**:
-  - Dual support for **HTTP-Only Secure Cookies** (`nexalearn_session`) and **Bearer Tokens** (`Authorization: Bearer <token>`).
-  - Secure password hashing using cryptographic `scrypt` and `bcrypt`.
-  - Roles: `student`, `teacher`, `admin`.
-- **Courses**:
-  - Full CRUD operations with curriculum modules, lessons, levels, and status (`draft` / `published`).
-  - Search (`q` / `search`), category filtering, level filtering, and pagination.
-- **Student Workspace**:
-  - Enrolling in published courses.
-  - Tracking course progress (0–100%) and automatic completion.
-  - Overall student progress analytics.
-- **Teacher Workspace**:
-  - Course curriculum authoring and management.
-  - Teacher analytics: course counts, enrolled students, completed enrollments.
-- **Admin Console**:
-  - Platform-wide statistics (users, courses, enrollments).
-  - User status management (`active` / `suspended`).
-  - User role assignment (`student` / `teacher`).
-  - Audit logging.
-- **Security & Optimization**:
-  - Helmet security headers.
-  - CORS with credentials support for frontend (`http://localhost:4200`, `http://localhost:5173`, and Vercel domains).
-  - Rate limiting on authentication routes.
-- **Deployment Ready**:
-  - Configured for 1-click **Vercel** serverless deployment (`vercel.json` + `api/index.js`).
-  - Works seamlessly with the Angular frontend (`AI-LEARNING-PLATFORM-PROJECT`).
+```bash
+# Start backend in development mode with live watch
+npm run dev
 
----
+# Start backend in production mode
+npm start
 
-## 📋 Environment Variables (.env)
+# Run API tests
+npm test
 
-Create a `.env` file in the root directory (or use `.env.example` as a template):
-
-```env
-PORT=4301
-DATABASE_URL=postgresql://postgres.<project-ref>:<password>@<host>:5432/postgres
-AUTH_JWT_SECRET=your-random-32-byte-secret-key-here
-JWT_SECRET=your-random-32-byte-secret-key-here
-FRONTEND_URL=http://localhost:4200
-NODE_ENV=development
+# Seed demo database
+npm run seed
 ```
 
-> **Note for Supabase on Vercel**: Use the **Transaction Pooler** connection string (port `6543`) for serverless deployments, and the **Session Pooler** (port `5432`) for local long-running servers.
-
----
-
-## 🛠️ Local Development
-
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-2. **Start the server**:
-   ```bash
-   npm start
-   ```
-   Or for auto-reloading during development:
-   ```bash
-   npm run dev
-   ```
-
-3. **Verify the server is running**:
-   - Health Check: `http://localhost:4301/api/health`
-   - Course Catalog: `http://localhost:4301/api/courses`
-
----
-
-## 🔗 Integration with Frontend
-
-The Angular frontend (`AI-LEARNING-PLATFORM-PROJECT`) is configured with a proxy (`proxy.conf.json`) forwarding `/api` to `http://localhost:4301`.
-When both are running locally:
-1. Start backend: `npm start` (in `AI-LEARNING-PLATFORM-BACKEND` on port 4301)
-2. Start frontend: `npm start` (in `AI-LEARNING-PLATFORM-PROJECT` on port 4200)
-3. Navigate to `http://localhost:4200/` and sign in or browse courses.
-
----
-
-## 🌐 Deploy to Vercel
-
-1. Push this repository to GitHub.
-2. In [Vercel Dashboard](https://vercel.com):
-   - Click **Add New Project** -> **Import Git Repository**.
-   - Select your backend repository.
-   - Leave the Framework Preset as default or Other.
-   - Under **Environment Variables**, add:
-     - `DATABASE_URL`: Your Supabase connection string.
-     - `AUTH_JWT_SECRET`: Random 32+ byte string.
-     - `JWT_SECRET`: Same as `AUTH_JWT_SECRET`.
-     - `FRONTEND_URL`: Your deployed frontend URL (e.g. `https://your-frontend.vercel.app`).
-     - `NODE_ENV`: `production`
-   - Click **Deploy**.
-
----
-
-## 📡 API Endpoints Overview
-
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| `GET` | `/api/health` | Public | System & Supabase database status |
-| `POST` | `/api/auth/register` | Public | Register student or teacher |
-| `POST` | `/api/auth/login` | Public | Login (returns session cookie & token) |
-| `GET` | `/api/auth/me` | Authenticated | Get current logged-in profile |
-| `POST` | `/api/auth/logout` | Public | Clear session cookie |
-| `GET` | `/api/courses` | Public | Browse published courses (search & filter) |
-| `GET` | `/api/courses/:id` | Public | Get single course details |
-| `GET` | `/api/me/enrollments` | Student | List student enrollments |
-| `POST` | `/api/me/enrollments` | Student | Enroll in course |
-| `PATCH` | `/api/me/enrollments/:id/progress` | Student | Update learning progress (0-100) |
-| `GET` | `/api/me/progress` | Student | Overall enrolled and completed stats |
-| `GET` | `/api/teacher/courses` | Teacher | List instructor courses |
-| `GET` | `/api/teacher/overview` | Teacher | Instructor stats (learners & completions) |
-| `POST` | `/api/teacher/courses` | Teacher | Create new course draft |
-| `PUT` | `/api/teacher/courses/:id` | Teacher | Update course curriculum |
-| `PATCH` | `/api/teacher/courses/:id/status` | Teacher | Publish or unpublish course |
-| `DELETE` | `/api/teacher/courses/:id` | Teacher | Delete draft course |
-| `GET` | `/api/admin/overview` | Admin | Platform overview metrics |
-| `GET` | `/api/admin/users` | Admin | User management with filters |
-| `PATCH` | `/api/admin/users/:id/status` | Admin | Suspend or activate user |
-| `PATCH` | `/api/admin/users/:id/role` | Admin | Change user role |
-| `GET` | `/api/admin/audit-log` | Admin | View administrative audit logs |
+## ⚙️ Environment Configuration (`.env`)
+- `PORT` or `API_PORT`: API server port (default: 4301)
+- `MONGO_URI`: MongoDB connection string
+- `MONGO_DB_NAME`: Database name (e.g. `nexalearn`)
+- `AUTH_JWT_SECRET`: Secret key for session tokens
+- `FRONTEND_URL`: Allowed frontend origin for CORS (e.g. `http://localhost:4200`)

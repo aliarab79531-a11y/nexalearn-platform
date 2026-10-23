@@ -1,0 +1,29 @@
+@if (isPublic()) {
+  <app-navbar />
+  <main class="public-main">
+    <router-outlet />
+  </main>
+  <app-site-footer />
+} @else {
+  <button
+    class="mobile-nav-toggle mobile-toggle-btn d-lg-none"
+    type="button"
+    [attr.aria-expanded]="sidebarOpen"
+    aria-controls="workspace-sidebar"
+    aria-label="Toggle navigation"
+    (click)="toggleSidebar()"
+  >
+    <span class="material-symbols-outlined">menu</span>
+  </button>
+  <app-sidebar id="workspace-sidebar" [class.mobile-open]="sidebarOpen" (click)="closeSidebar()" />
+  @if (sidebarOpen) {
+    <button class="sidebar-backdrop" type="button" aria-label="Close navigation" (click)="closeSidebar()"></button>
+  }
+  <div class="workspace-layout">
+    <app-topbar (toggleSidebar)="toggleSidebar()" />
+    <main class="workspace-main">
+      <router-outlet />
+    </main>
+    <app-site-footer class="workspace-footer" />
+  </div>
+}

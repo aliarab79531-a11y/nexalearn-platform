@@ -1,0 +1,117 @@
+<header class="workspace-topbar">
+  <div class="topbar-left">
+    <button
+      class="mobile-toggle-btn"
+      type="button"
+      aria-label="Toggle navigation menu"
+      (click)="toggleSidebar.emit()"
+    >
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+
+    <div class="topbar-breadcrumbs">
+      <span class="crumb-root">
+        <span class="material-symbols-outlined">space_dashboard</span>
+        <span>Workspace</span>
+      </span>
+      <span class="crumb-separator" aria-hidden="true">/</span>
+      <span class="crumb-current">{{ pageTitle }}</span>
+    </div>
+  </div>
+
+  <div class="topbar-center">
+    <form class="topbar-search" (submit)="onSearchSubmit(); $event.preventDefault()">
+      <span class="material-symbols-outlined search-icon">search</span>
+      <input
+        type="search"
+        [(ngModel)]="searchQuery"
+        name="topbarSearch"
+        placeholder="Search courses, lessons, AI tools..."
+        aria-label="Global search"
+      />
+      <kbd class="search-kbd">⌘K</kbd>
+    </form>
+  </div>
+
+  <div class="topbar-right">
+    <!-- Workspace Role Mode Pill -->
+    <div class="workspace-mode-pill" [class]="accountRoleBadgeClass" [title]="roleModeLabel">
+      <span class="material-symbols-outlined mode-icon">{{ roleModeIcon }}</span>
+      <span class="mode-text">{{ roleModeLabel }}</span>
+    </div>
+
+    <!-- AI Status Indicator -->
+    <div class="ai-status-indicator" title="AI Model Active: Google Gemini 2.5 Flash">
+      <span class="pulse-dot"></span>
+      <span class="ai-text">Gemini 2.5 Active</span>
+    </div>
+
+    <!-- Language Toggle -->
+    <button
+      class="topbar-icon-btn lang-btn"
+      type="button"
+      (click)="toggleLanguage()"
+      [title]="'Switch language to ' + currentLanguageLabel"
+      aria-label="Switch language"
+    >
+      <span class="material-symbols-outlined">translate</span>
+      <span class="lang-code">{{ currentLanguageCode }}</span>
+    </button>
+
+    <!-- Quick Action: AI Tutor -->
+    <a
+      routerLink="/ai-tutor"
+      class="topbar-icon-btn ai-btn"
+      title="Open AI Studio"
+      aria-label="Open AI Studio"
+    >
+      <span class="material-symbols-outlined">auto_awesome</span>
+    </a>
+
+    <!-- User Profile Dropdown Pill -->
+    <div class="user-pill-container">
+      <button
+        class="user-pill"
+        type="button"
+        (click)="toggleUserMenu()"
+        [attr.aria-expanded]="userMenuOpen"
+        aria-label="Open user menu"
+      >
+        <span class="user-avatar" [class]="accountRoleBadgeClass">{{ accountInitials }}</span>
+        <span class="user-meta">
+          <strong class="user-name">{{ accountName }}</strong>
+          <span class="user-role-badge" [class]="accountRoleBadgeClass">{{ accountRole }}</span>
+        </span>
+        <span class="material-symbols-outlined chevron">expand_more</span>
+      </button>
+
+      @if (userMenuOpen) {
+        <div class="user-menu-dropdown" (window:click)="closeUserMenu()" (click)="$event.stopPropagation()">
+          <div class="dropdown-header">
+            <strong>{{ accountName }}</strong>
+            <small>{{ auth.currentAccount()?.email }}</small>
+            <span class="role-pill" [class]="accountRoleBadgeClass">{{ roleModeLabel }}</span>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <nav class="dropdown-links">
+            @for (link of dropdownLinks; track link.route) {
+              <a [routerLink]="link.route" (click)="closeUserMenu()">
+                <span class="material-symbols-outlined">{{ link.icon }}</span>
+                <span>{{ link.label }}</span>
+              </a>
+            }
+          </nav>
+
+          <div class="dropdown-divider"></div>
+
+          <button class="dropdown-signout" type="button" (click)="signOut()">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Sign Out</span>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</header>

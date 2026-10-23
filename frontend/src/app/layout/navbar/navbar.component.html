@@ -1,0 +1,121 @@
+<header class="site-header">
+  <div class="navbar-shell">
+    <!-- Brand Logo -->
+    <a class="brand" routerLink="/" (click)="closeMobileMenu()" aria-label="NexaLearn AI Home">
+      <span class="brand-mark" aria-hidden="true">
+        <span class="material-symbols-outlined">auto_awesome</span>
+      </span>
+      <span class="brand-copy">
+        <strong>NexaLearn</strong>
+        <span class="brand-subtitle">AI PLATFORM</span>
+      </span>
+    </a>
+
+    <!-- Mobile Hamburger Toggle -->
+    <button
+      class="mobile-menu mobile-menu-btn"
+      type="button"
+      [attr.aria-expanded]="mobileMenuOpen"
+      aria-controls="public-navigation"
+      [attr.aria-label]="mobileMenuOpen ? 'Close menu' : 'Open menu'"
+      (click)="toggleMobileMenu()"
+      (window:keydown.escape)="closeMobileMenu()"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true">
+        {{ mobileMenuOpen ? 'close' : 'menu' }}
+      </span>
+    </button>
+
+    <!-- Navigation Bar Desktop & Mobile -->
+    <div class="navbar-panel" [class.menu-open]="mobileMenuOpen" id="public-navigation">
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMobileMenu()">
+          <span>Home</span>
+        </a>
+        <a routerLink="/courses" routerLinkActive="active" (click)="closeMobileMenu()">
+          <span>Courses</span>
+        </a>
+        <a routerLink="/learning-paths" routerLinkActive="active" (click)="closeMobileMenu()">
+          <span>Learning Paths</span>
+        </a>
+        <a routerLink="/ai-tutor" routerLinkActive="active" (click)="closeMobileMenu()" class="nav-ai-link">
+          <span>AI Tutor</span>
+          <span class="nav-ai-pill">AI</span>
+        </a>
+        <a routerLink="/about" routerLinkActive="active" (click)="closeMobileMenu()">
+          <span>About</span>
+        </a>
+      </nav>
+
+      <!-- Dual Portals Quick Switcher -->
+      <div class="portals-switcher" aria-label="Portal shortcuts">
+        <a
+          routerLink="/dashboard"
+          class="portal-chip student-chip"
+          routerLinkActive="active-chip"
+          (click)="closeMobileMenu()"
+          title="Student Learning Workspace & AI Companion"
+        >
+          <span class="material-symbols-outlined portal-icon">school</span>
+          <span>Student Hub</span>
+        </a>
+        <a
+          routerLink="/instructor"
+          class="portal-chip teacher-chip"
+          routerLinkActive="active-chip"
+          (click)="closeMobileMenu()"
+          title="Instructor Teaching Console & Grading Queue"
+        >
+          <span class="material-symbols-outlined portal-icon">cast_for_education</span>
+          <span>Instructor Hub</span>
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Language Switcher -->
+        <button
+          class="language-button"
+          type="button"
+          (click)="toggleLanguage()"
+          [title]="'Switch language to ' + currentLanguageFull"
+          aria-label="Switch language"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">translate</span>
+          <span class="lang-text">{{ currentLanguageLabel }}</span>
+        </button>
+
+        @if (auth.currentAccount(); as account) {
+          <!-- Authenticated User State -->
+          <a class="workspace-btn" [class.teacher-mode]="isTeacher" [class.student-mode]="isStudent" [routerLink]="accountHome" (click)="closeMobileMenu()">
+            <span class="account-avatar" aria-hidden="true">{{ accountInitials }}</span>
+            <span class="account-meta">
+              <strong class="account-name">{{ account.name }}</strong>
+              <small class="account-role">{{ isTeacher ? '👨‍🏫 Instructor' : isStudent ? '🎓 Student' : accountRole }}</small>
+            </span>
+            <span class="material-symbols-outlined arrow-icon" aria-hidden="true">arrow_forward</span>
+          </a>
+
+          <button class="signout-button" type="button" [disabled]="signingOut" (click)="signOut()" title="Sign Out">
+            <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+            <span class="signout-text">{{ signingOut ? 'Signing out…' : 'Sign Out' }}</span>
+          </button>
+        } @else {
+          <!-- Guest State -->
+          <a class="signin-link" routerLink="/auth/login" (click)="closeMobileMenu()">
+            Sign In
+          </a>
+          <a class="signup-button" routerLink="/auth/register" (click)="closeMobileMenu()">
+            <span>Get Started</span>
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (logoutError) {
+    <div class="navbar-error-banner" role="alert">
+      <span>{{ logoutError }}</span>
+    </div>
+  }
+</header>

@@ -1,17 +1,26 @@
 {
   "name": "nexalearn-ai",
   "version": "0.0.0",
+  "engines": {
+    "node": "26.x"
+  },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "backend:dev": "node --env-file-if-exists=.env --import tsx src/api-dev.ts",
-    "build": "node --env-file-if-exists=.env ./node_modules/@angular/cli/bin/ng.js build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "test:api": "node --import tsx --test tests/api/validation.spec.ts",
-    "seed:demo": "node --env-file-if-exists=.env scripts/seed-demo.mjs",
-    "serve:ssr:ai-learning-platform": "node --env-file-if-exists=.env dist/ai-learning-platform/server/server.mjs",
-    "create:admin": "node --env-file-if-exists=.env scripts/create-admin.mjs"
+    "start": "node scripts/dev.mjs",
+    "start:backend": "npm --prefix backend run dev",
+    "start:frontend": "npm --prefix frontend start",
+    "backend:dev": "npm --prefix backend run dev",
+    "start:api": "npm --prefix backend start",
+    "build": "npm --prefix frontend run build:static",
+    "build:static": "npm --prefix frontend run build:static",
+    "test": "npm --prefix frontend run test:ci",
+    "test:watch": "npm --prefix frontend test",
+    "test:api": "npm --prefix backend test",
+    "seed:demo": "npm --prefix backend run seed",
+    "create:admin": "npm --prefix backend run create:admin"
   },
   "prettier": {
     "printWidth": 100,
@@ -36,10 +45,12 @@
     "@angular/router": "^22.2.0",
     "@angular/ssr": "^22.2.0",
     "bootstrap": "^5.3.8",
+    "dotenv": "^18.0.7",
     "express": "^5.1.0",
     "express-rate-limit": "^8.7.1",
     "helmet": "^8.3.0",
-    "pg": "^8.23.1",
+    "mongodb": "^7.7.0",
+    "mongoose": "^9.11.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -51,7 +62,6 @@
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^26.6.3",
-    "@types/pg": "^8.23.1",
     "istanbul-lib-instrument": "^6.0.3",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",

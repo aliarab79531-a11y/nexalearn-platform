@@ -1,0 +1,184 @@
+<aside class="sidebar">
+  <!-- Brand Header -->
+  <div class="sidebar-header">
+    <a class="side-brand" [routerLink]="accountHome">
+      <span class="brand-mark" aria-hidden="true">
+        <span class="material-symbols-outlined">auto_awesome</span>
+      </span>
+      <div class="brand-text">
+        <strong>NexaLearn</strong>
+        <span class="brand-tag">{{ brandTag }}</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- Scrollable Nav Section -->
+  <div class="side-scroll">
+    @if (auth.currentAccount()?.role === 'teacher') {
+      <!-- ================= TEACHER / INSTRUCTOR WORKSPACE ================= -->
+      <div class="nav-group">
+        <p class="nav-section-label">Teaching Operations</p>
+        <nav class="nav-links">
+          @for (item of teacherItems; track item.route) {
+            <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.route === '/instructor' }">
+              <span class="material-symbols-outlined link-icon">{{ item.icon }}</span>
+              <span class="link-label">{{ item.label }}</span>
+            </a>
+          }
+        </nav>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-section-header">
+          <p class="nav-section-label">AI Teaching Studio</p>
+          <span class="section-ai-badge">SMART</span>
+        </div>
+        <nav class="nav-links">
+          @for (item of teacherAiItems; track item.route) {
+            <a [routerLink]="item.route" routerLinkActive="active">
+              <span class="material-symbols-outlined link-icon ai-icon">{{ item.icon }}</span>
+              <span class="link-label">{{ item.label }}</span>
+              @if (item.badge) {
+                <span class="link-badge" [class]="item.badgeClass">{{ item.badge }}</span>
+              }
+            </a>
+          }
+        </nav>
+      </div>
+
+      <!-- Teacher AI Copilot Card -->
+      <div class="ai-sidebar-card">
+        <div class="ai-card-glow"></div>
+        <div class="ai-card-head">
+          <span class="material-symbols-outlined">psychology</span>
+          <strong>Teaching Copilot</strong>
+        </div>
+        <p>Draft syllabus modules, generate quizzes, or review code with Gemini.</p>
+        <a routerLink="/instructor/course-builder" class="ai-card-link">
+          Open Curriculum Builder
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+      </div>
+    } @else if (auth.currentAccount()?.role === 'admin') {
+      <!-- ================= ADMIN CONSOLE ================= -->
+      <div class="nav-group">
+        <p class="nav-section-label">Platform Governance</p>
+        <nav class="nav-links">
+          @for (item of adminItems; track item.route) {
+            <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.route === '/admin' }">
+              <span class="material-symbols-outlined link-icon">{{ item.icon }}</span>
+              <span class="link-label">{{ item.label }}</span>
+            </a>
+          }
+        </nav>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-section-header">
+          <p class="nav-section-label">AI Platform Tools</p>
+          <span class="section-ai-badge">SMART</span>
+        </div>
+        <nav class="nav-links">
+          @for (item of teacherAiItems; track item.route) {
+            <a [routerLink]="item.route" routerLinkActive="active">
+              <span class="material-symbols-outlined link-icon ai-icon">{{ item.icon }}</span>
+              <span class="link-label">{{ item.label }}</span>
+            </a>
+          }
+        </nav>
+      </div>
+    } @else {
+      <!-- ================= STUDENT WORKSPACE (DEFAULT) ================= -->
+      <div class="nav-group">
+        <p class="nav-section-label">Learning Hub</p>
+        <nav class="nav-links">
+          @for (item of studentLearningItems; track item.route) {
+            <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }">
+              <span class="material-symbols-outlined link-icon">{{ item.icon }}</span>
+              <span class="link-label">{{ item.label }}</span>
+            </a>
+          }
+        </nav>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-section-header">
+          <p class="nav-section-label">AI Learning Studio</p>
+          <span class="section-ai-badge">SMART</span>
+        </div>
+        <nav class="nav-links">
+          @for (item of studentAiItems; track item.route) {
+            <a [routerLink]="item.route" routerLinkActive="active">
+              <span class="material-symbols-outlined link-icon ai-icon">{{ item.icon }}</span>
+              <span class="link-label">{{ item.label }}</span>
+              @if (item.badge) {
+                <span class="link-badge" [class]="item.badgeClass">{{ item.badge }}</span>
+              }
+            </a>
+          }
+        </nav>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-section-label">Academic Performance</p>
+        <nav class="nav-links">
+          @for (item of studentAcademicItems; track item.route) {
+            <a [routerLink]="item.route" routerLinkActive="active">
+              <span class="material-symbols-outlined link-icon">{{ item.icon }}</span>
+              <span class="link-label">{{ item.label }}</span>
+            </a>
+          }
+        </nav>
+      </div>
+
+      <!-- Student AI Assistant Card -->
+      <div class="ai-sidebar-card">
+        <div class="ai-card-glow"></div>
+        <div class="ai-card-head">
+          <span class="material-symbols-outlined">psychology</span>
+          <strong>AI Study Companion</strong>
+        </div>
+        <p>Stuck on a tricky concept or code exercise?</p>
+        <a routerLink="/ai-tutor" class="ai-card-link">
+          Chat with AI Tutor
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+      </div>
+    }
+  </div>
+
+  <!-- Sidebar Footer: User Card -->
+  <div class="side-footer">
+    <div class="side-user-card">
+      <span class="side-avatar" [class]="roleBadgeClass">{{ accountInitials }}</span>
+      <div class="side-user-info">
+        <strong class="user-display-name">{{ accountName }}</strong>
+        <span class="user-role-tag" [class]="roleBadgeClass">{{ accountRole }}</span>
+      </div>
+      @if (auth.currentAccount()) {
+        <button
+          class="side-logout-btn"
+          type="button"
+          (click)="signOut()"
+          title="Sign out of account"
+          aria-label="Sign out"
+        >
+          <span class="material-symbols-outlined">logout</span>
+        </button>
+      } @else {
+        <a
+          class="side-logout-btn"
+          routerLink="/auth/login"
+          title="Sign in"
+          aria-label="Sign in"
+        >
+          <span class="material-symbols-outlined">login</span>
+        </a>
+      }
+    </div>
+
+    @if (logoutError) {
+      <p class="sidebar-alert" role="alert">{{ logoutError }}</p>
+    }
+  </div>
+</aside>
