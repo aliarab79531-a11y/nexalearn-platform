@@ -3,7 +3,7 @@
   "framework": "angular",
   "installCommand": "npm ci --include=dev",
   "buildCommand": "npm --prefix frontend run build:static",
-  "outputDirectory": "frontend/dist/ai-learning-platform",
+  "outputDirectory": "frontend/dist/ai-learning-platform/browser",
   "regions": ["dub1"],
   "rewrites": [
     { "source": "/:path((?!api/).*)", "destination": "/index.html" }
