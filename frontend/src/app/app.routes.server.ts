@@ -9,6 +9,6 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'auth/logout', renderMode: RenderMode.Prerender },
   {
     path: '**',
-    renderMode: RenderMode.Server
+    renderMode: RenderMode.Client
   }
 ];
