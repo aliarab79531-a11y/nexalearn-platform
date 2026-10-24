@@ -3605,7 +3605,66 @@ html[dir="rtl"] .faq-answer-panel {
   color: #475569;
 }
 
-/* ================= RESPONSIVE ================= */
+/* ================= RESPONSIVE & ADAPTIVE ECOSYSTEM ================= */
+/* Base responsive hygiene */
+html, body {
+  max-width: 100%;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+img, video, canvas, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  width: 100%;
+  max-width: 1360px;
+  padding-inline: clamp(16px, 3.5vw, 32px);
+  margin-inline: auto;
+}
+
+/* Modern Auto-fit Adaptive Course Grid */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr));
+  gap: clamp(16px, 2.5vw, 24px);
+}
+
+/* Filter Row Touch Friendly */
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.filter-row::-webkit-scrollbar {
+  display: none;
+}
+.filter-row .btn,
+.filter-row button {
+  flex-shrink: 0;
+  white-space: nowrap;
+  min-height: 38px;
+}
+
+/* Large Displays / 4K / Ultra-wide */
+@media (min-width: 1600px) {
+  .container {
+    max-width: 1480px;
+  }
+
+  .hero-title {
+    font-size: 4.4rem;
+  }
+}
+
+/* Tablet & Laptops (<= 1024px) */
 @media (max-width: 1024px) {
   .hero-grid,
   .ai-lab-layout {
@@ -3613,26 +3672,257 @@ html[dir="rtl"] .faq-answer-panel {
     gap: 40px;
   }
 
+  .hero-copy-block {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-header-meta {
+    justify-content: center;
+  }
+
+  .hero-description {
+    margin-inline: auto;
+  }
+
+  .hero-cta-group {
+    justify-content: center;
+  }
+
+  .hero-stats-strip {
+    max-width: 640px;
+    margin-inline: auto;
+  }
+
   .portals-dual-cards {
     grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .terminal-glow-orb {
+    width: 340px;
+    height: 340px;
+    filter: blur(40px);
   }
 }
 
+/* Mid-size Tablets & Large Phones (<= 768px) */
+@media (max-width: 768px) {
+  .hero-redesign {
+    padding: 96px 0 48px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.1rem, 1.2rem + 4.2vw, 3.2rem);
+  }
+
+  .portals-world-section,
+  .ai-lab-section {
+    padding: 60px 0;
+  }
+
+  .section-title-centered {
+    margin-bottom: 36px;
+  }
+
+  .floating-stat-card {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  .card-top-right {
+    top: -12px;
+    right: 4px;
+  }
+
+  .card-bottom-left {
+    bottom: -12px;
+    left: 4px;
+  }
+
+  html[dir="rtl"] .card-top-right {
+    right: auto;
+    left: 4px;
+  }
+
+  html[dir="rtl"] .card-bottom-left {
+    left: auto;
+    right: 4px;
+  }
+
+  /* Form controls touch safety */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Mobile Phones (<= 640px) */
 @media (max-width: 640px) {
   .hero-redesign {
-    padding: 100px 0 48px;
+    padding: 88px 0 40px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.85rem, 1rem + 3.8vw, 2.75rem);
+    letter-spacing: -0.035em;
+    margin-bottom: 16px;
+  }
+
+  .hero-description {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .hero-header-meta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .hero-pill-badge {
+    justify-content: center;
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .hero-quick-login-pills {
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 6px 10px;
+  }
+
+  .quick-test-btn {
+    min-height: 34px;
+    padding: 4px 10px;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .hero-primary-btn,
+  .hero-secondary-btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 46px;
+    padding: 13px 20px;
+    font-size: 14.5px;
   }
 
   .hero-stats-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
+    gap: 16px;
+    padding-top: 22px;
+  }
+
+  .stat-item strong {
+    font-size: 1.35rem;
+  }
+
+  .stat-item small {
+    font-size: 10.5px;
   }
 
   .portal-role-card {
-    padding: 26px 20px;
+    padding: 24px 18px;
+    border-radius: 16px;
+  }
+
+  .role-benefits-list {
+    margin-bottom: 24px;
+    gap: 12px;
+  }
+
+  .role-enter-btn {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  .interactive-terminal {
+    border-radius: 16px;
+    max-width: 100%;
+  }
+
+  .terminal-code-area {
+    padding: 16px 14px;
+    font-size: 11.5px;
+    line-height: 1.6;
+    overflow-x: auto;
   }
 
   .faq-answer-panel {
-    padding-inline-start: 24px;
+    padding-inline: 18px;
+    padding-bottom: 18px;
+  }
+
+  .faq-question-btn {
+    padding: 16px 18px;
+    font-size: 0.98rem;
+  }
+}
+
+/* Small / Compact Phones (<= 420px) */
+@media (max-width: 420px) {
+  .hero-redesign {
+    padding: 80px 0 32px;
+  }
+
+  .hero-visual-block {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .floating-stat-card {
+    position: static;
+    margin: 0;
+    width: 100%;
+    justify-content: center;
+    animation: none;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  }
+
+  .card-top-right,
+  .card-bottom-left {
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+  }
+
+  .stat-item strong {
+    font-size: 1.25rem;
+  }
+
+  .hero-pill-badge span:not(.sparkle-icon) {
+    font-size: 10.5px;
+  }
+
+  .quick-pill-label {
+    display: none;
+  }
+}
+
+/* Very Narrow Devices (<= 340px) */
+@media (max-width: 340px) {
+  .hero-title {
+    font-size: 1.7rem;
+  }
+
+  .hero-stats-strip {
+    grid-template-columns: 1fr;
+    text-align: center;
   }
 }

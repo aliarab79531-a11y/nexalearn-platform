@@ -463,10 +463,21 @@
   }
 }
 
+@media (max-width: 768px) {
+  .workspace-mode-pill {
+    display: none;
+  }
+
+  .crumb-root span:not(.material-symbols-outlined) {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   .workspace-topbar {
-    padding: 0 14px;
+    padding: 0 12px;
     height: 60px;
+    gap: 8px;
   }
 
   .ai-status-indicator {
@@ -478,10 +489,40 @@
   }
 
   .user-pill {
-    padding: 3px;
+    padding: 2px;
   }
 
   .chevron {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .crumb-root,
+  .crumb-separator {
+    display: none;
+  }
+
+  .crumb-current {
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+
+  .topbar-right {
+    gap: 6px;
+  }
+
+  .topbar-icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 360px) {
+  .crumb-current {
+    max-width: 75px;
   }
 }

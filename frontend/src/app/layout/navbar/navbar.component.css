@@ -789,13 +789,13 @@
 }
 
 /* ================= RESPONSIVE ================= */
-@media (max-width: 1024px) {
+@media (max-width: 1140px) {
   .demo-pills-wrap {
     display: none;
   }
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1040px) {
   .mobile-menu-btn {
     display: flex;
   }
@@ -806,11 +806,15 @@
     top: 76px;
     inset-inline: 0;
     max-height: calc(100vh - 76px);
+    max-height: calc(100dvh - 76px);
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     flex-direction: column;
     align-items: stretch;
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
     border-bottom: 1px solid rgba(148, 163, 184, 0.25);
     box-shadow: 0 24px 48px rgba(15, 23, 42, 0.12);
     padding: 20px 24px 32px;
@@ -834,6 +838,7 @@
     padding: 12px 14px;
     font-size: 15px;
     border-radius: 12px;
+    min-height: 44px;
   }
 
   .nav-dropdown-menu.ai-dropdown {
@@ -856,6 +861,7 @@
     flex: 1;
     justify-content: center;
     padding: 10px 12px;
+    min-height: 44px;
   }
 
   .nav-actions {
@@ -889,6 +895,70 @@
     margin-top: 8px;
     box-shadow: none;
     border: 1px solid rgba(226, 232, 240, 0.9);
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    height: 68px;
+  }
+
+  .navbar-shell {
+    width: calc(100% - 24px);
+    height: 68px;
+  }
+
+  .brand {
+    gap: 10px;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+  }
+
+  .brand-mark .material-symbols-outlined {
+    font-size: 22px;
+  }
+
+  .brand-title {
+    font-size: 17.5px;
+  }
+
+  .brand-subtitle {
+    font-size: 8px;
+    letter-spacing: 0.14em;
+  }
+
+  .navbar-panel {
+    top: 68px;
+    max-height: calc(100vh - 68px);
+    max-height: calc(100dvh - 68px);
+    padding: 16px 16px 28px;
+  }
+
+  .portals-switcher {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .portal-chip {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .navbar-shell {
+    width: calc(100% - 16px);
+  }
+
+  .brand-title {
+    font-size: 16px;
+  }
+
+  .brand-subtitle {
+    display: none;
   }
 }
 

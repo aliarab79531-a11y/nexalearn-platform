@@ -195,7 +195,7 @@
 @media (max-width: 767.98px) {
   .workspace { padding: 0 0 28px; }
   .workspace-heading { align-items: flex-start !important; }
-  .workspace-heading h1 { font-size: 28px; }
+  .workspace-heading h1 { font-size: clamp(22px, 5vw, 28px); }
   .active-course { align-items: flex-start !important; }
   .active-course .btn { width: 100%; }
   .video-screen { min-height: 210px; }
@@ -206,6 +206,37 @@
   .teacher-header, .admin-header { padding: 0.9rem 1rem; }
   .audit-item { flex-direction: column; }
   .teacher-graph { gap: 8px; }
+}
+
+@media (max-width: 480px) {
+  .workspace-card {
+    border-radius: 14px;
+  }
+  .mini-stat {
+    padding: 8px 6px;
+  }
+  .mini-stat strong {
+    font-size: 18px;
+  }
+  .mini-stat small {
+    font-size: 10.5px;
+  }
+  .metric-card {
+    padding: 16px;
+  }
+  .metric-card > strong {
+    font-size: 22px;
+  }
+  .prompt-chips {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .prompt-chips::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .active-lesson {
