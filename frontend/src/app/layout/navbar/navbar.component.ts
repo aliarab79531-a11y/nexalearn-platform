@@ -76,7 +76,7 @@ export class NavbarComponent {
   }
 
   get currentLanguageLabel(): string {
-    return this.translation.currentLanguage === 'en' ? 'AR' : 'EN';
+    return this.translation.currentLanguage === 'en' ? 'العربية' : 'English';
   }
 
   get currentLanguageFull(): string {

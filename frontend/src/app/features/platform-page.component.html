@@ -1,150 +1,215 @@
     @switch (view) {
       @case ('home') {
-        <!-- Hero Section with 1-Click Role Demos -->
-        <section class="hero container">
-          <div class="hero-copy">
-            <div class="hero-top-badges">
-              <span class="pill"><span class="material-symbols-outlined">auto_awesome</span> Powered by Advanced AI & Adaptive Learning</span>
-              <div class="quick-demo-pills" aria-label="1-Click Demo Login">
-                <span class="quick-demo-label">1-Click Test:</span>
-                <button type="button" class="quick-demo-btn student" [disabled]="authPending" (click)="quickLogin('student')" title="Log in immediately as Demo Student">
-                  <span class="material-symbols-outlined">school</span>
-                  <span>Student Demo</span>
-                </button>
-                <button type="button" class="quick-demo-btn teacher" [disabled]="authPending" (click)="quickLogin('teacher')" title="Log in immediately as Demo Instructor">
-                  <span class="material-symbols-outlined">cast_for_education</span>
-                  <span>Instructor Demo</span>
-                </button>
-              </div>
-            </div>
-            <h1>Learn Smarter.<br>Learn Faster.<br><span>Master With AI.</span></h1>
-            <p>Build production-grade skills through personalized adaptive curricula, real-time code synthesis, hands-on projects, and intelligent tutoring companions.</p>
-            <div class="hero-actions">
-              <a class="gradient-btn large" routerLink="/courses">Explore Courses <span class="material-symbols-outlined">arrow_forward</span></a>
-              <a class="secondary-btn large student-accent" routerLink="/dashboard"><span class="material-symbols-outlined">school</span> Student Hub</a>
-              <a class="secondary-btn large teacher-accent" routerLink="/instructor"><span class="material-symbols-outlined">cast_for_education</span> Instructor Studio</a>
-            </div>
-            <div class="trust-row">
-              <div><strong>50K+</strong><span>active learners worldwide</span></div>
-              <div><strong>99.8%</strong><span>AI tutoring accuracy</span></div>
-              <div><strong>4.9/5</strong><span>learner satisfaction score</span></div>
-              <div><strong>1,200+</strong><span>verified instructor courses</span></div>
-            </div>
-          </div>
-          <div class="hero-visual">
-            <div class="orb orb-one"></div>
-            <div class="orb orb-two"></div>
-            <div class="ai-preview">
-              <div class="preview-head">
-                <span class="brand-mark"><span class="material-symbols-outlined">terminal</span></span>
-                <div>
-                  <strong>Neural Code Co-Pilot</strong>
-                  <small>Gemini 2.5 Engine · Realtime AST Review</small>
+        <!-- ================= HERO SECTION ================= -->
+        <section class="hero-redesign">
+          <div class="hero-mesh-glow"></div>
+          <div class="container hero-grid">
+            <div class="hero-copy-block">
+              <!-- Pill & 1-Click Demo Quick Bar -->
+              <div class="hero-header-meta">
+                <span class="hero-pill-badge">
+                  <span class="material-symbols-outlined sparkle-icon">auto_awesome</span>
+                  <span>Neural Learning Platform · Powered by Gemini 2.5</span>
+                </span>
+                <div class="hero-quick-login-pills" aria-label="1-Click Demo Login">
+                  <span class="quick-pill-label">⚡ 1-Click Test:</span>
+                  <button type="button" class="quick-test-btn student-pill" [disabled]="authPending" (click)="quickLogin('student')" title="Sign in as Demo Student">
+                    <span class="material-symbols-outlined">school</span>
+                    <span>Student</span>
+                  </button>
+                  <button type="button" class="quick-test-btn teacher-pill" [disabled]="authPending" (click)="quickLogin('teacher')" title="Sign in as Demo Instructor">
+                    <span class="material-symbols-outlined">cast_for_education</span>
+                    <span>Instructor</span>
+                  </button>
                 </div>
-                <span class="status-dot"></span>
               </div>
-              <div class="code-window">
-                <span class="code-purple">const</span> <span class="code-blue">learner</span> = <span class="code-green">await</span> nexaLearn.<span class="code-yellow">adaptCurriculum</span>(&#123;<br>
-                &nbsp;&nbsp;level: <span class="code-orange">'zero-to-hero'</span>,<br>
-                &nbsp;&nbsp;focus: <span class="code-orange">'full-stack-ai'</span>,<br>
-                &nbsp;&nbsp;pace: <span class="code-orange">'self-guided'</span><br>
-                &#125;);
+
+              <h1 class="hero-title">
+                Master Ambitious Tech.<br>
+                Accelerate With <span>Adaptive AI Intelligence.</span>
+              </h1>
+
+              <p class="hero-description">
+                Escape tutorial purgatory. NexaLearn combines production curricula with instant AST-level code synthesis, 24/7 AI tutoring companions, and dedicated workspaces tailored for students and instructors.
+              </p>
+
+              <!-- Hero CTAs -->
+              <div class="hero-cta-group">
+                <a class="hero-primary-btn" routerLink="/courses">
+                  <span>Explore Courses</span>
+                  <span class="material-symbols-outlined">arrow_forward</span>
+                </a>
+                <a class="hero-secondary-btn student-tone" routerLink="/dashboard">
+                  <span class="material-symbols-outlined">school</span>
+                  <span>Student Hub</span>
+                </a>
+                <a class="hero-secondary-btn teacher-tone" routerLink="/instructor">
+                  <span class="material-symbols-outlined">cast_for_education</span>
+                  <span>Instructor Studio</span>
+                </a>
               </div>
-              <div class="preview-footer">
-                <span class="material-symbols-outlined">auto_awesome</span>
-                <span>Active Diagnostic Model</span>
-                <b>99.8% Precision</b>
+
+              <!-- Metrics Row -->
+              <div class="hero-stats-strip">
+                <div class="stat-item">
+                  <strong>50K+</strong>
+                  <small>Active builders worldwide</small>
+                </div>
+                <div class="stat-item">
+                  <strong>99.8%</strong>
+                  <small>AST tutoring precision</small>
+                </div>
+                <div class="stat-item">
+                  <strong>4.9 / 5</strong>
+                  <small>Learner satisfaction</small>
+                </div>
+                <div class="stat-item">
+                  <strong>1,200+</strong>
+                  <small>Verified learning modules</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hero Interactive Terminal Simulator -->
+            <div class="hero-visual-block">
+              <div class="terminal-glow-orb"></div>
+              <div class="floating-stat-card card-top-right">
+                <span class="material-symbols-outlined icon-glow">psychology</span>
+                <div>
+                  <strong>Adaptive Roadmap</strong>
+                  <small>+42% faster retention</small>
+                </div>
+              </div>
+
+              <div class="interactive-terminal">
+                <div class="terminal-header-bar">
+                  <div class="window-controls">
+                    <span class="dot close"></span>
+                    <span class="dot minimize"></span>
+                    <span class="dot zoom"></span>
+                  </div>
+                  <span class="terminal-name">nexalearn-ai-compiler · v2.5.0</span>
+                  <span class="terminal-status-pill">
+                    <span class="pulse-indicator"></span>
+                    <span>LIVE ENGINE</span>
+                  </span>
+                </div>
+                <div class="terminal-code-area">
+                  <div class="code-line"><span class="c-keyword">import</span> &#123; <span class="c-variable">createLearnerSession</span> &#125; <span class="c-keyword">from</span> <span class="c-string">'@nexalearn/core'</span>;</div>
+                  <div class="code-line"><span class="c-keyword">const</span> <span class="c-variable">session</span> = <span class="c-keyword">await</span> <span class="c-func">createLearnerSession</span>(&#123;</div>
+                  <div class="code-line indent"><span class="c-prop">mode</span>: <span class="c-string">'full-stack-engineer'</span>,</div>
+                  <div class="code-line indent"><span class="c-prop">aiCompanion</span>: <span class="c-string">'Gemini-2.5-Flash'</span>,</div>
+                  <div class="code-line indent"><span class="c-prop">adaptiveSpeed</span>: <span class="c-number">1.4</span></div>
+                  <div class="code-line">&#125;);</div>
+                  <div class="code-line mt-2"><span class="c-comment">// Synthesizing roadmap milestone & AST review...</span></div>
+                  <div class="terminal-execution-badge">
+                    <span class="material-symbols-outlined">verified</span>
+                    <span>Curriculum Adapted · Diagnostic Score: 100%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="floating-stat-card card-bottom-left">
+                <span class="material-symbols-outlined icon-teal">terminal</span>
+                <div>
+                  <strong>Browser Sandbox</strong>
+                  <small>Zero toolchain setup</small>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- Dedicated Two Specialized Worlds Comparison Section -->
-        <section class="section portals-showcase-section">
+        <!-- ================= SPECIALIZED WORLDS (STUDENT vs TEACHER) ================= -->
+        <section class="section portals-world-section">
           <div class="container">
-            <div class="section-header-centered">
-              <p class="eyebrow centered">SPECIALIZED LEARNING & TEACHING SUITES</p>
-              <h2 class="centered">Two Dedicated Worlds. <span>One AI Ecosystem.</span></h2>
-              <p class="section-subtext centered">Whether you are acquiring engineering capabilities or authoring and mentoring next-generation talent, NexaLearn provides dedicated workflows crafted for your exact role.</p>
+            <div class="section-title-centered">
+              <span class="section-kicker">TWO SPECIALIZED WORLDS · ONE PLATFORM</span>
+              <h2>Dedicated Environments Crafted <span>For Your Role</span></h2>
+              <p>Whether you're developing high-demand engineering skills or authoring and mentoring talent, NexaLearn gives you purposeful, role-specific tools.</p>
             </div>
 
-            <div class="portals-dual-grid">
+            <div class="portals-dual-cards">
               <!-- Student Experience Card -->
-              <div class="portal-world-card student-world">
-                <div class="portal-world-header">
-                  <div class="world-badge">
+              <div class="portal-role-card student-card">
+                <div class="role-card-header">
+                  <div class="role-badge-chip student-theme">
                     <span class="material-symbols-outlined">school</span>
-                    <strong>Student Experience</strong>
+                    <span>Student Experience</span>
                   </div>
-                  <span class="world-tag">For Learners</span>
+                  <span class="role-subtag">FOR LEARNERS</span>
                 </div>
                 <h3>Master Skills With Adaptive Intelligence</h3>
-                <p>Never get stuck with an AI tutor that adapts to your mental model, reviews your code syntax in real-time, and guides you through project milestones.</p>
-                <ul class="world-features-list">
+                <p>Never get stuck with an AI tutor that adapts to your learning pace, analyzes your code syntax, and guides you through real project milestones.</p>
+
+                <ul class="role-benefits-list">
                   <li>
-                    <span class="material-symbols-outlined check-icon">check_circle</span>
-                    <span><strong>Adaptive Learning Roadmaps</strong> that evolve based on your quiz scores and coding speed.</span>
+                    <span class="material-symbols-outlined checkmark">check_circle</span>
+                    <span><strong>Dynamic Roadmaps</strong> that adjust in real-time based on your quiz results and coding pace.</span>
                   </li>
                   <li>
-                    <span class="material-symbols-outlined check-icon">check_circle</span>
-                    <span><strong>24/7 AI Code Companion</strong> capable of generating AST diagnostics and architectural hints.</span>
+                    <span class="material-symbols-outlined checkmark">check_circle</span>
+                    <span><strong>24/7 AI Code Companion</strong> offering AST inspections, algorithmic hints, and clean patterns.</span>
                   </li>
                   <li>
-                    <span class="material-symbols-outlined check-icon">check_circle</span>
-                    <span><strong>Hands-On Web Sandbox</strong> to build full-stack projects without setting up local toolchains.</span>
+                    <span class="material-symbols-outlined checkmark">check_circle</span>
+                    <span><strong>Browser Code Sandbox</strong> to write and test full-stack code without local installations.</span>
                   </li>
                   <li>
-                    <span class="material-symbols-outlined check-icon">check_circle</span>
-                    <span><strong>Interactive Practice Quizzes</strong> and flashcards with instant explanation breakdowns.</span>
+                    <span class="material-symbols-outlined checkmark">check_circle</span>
+                    <span><strong>Interactive Quizzes & Flashcards</strong> with comprehensive explanations for every question.</span>
                   </li>
                 </ul>
-                <div class="world-footer-cta">
-                  <a routerLink="/dashboard" class="portal-cta-btn student-btn">
+
+                <div class="role-card-footer">
+                  <a routerLink="/dashboard" class="role-enter-btn student-btn">
                     <span>Enter Student Workspace</span>
                     <span class="material-symbols-outlined">arrow_forward</span>
                   </a>
-                  <button type="button" class="portal-demo-link" (click)="quickLogin('student')">
-                    ⚡ Try Student Demo Account
+                  <button type="button" class="role-demo-quick-btn" (click)="quickLogin('student')">
+                    ⚡ Try Student Demo in 1 Click
                   </button>
                 </div>
               </div>
 
               <!-- Instructor Operations Card -->
-              <div class="portal-world-card teacher-world">
-                <div class="portal-world-header">
-                  <div class="world-badge">
+              <div class="portal-role-card teacher-card">
+                <div class="role-card-header">
+                  <div class="role-badge-chip teacher-theme">
                     <span class="material-symbols-outlined">cast_for_education</span>
-                    <strong>Instructor Operations</strong>
+                    <span>Instructor Operations</span>
                   </div>
-                  <span class="world-tag">For Mentors & Educators</span>
+                  <span class="role-subtag">FOR EDUCATORS & AUTHORS</span>
                 </div>
                 <h3>Author, Mentor & Scale High-Impact Curricula</h3>
                 <p>Equip yourself with a modern teaching studio featuring AI-assisted rubric grading, live cohort telemetry, and seamless curriculum management.</p>
-                <ul class="world-features-list">
+
+                <ul class="role-benefits-list">
                   <li>
-                    <span class="material-symbols-outlined check-icon">check_circle</span>
+                    <span class="material-symbols-outlined checkmark">check_circle</span>
                     <span><strong>Visual Curriculum Builder</strong> with drag-and-drop syllabus structure and code prompts.</span>
                   </li>
                   <li>
-                    <span class="material-symbols-outlined check-icon">check_circle</span>
+                    <span class="material-symbols-outlined checkmark">check_circle</span>
                     <span><strong>AI-Assisted Grading Queue</strong> reviewing submissions against rubrics with 95%+ confidence.</span>
                   </li>
                   <li>
-                    <span class="material-symbols-outlined check-icon">check_circle</span>
+                    <span class="material-symbols-outlined checkmark">check_circle</span>
                     <span><strong>Live Cohort Roster & Analytics</strong> tracking student velocity, retention, and drop-off risks.</span>
                   </li>
                   <li>
-                    <span class="material-symbols-outlined check-icon">check_circle</span>
+                    <span class="material-symbols-outlined checkmark">check_circle</span>
                     <span><strong>Instant Course Publishing</strong> controls with real-time catalog sync and updates.</span>
                   </li>
                 </ul>
-                <div class="world-footer-cta">
-                  <a routerLink="/instructor" class="portal-cta-btn teacher-btn">
+
+                <div class="role-card-footer">
+                  <a routerLink="/instructor" class="role-enter-btn teacher-btn">
                     <span>Enter Instructor Studio</span>
                     <span class="material-symbols-outlined">arrow_forward</span>
                   </a>
-                  <button type="button" class="portal-demo-link" (click)="quickLogin('teacher')">
-                    ⚡ Try Instructor Demo Account
+                  <button type="button" class="role-demo-quick-btn" (click)="quickLogin('teacher')">
+                    ⚡ Try Instructor Demo in 1 Click
                   </button>
                 </div>
               </div>
@@ -152,93 +217,100 @@
           </div>
         </section>
 
-        <!-- Live Interactive AI Tutor Playground Widget -->
-        <section class="section ai-playground-section">
+        <!-- ================= LIVE AI PLAYGROUND INTERACTIVE LAB ================= -->
+        <section class="section ai-lab-section">
           <div class="container">
-            <div class="playground-layout">
-              <div class="playground-info">
-                <span class="pill"><span class="material-symbols-outlined">psychology</span> Try The AI Right Now</span>
+            <div class="ai-lab-layout">
+              <div class="ai-lab-sidebar">
+                <span class="hero-pill-badge">
+                  <span class="material-symbols-outlined">psychology</span>
+                  <span>Live AI Tutor Sandbox</span>
+                </span>
                 <h2>Experience the power of our <span>AI Tutor</span></h2>
-                <p>Select any real-world programming scenario below to see how our AI Tutor synthesizes concepts, generates tested code, and guides you with production best-practices.</p>
-                <div class="playground-topics-list" role="tablist" aria-label="AI Tutor Topics">
+                <p>Select any real-world technical scenario below to see how our AI Tutor breaks down concepts, generates verified code, and guides you with production best-practices.</p>
+
+                <div class="ai-topic-tabs" role="tablist" aria-label="AI Tutor Topics">
                   <button
                     type="button"
-                    class="topic-tab-btn"
+                    class="ai-topic-tab"
                     [class.active]="homeInteractiveTutorTopic === 'signals'"
                     (click)="selectHomeTutorTopic('signals')"
                   >
-                    <span class="material-symbols-outlined">bolt</span>
+                    <span class="material-symbols-outlined topic-icon">bolt</span>
                     <div>
                       <strong>Angular Signals & Reactivity</strong>
-                      <small>Synchronous state & zone-less architecture</small>
+                      <small>Synchronous state & zoneless architecture</small>
                     </div>
                   </button>
+
                   <button
                     type="button"
-                    class="topic-tab-btn"
+                    class="ai-topic-tab"
                     [class.active]="homeInteractiveTutorTopic === 'closure'"
                     (click)="selectHomeTutorTopic('closure')"
                   >
-                    <span class="material-symbols-outlined">data_object</span>
+                    <span class="material-symbols-outlined topic-icon">data_object</span>
                     <div>
                       <strong>JavaScript Lexical Closures</strong>
                       <small>Memory models & functional patterns</small>
                     </div>
                   </button>
+
                   <button
                     type="button"
-                    class="topic-tab-btn"
+                    class="ai-topic-tab"
                     [class.active]="homeInteractiveTutorTopic === 'challenge'"
                     (click)="selectHomeTutorTopic('challenge')"
                   >
-                    <span class="material-symbols-outlined">code_blocks</span>
+                    <span class="material-symbols-outlined topic-icon">code_blocks</span>
                     <div>
                       <strong>Async Exponential Backoff</strong>
                       <small>Resilient retry patterns with jitter</small>
                     </div>
                   </button>
+
                   <button
                     type="button"
-                    class="topic-tab-btn"
+                    class="ai-topic-tab"
                     [class.active]="homeInteractiveTutorTopic === 'bigo'"
                     (click)="selectHomeTutorTopic('bigo')"
                   >
-                    <span class="material-symbols-outlined">speed</span>
+                    <span class="material-symbols-outlined topic-icon">speed</span>
                     <div>
                       <strong>Big-O Algorithmic Tuning</strong>
                       <small>Optimizing O(N²) down to linear O(N)</small>
                     </div>
                   </button>
                 </div>
-                <div class="playground-actions">
-                  <a routerLink="/ai-tutor" class="gradient-btn">
+
+                <div class="ai-lab-action">
+                  <a routerLink="/ai-tutor" class="hero-primary-btn">
                     <span>Open Full AI Tutor Session</span>
                     <span class="material-symbols-outlined">arrow_forward</span>
                   </a>
                 </div>
               </div>
 
-              <div class="playground-display">
-                <div class="playground-terminal-card">
-                  <div class="terminal-bar">
-                    <div class="terminal-dots">
-                      <span class="dot red"></span>
-                      <span class="dot yellow"></span>
-                      <span class="dot green"></span>
-                    </div>
-                    <span class="terminal-title">NexaLearn AI Engine · Gemini 2.5 Flash</span>
-                    <span class="terminal-badge">LIVE RESPONSE</span>
+              <!-- Terminal Display -->
+              <div class="ai-lab-terminal-card">
+                <div class="terminal-bar">
+                  <div class="terminal-dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
                   </div>
-                  <div class="terminal-body">
-                    <h3 class="terminal-topic-title">{{ homeTutorSnippets[homeInteractiveTutorTopic].title }}</h3>
-                    <p class="terminal-explainer">{{ homeTutorSnippets[homeInteractiveTutorTopic].text }}</p>
-                    <div class="terminal-code-block">
-                      <pre><code>{{ homeTutorSnippets[homeInteractiveTutorTopic].code }}</code></pre>
-                    </div>
-                    <div class="terminal-pro-tip">
-                      <span class="material-symbols-outlined">lightbulb</span>
-                      <span>{{ homeTutorSnippets[homeInteractiveTutorTopic].tip }}</span>
-                    </div>
+                  <span class="terminal-title">NexaLearn AI Engine · Gemini 2.5 Flash</span>
+                  <span class="terminal-badge">LIVE RESPONSE</span>
+                </div>
+                <div class="terminal-body">
+                  <h3 class="terminal-topic-title">{{ homeTutorSnippets[homeInteractiveTutorTopic].title }}</h3>
+                  <p class="terminal-explainer">{{ homeTutorSnippets[homeInteractiveTutorTopic].text }}</p>
+                  <div class="terminal-code-block">
+                    <pre><code>{{ homeTutorSnippets[homeInteractiveTutorTopic].code }}</code></pre>
+                  </div>
+                  <div class="terminal-pro-tip">
+                    <span class="material-symbols-outlined">lightbulb</span>
+                    <span>{{ homeTutorSnippets[homeInteractiveTutorTopic].tip }}</span>
                   </div>
                 </div>
               </div>
@@ -246,19 +318,20 @@
           </div>
         </section>
 
-        <!-- Curated Tracks Section -->
+        <!-- ================= CURATED TRACKS SECTION ================= -->
         <section class="section curated-tracks-section">
           <div class="container">
             <div class="tracks-header">
               <div>
-                <p class="eyebrow">CAREER-ACCELERATING CURRICULA</p>
+                <span class="section-kicker">CAREER-ACCELERATING CURRICULA</span>
                 <h2>Featured Learning <span>Tracks</span></h2>
               </div>
-              <a routerLink="/courses" class="text-btn">
+              <a routerLink="/courses" class="text-link-button">
                 <span>View all courses</span>
                 <span class="material-symbols-outlined">arrow_forward</span>
               </a>
             </div>
+
             <div class="featured-tracks-grid">
               @for (track of featuredCurricula; track track.id) {
                 <article class="featured-track-card">
@@ -291,28 +364,33 @@
           </div>
         </section>
 
-        <!-- Ecosystem Features -->
-        <section class="section muted">
+        <!-- ================= ECOSYSTEM FEATURES ================= -->
+        <section class="section features-ecosystem-section">
           <div class="container">
-            <p class="eyebrow centered">A COMPLETE LEARNING ECOSYSTEM</p>
-            <h2 class="centered">Everything you need to <span>level up</span></h2>
+            <div class="section-title-centered">
+              <span class="section-kicker">A COMPLETE LEARNING ECOSYSTEM</span>
+              <h2>Everything You Need to <span>Level Up</span></h2>
+              <p>Designed to take you from foundational understanding to production fluency through guided practice and feedback.</p>
+            </div>
             <div class="feature-grid">
               @for (feature of features; track feature.title) {
                 <article class="feature-card">
-                  <span class="feature-icon"><span class="material-symbols-outlined">{{feature.icon}}</span></span>
-                  <h3>{{feature.title}}</h3>
-                  <p>{{feature.text}}</p>
+                  <span class="feature-icon"><span class="material-symbols-outlined">{{ feature.icon }}</span></span>
+                  <h3>{{ feature.title }}</h3>
+                  <p>{{ feature.text }}</p>
                 </article>
               }
             </div>
           </div>
         </section>
 
-        <!-- Testimonials Section -->
+        <!-- ================= TESTIMONIALS ================= -->
         <section class="section testimonials-section">
           <div class="container">
-            <p class="eyebrow centered">TRUSTED BY LEARNERS AND EDUCATORS</p>
-            <h2 class="centered">Proven impact across the <span>entire journey</span></h2>
+            <div class="section-title-centered">
+              <span class="section-kicker">TRUSTED BY LEARNERS AND EDUCATORS</span>
+              <h2>Proven Impact Across the <span>Entire Journey</span></h2>
+            </div>
             <div class="testimonials-grid">
               <article class="testimonial-card">
                 <div class="testimonial-stars">★★★★★</div>
@@ -340,20 +418,56 @@
           </div>
         </section>
 
-        <!-- Final CTA Banner -->
+        <!-- ================= INTERACTIVE FAQ SECTION ================= -->
+        <section class="section faq-section">
+          <div class="container">
+            <div class="section-title-centered">
+              <span class="section-kicker">CLEAR ANSWERS TO COMMON QUESTIONS</span>
+              <h2>Frequently Asked <span>Questions</span></h2>
+              <p>Everything you need to know about getting started, our AI companion, and course authoring.</p>
+            </div>
+
+            <div class="faq-accordion-container">
+              @for (faq of homeFaqs; track faq.q; let i = $index) {
+                <div class="faq-item-card" [class.open]="activeFaqIndex === i">
+                  <button
+                    type="button"
+                    class="faq-question-btn"
+                    [attr.aria-expanded]="activeFaqIndex === i"
+                    (click)="toggleFaq(i)"
+                  >
+                    <span class="material-symbols-outlined faq-leading-icon">{{ faq.icon }}</span>
+                    <span class="faq-question-text">{{ faq.q }}</span>
+                    <span class="material-symbols-outlined faq-chevron">
+                      {{ activeFaqIndex === i ? 'expand_less' : 'expand_more' }}
+                    </span>
+                  </button>
+                  @if (activeFaqIndex === i) {
+                    <div class="faq-answer-panel">
+                      <p>{{ faq.a }}</p>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= CLOSING CTA BANNER ================= -->
         <section class="section home-closing-cta">
           <div class="container">
             <div class="cta-banner-card">
+              <div class="cta-mesh-circle"></div>
               <div class="cta-copy">
                 <h2>Start mastering technology with <span>AI guidance</span> today</h2>
                 <p>Join thousands of students building real skills, or empower your students with our advanced instructor workspace.</p>
                 <div class="cta-buttons-group">
-                  <a routerLink="/auth/register" class="gradient-btn large">
+                  <a routerLink="/auth/register" class="hero-primary-btn large">
                     <span>Create Free Account</span>
                     <span class="material-symbols-outlined">rocket_launch</span>
                   </a>
-                  <a routerLink="/courses" class="secondary-btn large">
-                    <span>Browse Courses</span>
+                  <a routerLink="/courses" class="hero-secondary-btn large">
+                    <span>Browse All Courses</span>
                     <span class="material-symbols-outlined">explore</span>
                   </a>
                 </div>

@@ -12,8 +12,9 @@ export class TranslationService {
   private readonly originalAttributes = new WeakMap<Element, Map<string, string>>();
   private observer?: MutationObserver;
 
-  private readonly translations: Record<string, string> = {
-    ...{
+  private readonly translations: Record<string, string> = Object.assign(
+    {},
+    {
       'LEARNING WORKSPACE': 'مساحة التعلم',
       'INSTRUCTOR WORKSPACE': 'مساحة المدرّس',
       'STUDENT WORKSPACE': 'مساحة الطالب',
@@ -271,7 +272,8 @@ export class TranslationService {
       'Enter a question before sending it to the tutor.': 'أدخل سؤالًا قبل إرساله إلى المعلم.',
       'Message added to this tutor preview. AI responses require a connected backend.': 'أُضيفت الرسالة إلى معاينة المعلم. تتطلب استجابات الذكاء الاصطناعي ربط الواجهة الخلفية.',
     },
-    Home: 'الرئيسية',
+    {
+      Home: 'الرئيسية',
     Courses: 'الدورات',
     'Learning Paths': 'مسارات التعلم',
     'AI Tutor': 'المعلم الذكي',
@@ -389,7 +391,8 @@ export class TranslationService {
     'Translate to and from Arabic and English': 'الترجمة من العربية إلى الإنجليزية ومن الإنجليزية إلى العربية',
     English: 'الإنجليزية',
     Arabic: 'العربية',
-    ...{
+    },
+    {
     Main: 'الرئيسية',
     Workspace: 'مساحة العمل',
     Teaching: 'التدريس',
@@ -568,7 +571,6 @@ export class TranslationService {
     'Identity & tenant verification': 'التحقق من الهوية والمؤسسة',
     'Curriculum moderation': 'مراجعة المناهج',
     'Pedagogical audit': 'التدقيق التربوي',
-    },
     'Security overview': 'نظرة عامة على الأمان',
     'AI compute & telemetry': 'حوسبة الذكاء الاصطناعي والقياس عن بُعد',
     'AI security': 'أمان الذكاء الاصطناعي',
@@ -584,7 +586,8 @@ export class TranslationService {
     'Operational': 'يعمل بشكل طبيعي',
     'Approve': 'موافقة',
     'Request revision': 'طلب تعديل',
-    ...{
+    },
+    {
       'Explore the platform': 'استكشف المنصة',
       'Browse all courses': 'تصفح جميع الدورات',
       'Make ambitious learning feel': 'اجعل التعلم الطموح يبدو',
@@ -728,7 +731,7 @@ export class TranslationService {
       'Build routed forms and data-driven interfaces': 'أنشئ نماذج موجهة وواجهات قائمة على البيانات',
       'Test and optimize accessible production applications': 'اختبر وحسّن تطبيقات إنتاج سهلة الوصول',
     },
-    ...{
+    {
       'HOW NEXALEARN WORKS': 'كيف تعمل NexaLearn',
       'NexaLearn brings course material, practice, and feedback into one guided experience. Start with a goal, follow a focused sequence, and use projects to turn new concepts into durable skills.': 'تجمع NexaLearn مواد الدورات والتدريب والملاحظات في تجربة تعليمية موجهة. ابدأ بهدف، واتبع تسلسلًا مركزًا، واستخدم المشاريع لتحويل المفاهيم الجديدة إلى مهارات راسخة.',
       'Browse role-focused subjects and pick a learning direction that fits your experience and ambitions.': 'تصفح موضوعات مرتبطة بالأدوار المهنية واختر مسار تعلم يناسب خبرتك وطموحاتك.',
@@ -876,8 +879,257 @@ export class TranslationService {
       'Curriculum and moderation queues surface material that needs a human review.': 'تعرض قوائم مراجعة المناهج والإشراف المواد التي تتطلب مراجعة بشرية.',
       'Watch service health': 'راقب صحة الخدمات',
       'Operational indicators help teams notice reliability or security signals that may need follow-up.': 'تساعد المؤشرات التشغيلية الفرق على ملاحظة إشارات الموثوقية أو الأمان التي قد تحتاج إلى متابعة.',
-    },
-  };
+
+      // Landing Page - Hero & Quick Demo
+      'Neural Learning Platform · Powered by Gemini 2.5': 'منصة تعلم عصبية · مدعومة بـ Gemini 2.5',
+      'Neural Learning Platform': 'منصة التعلم العصبية',
+      'Powered by Gemini 2.5': 'مدعومة بـ Gemini 2.5',
+      '1-Click Test:': '⚡ تجربة بضغطة واحدة:',
+      '⚡ 1-Click Test:': '⚡ تجربة بضغطة واحدة:',
+      '1-Click Demo Login': 'تسجيل تجريبي بضغطة واحدة',
+      'Sign in as Demo Student': 'تسجيل الدخول كطالب تجريبي',
+      'Sign in as Demo Instructor': 'تسجيل الدخول كمعلم تجريبي',
+      'Master Ambitious Tech.': 'أتقن أحدث التقنيات البرمجية.',
+      'Master Ambitious Tech': 'أتقن أحدث التقنيات البرمجية',
+      'Accelerate With Adaptive AI Intelligence.': 'تسارع بذكاء اصطناعي تكيفي فائق.',
+      'Accelerate With': 'تسارع بـ',
+      'Adaptive AI Intelligence.': 'ذكاء اصطناعي تكيفي فائق.',
+      'Adaptive AI Intelligence': 'ذكاء اصطناعي تكيفي',
+      'Escape tutorial purgatory. NexaLearn combines production curricula with instant AST-level code synthesis, 24/7 AI tutoring companions, and dedicated workspaces tailored for students and instructors.': 'تجاوز حلقة الدروس النظرية المفرغة. تجمع NexaLearn بين مناهج الإنتاج وتحليل الكود الفوري على مستوى شجرة الصياغة (AST)، مع مرشد ذكاء اصطناعي يعمل على مدار الساعة ومساحات عمل مخصصة للطلاب والمعلمين.',
+      'Explore Courses': 'استكشف الدورات',
+      'Explore courses': 'استكشف الدورات',
+      'Student Hub': 'مركز الطلاب',
+      'Instructor Studio': 'استوديو المدرّس',
+      '50K+': '٥٠ ألف+',
+      'Active builders worldwide': 'مطور نشط حول العالم',
+      '99.8%': '٩٩٫٨٪',
+      'AST tutoring precision': 'دقة تحليل وتوجيه الكود',
+      '4.9 / 5': '٤٫٩ / ٥',
+      'Learner satisfaction': 'نسبة رضا المتعلمين',
+      '1,200+': '١٢٠٠+',
+      'Verified learning modules': 'وحدة تعليمية معتمدة',
+      'Adaptive Roadmap': 'مسار تعليمي تكيفي',
+      '+42% faster retention': '+٤٢٪ سرعة في الاستيعاب',
+      'nexalearn-ai-compiler · v2.5.0': 'مترجم NexaLearn الذكي · v2.5.0',
+      'LIVE ENGINE': 'محرك نشط',
+      'Curriculum Adapted · Diagnostic Score: 100%': 'تم تكييف المنهج · النتيجة التشخيصية: ١٠٠٪',
+      'Browser Sandbox': 'بيئة برمجية في المتصفح',
+      'Zero toolchain setup': 'بدون الحاجة لأي إعداد محلي',
+
+      // Specialized Worlds (Student vs Instructor)
+      'TWO SPECIALIZED WORLDS · ONE PLATFORM': 'بيئتان متخصصتان · منصة واحدة',
+      'Dedicated Environments Crafted For Your Role': 'بيئات عمل مخصصة صُممت بدقة لدورك',
+      'Dedicated Environments Crafted': 'بيئات مخصصة صُممت بدقة',
+      'For Your Role': 'لدورك التعليمي',
+      "Whether you're developing high-demand engineering skills or authoring and mentoring talent, NexaLearn gives you purposeful, role-specific tools.": 'سواء كنت تبني مهارات هندسية عالية الطلب أو تؤلف وتوجه المواهب البرمجية، تمنحك NexaLearn أدوات دقيقة مصممة خصيصاً لدورك.',
+      'Student Experience': 'تجربة الطالب',
+      'FOR LEARNERS': 'للمتعلمين والطلاب',
+      'Master Skills With Adaptive Intelligence': 'أتقن المهارات بذكاء اصطناعي تكيفي',
+      'Never get stuck with an AI tutor that adapts to your learning pace, analyzes your code syntax, and guides you through real project milestones.': 'لن تتعثر أبداً بفضل مرشد ذكاء اصطناعي يتكيف مع وتيرة تعلمك، ويحلل صياغة الكود البرمجي، ويرشدك خطوة بخطوة خلال مراحل المشاريع الحقيقية.',
+      'Dynamic Roadmaps that adjust in real-time based on your quiz results and coding pace.': 'مسارات تعلم ديناميكية تتكيف فورياً وفق نتائج اختباراتك وسرعة كتابتك للأكواد.',
+      'Dynamic Roadmaps': 'مسارات ديناميكية',
+      '24/7 AI Code Companion offering AST inspections, algorithmic hints, and clean patterns.': 'رفيق برمجي ذكي على مدار الساعة يوفر فحص الصياغة، تلميحات خوارزمية، وأنماط كتابة كود نظيفة.',
+      '24/7 AI Code Companion': 'رفيق كود ذكي على مدار الساعة',
+      'Browser Code Sandbox to write and test full-stack code without local installations.': 'بيئة برمجية معزولة داخل المتصفح لكتابة واختبار تطبيقات كاملة دون الحاجة لتثبيت أي برامج.',
+      'Browser Code Sandbox': 'بيئة تشغيل الأكواد في المتصفح',
+      'Interactive Quizzes & Flashcards with comprehensive explanations for every question.': 'اختبارات تفاعلية وبطاقات استذكار مع شروحات تحليلية مفصلة لكل سؤال.',
+      'Interactive Quizzes & Flashcards': 'اختبارات تفاعلية وبطاقات استذكار',
+      'Enter Student Workspace': 'الدخول لمساحة الطالب',
+      'Try Student Demo in 1 Click': '⚡ تجربة حساب الطالب بضغطة واحدة',
+      '⚡ Try Student Demo in 1 Click': '⚡ تجربة حساب الطالب بضغطة واحدة',
+      'Instructor Operations': 'عمليات وإدارة التدريس',
+      'FOR EDUCATORS & AUTHORS': 'للمعلمين والمؤلفين',
+      'Author, Mentor & Scale High-Impact Curricula': 'قم بتأليف وتوجيه مناهج عالية التأثير وتوسيع نطاقها',
+      'Equip yourself with a modern teaching studio featuring AI-assisted rubric grading, live cohort telemetry, and seamless curriculum management.': 'جهّز نفسك باستوديو تدريس حديث يضم تصحيحاً مدعوماً بالذكاء الاصطناعي وفق معايير التقييم، ومؤشرات حية لدفعات الطلاب، وإدارة سلسة للمناهج.',
+      'Visual Curriculum Builder with drag-and-drop syllabus structure and code prompts.': 'منشئ مناهج بصري مع هيكلة السيلابوس بنظام السحب والإفلات ومطالبات الأكواد البرمجية.',
+      'Visual Curriculum Builder': 'منشئ مناهج بصري تفاعلي',
+      'AI-Assisted Grading Queue reviewing submissions against rubrics with 95%+ confidence.': 'قائمة تصحيح مدعومة بالذكاء الاصطناعي لمراجعة التسليمات وفق معايير التقييم بدقة تتجاوز ٩٥٪.',
+      'AI-Assisted Grading Queue': 'قائمة تصحيح بالذكاء الاصطناعي',
+      'Live Cohort Roster & Analytics tracking student velocity, retention, and drop-off risks.': 'سجل تحليلات حي للدفعات يتابع وتيرة تقدم الطلاب، معدلات الاستبقاء، ومخاطر الانقطاع.',
+      'Live Cohort Roster & Analytics': 'سجل تحليلات الدفعات الحية',
+      'Instant Course Publishing controls with real-time catalog sync and updates.': 'أدوات نشر فوري للدورات مع مزامنة وتحديث فوري مع دليل المنصة.',
+      'Instant Course Publishing': 'نشر فوري للدورات',
+      'Enter Instructor Studio': 'الدخول لاستوديو التدريس',
+      'Try Instructor Demo in 1 Click': '⚡ تجربة حساب المدرّس بضغطة واحدة',
+      '⚡ Try Instructor Demo in 1 Click': '⚡ تجربة حساب المدرّس بضغطة واحدة',
+
+      // AI Tutor Lab Playground
+      'Live AI Tutor Sandbox': 'معمل تجربة المرشد الذكي الحي',
+      'Experience the power of our AI Tutor': 'عِش قوة وإمكانيات مرشد الذكاء الاصطناعي',
+      'Experience the power of our': 'عِش قوة وإمكانيات',
+      'AI Tutor': 'مرشد الذكاء الاصطناعي',
+      'Select any real-world technical scenario below to see how our AI Tutor breaks down concepts, generates verified code, and guides you with production best-practices.': 'اختر أي سيناريو تقني واقعي أدناه لتشاهد كيف يقوم مرشدنا الذكي بتبسيط المفاهيم، وتوليد أكواد معتمدة، وتوجيهك وفق أفضل ممارسات الإنتاج البرمجي.',
+      'Angular Signals & Reactivity': 'إشارات Angular والتفاعلية الحديثة',
+      'Synchronous state & zoneless architecture': 'حالة متزامنة وبنية خالية من Zone.js',
+      'JavaScript Lexical Closures': 'نطاقات الإغلاق في JavaScript',
+      'Memory models & functional patterns': 'نماذج الذاكرة والأنماط الوظيفية',
+      'Async Exponential Backoff': 'التراجع الأسي للعمليات غير المتزامنة',
+      'Resilient retry patterns with jitter': 'أنماط إعادة محاولة مرنة ومقاومة للأعطال',
+      'Big-O Algorithmic Tuning': 'تحسين الكفاءة الخوارزمية (Big-O)',
+      'Optimizing O(N²) down to linear O(N)': 'تقليل التعقيد من O(N²) إلى الخطي O(N)',
+      'Open Full AI Tutor Session': 'فتح جلسة كاملة مع المعلم الذكي',
+      'NexaLearn AI Engine · Gemini 2.5 Flash': 'محرك NexaLearn الذكي · Gemini 2.5 Flash',
+      'LIVE RESPONSE': 'استجابة مباشرة حية',
+      'Signals provide synchronous, fine-grained reactivity. Angular recomputes derived state only when tracked reads change, removing zone.js overhead.': 'توفر Signals تفاعلية متزامنة ودقيقة للغاية. تعيد Angular حساب الحالة المشتقة فقط عند تغير القراءات المتتبعة، مما يلغي العبء الزائد لـ zone.js.',
+      'Best practice: Keep signals synchronous and pure. Use effects only for side effects like logging or external syncing.': 'أفضل ممارسة: حافظ على أن تكون الإشارات متزامنة ونقية. استخدم effects فقط للتأثيرات الجانبية مثل السجلات أو المزامنة الخارجية.',
+      'JavaScript Closures & Lexical Scope': 'إغلاقات JavaScript والنطاق المعجمي',
+      'A closure is created when an inner function retains access to its enclosing lexical scope even after the parent function has finished executing.': 'يتم إنشاء Closure عندما تحتفظ دالة داخلية بالوصول إلى نطاقها المعجمي المحيط حتى بعد انتهاء الدالة الرئيسية من التنفيذ.',
+      'Watch out: Closures holding DOM nodes can cause memory leaks if listeners are not cleaned up on unmount.': 'انتبه: يمكن للإغلاقات التي تحتفظ بعناصر DOM أن تسبب تسرباً في الذاكرة إذا لم تتم إزالة مستمعات الأحداث عند إلغاء التركيب.',
+      '5-Minute Async Backoff Challenge': 'تحدي التراجع الأسي غير المتزامن خلال ٥ دقائق',
+      'Design an exponential backoff retry helper that retries an async task N times before throwing.': 'صمم دالة مساعدة للتراجع الأسي تعيد محاولة مهمة غير متزامنة N من المرات قبل إلقاء الخطأ.',
+      'Tip: Add random jitter to exponential backoff to prevent thundering herd problems in microservices.': 'نصيحة: أضف تأخيراً عشوائياً (jitter) للتراجع الأسي لتجنب مشكلة هجوم القطيع المتزامن (thundering herd) في الخدمات المصغرة.',
+      'Algorithmic Complexity & Optimization': 'التعقيد الخوارزمي والتحسين البرمجي',
+      'Replacing an O(N²) nested array search with a Set lookup drops time complexity to linear O(N).': 'استبدال البحث في المصفوفات المتداخلة O(N²) بالبحث عبر Set يقلل التعقيد الزمني إلى التعقيد الخطي O(N).',
+      'Rule of thumb: Sets and Maps provide O(1) average lookup times, saving seconds on large data arrays.': 'قاعدة ذهبية: توفر هياكل Sets و Maps وقتاً متوسطاً للبحث يبلغ O(1)، مما يوفر ثوانٍ ثمينة في مصفوفات البيانات الكبيرة.',
+
+      // Featured Tracks
+      'CAREER-ACCELERATING CURRICULA': 'مناهج لتسريع مسارك المهني',
+      'Featured Learning Tracks': 'المسارات التعليمية المميزة',
+      'Featured Learning': 'المسارات التعليمية',
+      'Tracks': 'المسارات',
+      'View all courses': 'عرض جميع الدورات',
+      'TOP RATED': 'الأعلى تقييماً',
+      'POPULAR': 'الأكثر طلباً',
+      'NEW': 'جديد',
+      'Angular 20 & Reactive Architecture': 'معمارية Angular 20 والبرمجة التفاعلية',
+      'Master fine-grained signals, computed state, zoneless change detection, and SSR microfrontends.': 'أتقن إشارات Signals الدقيقة، والحالة المحسوبة، واكتشاف التغييرات بدون zone، وتطبيقات الواجهات المصغرة مع SSR.',
+      'Full-Stack Node.js & Microservices': 'تطوير Node.js الشامل والخدمات المصغرة',
+      'Design distributed architectures with Docker, Redis caching, event loops, and rate limiting.': 'صمم معماريات موزعة باستخدام Docker، والتخزين المؤقت عبر Redis، وحلقة الأحداث، وتقنين الطلبات.',
+      'Enterprise AI Engineering with Gemini': 'هندسة الذكاء الاصطناعي للمؤسسات مع Gemini',
+      'Integrate Google Gemini 2.5 Flash, multi-modal LLM reasoning, function calling, and vector embeddings.': 'دمج نموذج Google Gemini 2.5 Flash، واستدلال النماذج اللغوية متعددة الوسائط، واستدعاء الدوال، والتضمينات الشعاعية.',
+      'Explore Curriculum': 'استكشف المنهج الدراسي',
+      '18 hours': '١٨ ساعة',
+      '14 hours': '١٤ ساعة',
+      '20 hours': '٢٠ ساعة',
+      '24 lessons': '٢٤ درساً',
+      '15 lessons': '١٥ درساً',
+      '18 lessons': '١٨ درساً',
+      'Advanced': 'متقدم',
+      'Intermediate': 'متوسط',
+      'Beginner': 'مبتدئ',
+
+      // Ecosystem Features
+      'A COMPLETE LEARNING ECOSYSTEM': 'منظومة تعليمية متكاملة',
+      'Everything You Need to Level Up': 'كل ما تحتاجه للارتقاء بمستواك البرمجي',
+      'Everything You Need to': 'كل ما تحتاجه لـ',
+      'Level Up': 'الارتقاء بمستواك',
+      'Designed to take you from foundational understanding to production fluency through guided practice and feedback.': 'مصممة لتنقلك من الفهم التأسيسي إلى الطلاقة في بيئات الإنتاج من خلال التطبيق الموجه والتغذية الراجعة المستمرة.',
+      'Adaptive Learning Paths': 'مسارات تعلم تكيفية',
+      'Personalized roadmaps that evolve with your goals, knowledge gaps, and daily momentum.': 'خرائط طريق مخصصة تتطور وفق أهدافك، الفجوات المعرفية لديك، واستمرارية تعلمك اليومي.',
+      '24/7 AI-Powered Tutoring': 'إرشاد ذكي على مدار الساعة',
+      'Instant AST-level code diagnostics, algorithmic hints, and step-by-step conceptual breakdowns.': 'تشخيص فوري للأكواد على مستوى AST، تلميحات خوارزمية، وشروحات تدريجية للمفاهيم المعقدة.',
+      'Interactive Sandbox & Code': 'مختبر كود تفاعلي متكامل',
+      'Write, debug, and run code directly in your browser with real-time feedback and tests.': 'اكتب ونقح وشغّل الأكواد البرمجية مباشرة في متصفحك مع تقييم فوري واختبارات آلية.',
+      'Instructor Authoring Suite': 'حزمة أدوات تأليف المناهج للمدربين',
+      'Visual curriculum builder to craft modular lessons, assign hands-on challenges, and publish.': 'منشئ مناهج بصري لتصميم دروس نموذجية، وتعيين تحديات تطبيقية، والنشر بضغطة زر.',
+      'AI Rubric Submissions & Grading': 'تصحيح التسليمات بمعايير ذكية',
+      'Automated grading assistance with confidence scores and customizable mentor feedback.': 'مساعد تصحيح آلي مدعوم بنسب ثقة وتغذية راجعة قابلة للتخصيص من قبل المعلم.',
+      'Cohort Telemetry & Insights': 'تحليلات ومؤشرات أداء الدفعات',
+      'Live student velocity tracking, completion forecasts, and cohort retention metrics.': 'تتبع حي لسرعة الطلاب، توقعات نسب الإكمال، ومقاييس استبقاء المتعلمين.',
+
+      // Testimonials
+      'TRUSTED BY LEARNERS AND EDUCATORS': 'موثوق من الطلاب والمعلمين الرائدين',
+      'Proven Impact Across the Entire Journey': 'أثر مثبت عبر مسيرة التعلم الكاملة',
+      'Proven Impact Across the': 'أثر مثبت عبر',
+      'Entire Journey': 'مسيرة التعلم الكاملة',
+      '"The AI tutor felt like sitting right next to a senior staff engineer. Whenever I got stuck on async concepts, it broke the execution down step-by-step instead of just handing me the answers."': '"شعرت مع المرشد الذكي وكأنني أجلس بجوار مهندس برمجيات أول. كلما واجهت صعوبة في المفاهيم غير المتزامنة، قام بتحليل خطوات التنفيذ بدقة بدلاً من مجرد إعطائي الإجابة الجاهزة."',
+      'The AI tutor felt like sitting right next to a senior staff engineer. Whenever I got stuck on async concepts, it broke the execution down step-by-step instead of just handing me the answers.': 'شعرت مع المرشد الذكي وكأنني أجلس بجوار مهندس برمجيات أول. كلما واجهت صعوبة في المفاهيم غير المتزامنة، قام بتحليل خطوات التنفيذ بدقة بدلاً من مجرد إعطائي الإجابة الجاهزة.',
+      'Alex Rivera': 'أليكس ريفيرا',
+      'Full-Stack Fellow · Now at Stripe': 'مهندس برمجيات شامل · يعمل حالياً لدى Stripe',
+      '"As an educator, NexaLearn\'s instructor workspace cut my assignment turnaround time by 70%. The AI grading suggestions are remarkably accurate, allowing me to focus on high-touch mentorship."': '"كمعلمة، قلصت مساحة عمل المدرب في NexaLearn وقت مراجعة الواجبات بنسبة ٧٠٪. اقتراحات التصحيح بالذكاء الاصطناعي دقيقة للغاية، مما أتاح لي التركيز على التوجيه المباشر للطلاب."',
+      "As an educator, NexaLearn's instructor workspace cut my assignment turnaround time by 70%. The AI grading suggestions are remarkably accurate, allowing me to focus on high-touch mentorship.": 'كمعلمة، قلصت مساحة عمل المدرب في NexaLearn وقت مراجعة الواجبات بنسبة ٧٠٪. اقتراحات التصحيح بالذكاء الاصطناعي دقيقة للغاية، مما أتاح لي التركيز على التوجيه المباشر للطلاب.',
+      'Dr. Elena Vance': 'د. إلينا فانس',
+      'Lead AI Educator · 4,200+ Students Mentored': 'كبيرة مدربي الذكاء الاصطناعي · أشرفت على تدريب أكثر من ٤٢٠٠ طالب',
+
+      // FAQ Accordion
+      'CLEAR ANSWERS TO COMMON QUESTIONS': 'إجابات واضحة للأسئلة الشائعة',
+      'Frequently Asked Questions': 'الأسئلة الشائعة',
+      'Frequently Asked': 'الأسئلة الشائعة',
+      'Everything you need to know about getting started, our AI companion, and course authoring.': 'كل ما تحتاج معرفته حول البداية، رفيق الذكاء الاصطناعي، وتأليف الدورات التعليمية.',
+      'How does the AI Tutor differ from standard chatbot responses?': 'كيف يختلف مرشد الذكاء الاصطناعي عن روبوتات الدردشة التقليدية؟',
+      'Unlike generic LLMs, NexaLearn’s AI Tutor is context-aware: it understands your exact course progress, performs AST (Abstract Syntax Tree) code inspections, and guides you through socratic hints and diagnostics rather than dumping raw answers.': 'على عكس نماذج الذكاء الاصطناعي العامة، يدرك مرشد NexaLearn سياقك التعليمي بدقة: فهو يستوعب تقدمك في الدورة، ويفحص كودك على مستوى شجرة الصياغة (AST)، ويرشدك بأسلوب سقراطي وتلميحات تشخيصية بدلاً من الاكتفاء بإلقاء الإجابات الجاهزة.',
+      'Unlike generic LLMs, NexaLearn\'s AI Tutor is context-aware: it understands your exact course progress, performs AST (Abstract Syntax Tree) code inspections, and guides you through socratic hints and diagnostics rather than dumping raw answers.': 'على عكس نماذج الذكاء الاصطناعي العامة، يدرك مرشد NexaLearn سياقك التعليمي بدقة: فهو يستوعب تقدمك في الدورة، ويفحص كودك على مستوى شجرة الصياغة (AST)، ويرشدك بأسلوب سقراطي وتلميحات تشخيصية بدلاً من الاكتفاء بإلقاء الإجابات الجاهزة.',
+      'Can I jump between the Student Learning Hub and Instructor Studio?': 'هل يمكنني التبديل بين مركز تعلم الطلاب واستوديو المدرب؟',
+      'Yes! NexaLearn supports specialized roles. Students get adaptive roadmaps and instant code sandboxes, while instructors get an AI-assisted curriculum builder, automated rubric grading, and cohort telemetry. You can test both with 1-click in the top bar.': 'نعم! تدعم NexaLearn أدواراً متخصصة. يحصل الطلاب على مسارات تكيفية وبيئات كود معزولة، بينما يحصل المعلمون على منشئ مناهج ذكي وتصحيح آلي بمعايير تقييم وتحليلات للدفعة. يمكنك تجربة الدورين بضغطة زر واحدة في الشريط العلوي.',
+      'Are the practice challenges and projects runnable in the browser?': 'هل التحديات والمشاريع التطبيقية قابلة للتشغيل في المتصفح؟',
+      'Absolutely. Every lesson includes interactive web sandboxes and code playgrounds. You don’t need to configure local toolchains, Docker, or compilers to build production-grade projects.': 'بالتأكيد. يتضمن كل درس بيئات برمجية ويب تفاعلية ومختبرات كود. لن تحتاج إلى إعداد بيئات عمل محلية أو Docker أو برامج ترجمة لبناء مشاريع تحاكي بيئات العمل الحقيقية.',
+      'Absolutely. Every lesson includes interactive web sandboxes and code playgrounds. You don\'t need to configure local toolchains, Docker, or compilers to build production-grade projects.': 'بالتأكيد. يتضمن كل درس بيئات برمجية ويب تفاعلية ومختبرات كود. لن تحتاج إلى إعداد بيئات عمل محلية أو Docker أو برامج ترجمة لبناء مشاريع تحاكي بيئات العمل الحقيقية.',
+      'What AI model powers NexaLearn’s intelligence engine?': 'ما هو نموذج الذكاء الاصطناعي الذي يدير محرك NexaLearn؟',
+      'What AI model powers NexaLearn\'s intelligence engine?': 'ما هو نموذج الذكاء الاصطناعي الذي يدير محرك NexaLearn؟',
+      'NexaLearn is backed by Google Gemini 2.5 Flash, providing lightning-fast multimodal reasoning, code synthesis, and realtime explanation breakdowns with sub-second latency.': 'تعتمد NexaLearn على نموذج Google Gemini 2.5 Flash، مما يوفر استدلالاً سريعاً متعدد الوسائط، وتوليداً للأكواد، وشروحات تفصيلية في أجزاء من الثانية.',
+      'Is there a free tier to test the platform before committing?': 'هل تتوفر باقة مجانية لتجربة المنصة قبل الاشتراك؟',
+      'Yes, full free access is provided to sample modules, the interactive AI Tutor playground, and the course catalog. Click "Student Demo" or "Instructor Demo" to experience the platform instantly.': 'نعم، يتوفر وصول مجاني كامل لوحدات نموذجية، ولمعمل تجربة المعلم الذكي التفاعلي، ولدليل الدورات. اضغط على "تجربة الطالب" أو "تجربة المدرّس" لتجربة المنصة فورياً.',
+
+      // Closing CTA Banner
+      'Start mastering technology with AI guidance today': 'ابدأ في إتقان التكنولوجيا بإرشاد الذكاء الاصطناعي اليوم',
+      'AI guidance': 'إرشاد الذكاء الاصطناعي',
+      'Join thousands of students building real skills, or empower your students with our advanced instructor workspace.': 'انضم إلى آلاف الطلاب الذين يبنون مهارات حقيقية، أو مكّن طلابك باستخدام مساحة عمل المدرب المتقدمة لدينا.',
+      'Create Free Account': 'إنشاء حساب مجاني',
+      'Browse All Courses': 'تصفح جميع الدورات',
+
+      // Navbar & Navigation
+      'Learning Paths': 'مسارات التعلم',
+      'AI Studio': 'استوديو الذكاء الاصطناعي',
+      'About Platform': 'عن المنصة',
+      'Instructor Hub': 'مركز المدرّس',
+      'AI Tutor Lab': 'معمل المعلم الذكي',
+      'Quiz Engine': 'محرك الاختبارات الذكي',
+      'Code Explainer': 'مفسر ومحلل الأكواد',
+      'Interactive coding tutor with contextual hints': 'معلم برمجة تفاعلي يقدم تلميحات سياقية ذكية',
+      'Auto-generate quizzes from any concept': 'توليد اختبارات تلقائية من أي مفهوم برمجياً',
+      'Instant line-by-line reasoning and reviews': 'تحليل وشرح فوري سطر بسطر ومراجعة الكود',
+      'Quick Demo:': 'تجربة سريعة:',
+      'Student Demo': 'تجربة الطالب',
+      'Teacher Demo': 'تجربة المدرّس',
+      'Go to Dashboard': 'الانتقال للوحة التحكم',
+      'My Learning': 'تعلمي',
+      'Sign Out': 'تسجيل الخروج',
+      'Signing out…': 'جاري تسجيل الخروج…',
+      'Sign In': 'تسجيل الدخول',
+      'Get Started': 'ابدأ الآن',
+      'Dashboard': 'لوحة التحكم',
+      'My Enrolled Courses': 'دوراتي المسجل بها',
+      'Learning Roadmap': 'خريطة طريق التعلم',
+      'Assignments': 'الواجبات والتكليفات',
+      'Progress Analytics': 'تحليلات التقدم',
+      'Curriculum Builder': 'منشئ المناهج',
+      'Admin Governance': 'إدارة وحوكمة المنصة',
+      'AI Tutor Companion': 'رفيق المعلم الذكي',
+      'Switch language': 'تبديل اللغة',
+      'Switch language to English': 'تبديل اللغة إلى الإنجليزية',
+      'Switch language to العربية': 'تبديل اللغة إلى العربية',
+
+      // Footer
+      'Next-generation adaptive learning platform powered by deep artificial intelligence, interactive code sandboxes, and personalized mastery roadmaps.': 'منصة تعلم تكيفية من الجيل القادم مدعومة بذكاء اصطناعي عميق، ومختبرات كود تفاعلية، وخرائط طريق مخصصة لتحقيق الإتقان.',
+      'Product': 'المنتج',
+      'Roles & Access': 'الأدوار والوصول',
+      'Resources': 'المصادر والتعلم',
+      'Legal & Trust': 'الأمان والخصوصية',
+      'Privacy Policy': 'سياسة الخصوصية',
+      'Terms of Service': 'شروط الخدمة',
+      'Security Whitepaper': 'وثيقة الأمان والامتثال',
+      'Compliance': 'معايير الامتثال',
+      'API Status': 'حالة واجهة البرمجة',
+      'Documentation': 'التوثيق الفني',
+      'Community Forum': 'منتدى المجتمع البرمجي',
+      'Research Papers': 'الأوراق البحثية',
+      'System Status': 'حالة النظام التشغيلية',
+      'Operational': 'تشغيلي بالكامل',
+      'Operational 100%': 'تشغيلي ١٠٠٪',
+      'Gemini 2.5 Engine': 'محرك Gemini 2.5',
+      'Gemini 2.5 Engine: Operational 100%': 'محرك Gemini 2.5: تشغيلي بنسبة ١٠٠٪',
+      "All rights reserved. Built with precision for tomorrow's technology leaders.": 'جميع الحقوق محفوظة. صُنعت بدقة لقادة التكنولوجيا المستقبليين.',
+      'All rights reserved. Built with precision for tomorrow’s technology leaders.': 'جميع الحقوق محفوظة. صُنعت بدقة لقادة التكنولوجيا المستقبليين.',
+      'Gemini 2.5 Active': 'Gemini 2.5 نشط',
+      'Search courses, lessons, AI tools...': 'ابحث عن الدورات والدروس وأدوات الذكاء الاصطناعي...',
+      'Global search': 'البحث الشامل',
+      'AI Model Active: Google Gemini 2.5 Flash': 'نموذج الذكاء الاصطناعي نشط: Google Gemini 2.5 Flash',
+      'Open AI Studio': 'فتح استوديو الذكاء الاصطناعي',
+      'Draft syllabus modules, generate quizzes, or review code with Gemini.': 'صمم وحدات المنهج، وأنشئ الاختبارات، أو راجع الأكواد باستخدام Gemini.',
+      'Open Curriculum Builder': 'فتح منشئ المناهج',
+      'AI Platform Tools': 'أدوات منصة الذكاء الاصطناعي',
+    }
+  );
 
   private readonly reverseTranslations = Object.entries(this.translations).reduce<Record<string, string>>(
     (reverse, [english, arabic]) => {
@@ -926,6 +1178,8 @@ export class TranslationService {
     return map[key] ?? key;
   }
 
+  private isTranslating = false;
+
   applyTranslations(): void {
     if (typeof document === 'undefined') {
       return;
@@ -936,15 +1190,41 @@ export class TranslationService {
       return;
     }
 
+    const isRtl = this.currentLocale === 'ar';
     document.documentElement.lang = this.currentLocale;
-    document.documentElement.dir = this.currentLocale === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+    body.dir = isRtl ? 'rtl' : 'ltr';
+
+    document.documentElement.classList.toggle('rtl-mode', isRtl);
+    document.documentElement.classList.toggle('ltr-mode', !isRtl);
+    body.classList.toggle('rtl-mode', isRtl);
+    body.classList.toggle('ltr-mode', !isRtl);
+
     this.translateTree(body);
 
     if (!this.observer && typeof MutationObserver !== 'undefined') {
       this.observer = new MutationObserver((records) => {
+        if (this.isTranslating) {
+          return;
+        }
         for (const record of records) {
           if (record.type === 'characterData' && record.target instanceof Text) {
-            this.translateTextNode(record.target);
+            if (this.currentLocale === 'ar') {
+              const current = record.target.textContent ?? '';
+              const original = this.originalText.get(record.target);
+              const translated = original ? this.translationFor(original, 'ar') : undefined;
+              if (current !== translated) {
+                if (!/[\u0600-\u06FF]/.test(current)) {
+                  this.originalText.set(record.target, current);
+                }
+                this.translateTextNode(record.target);
+              }
+            } else {
+              const current = record.target.textContent ?? '';
+              if (!/[\u0600-\u06FF]/.test(current)) {
+                this.originalText.set(record.target, current);
+              }
+            }
           }
           for (const addedNode of record.addedNodes) {
             if (addedNode instanceof Element) {
@@ -988,23 +1268,59 @@ export class TranslationService {
 
   private translateTextNode(node: Text): void {
     const parent = node.parentElement;
-    if (!parent || parent.closest('script, style, code, pre, .material-symbols-outlined')) {
+    if (!parent || parent.closest('script, style, code, pre, .material-symbols-outlined, [dir="ltr"]')) {
       return;
     }
 
-    const raw = node.textContent ?? '';
-    const previousOriginal = this.originalText.get(node);
-    const previousTranslation = previousOriginal
-      ? this.translationFor(previousOriginal)
-      : undefined;
-    const original = previousOriginal && (raw === previousOriginal || raw === previousTranslation)
-      ? previousOriginal
-      : raw;
-    this.originalText.set(node, original);
+    const currentText = node.textContent ?? '';
 
-    const translated = this.translationFor(original);
-    if (translated !== undefined && translated !== raw) {
-      node.textContent = translated;
+    if (this.currentLocale === 'en') {
+      let originalEn = this.originalText.get(node);
+      if (originalEn && /[\u0600-\u06FF]/.test(originalEn)) {
+        originalEn = this.translationFor(originalEn, 'en') ?? originalEn;
+        this.originalText.set(node, originalEn);
+      }
+
+      if (originalEn !== undefined) {
+        if (node.textContent !== originalEn) {
+          this.isTranslating = true;
+          try {
+            node.textContent = originalEn;
+          } finally {
+            this.isTranslating = false;
+          }
+        }
+      } else if (/[\u0600-\u06FF]/.test(currentText)) {
+        const backToEn = this.translationFor(currentText, 'en');
+        if (backToEn && node.textContent !== backToEn) {
+          this.isTranslating = true;
+          try {
+            node.textContent = backToEn;
+          } finally {
+            this.isTranslating = false;
+          }
+          this.originalText.set(node, backToEn);
+        }
+      } else {
+        this.originalText.set(node, currentText);
+      }
+      return;
+    }
+
+    // Locale is 'ar'
+    if (!this.originalText.has(node) && !/[\u0600-\u06FF]/.test(currentText)) {
+      this.originalText.set(node, currentText);
+    }
+
+    const source = this.originalText.get(node) ?? currentText;
+    const arabic = this.translationFor(source, 'ar');
+    if (arabic !== undefined && node.textContent !== arabic) {
+      this.isTranslating = true;
+      try {
+        node.textContent = arabic;
+      } finally {
+        this.isTranslating = false;
+      }
     }
   }
 
@@ -1015,8 +1331,8 @@ export class TranslationService {
   }
 
   private translateAttribute(element: Element, attribute: string): void {
-    const raw = element.getAttribute(attribute);
-    if (raw === null) {
+    const currentVal = element.getAttribute(attribute);
+    if (currentVal === null) {
       return;
     }
 
@@ -1025,28 +1341,64 @@ export class TranslationService {
       originals = new Map<string, string>();
       this.originalAttributes.set(element, originals);
     }
-    const previousOriginal = originals.get(attribute);
-    const previousTranslation = previousOriginal
-      ? this.translationFor(previousOriginal)
-      : undefined;
-    const original = previousOriginal && (raw === previousOriginal || raw === previousTranslation)
-      ? previousOriginal
-      : raw;
-    originals.set(attribute, original);
 
-    const translated = this.translationFor(original);
-    if (translated !== undefined && translated !== raw) {
-      element.setAttribute(attribute, translated);
+    if (this.currentLocale === 'en') {
+      let originalEn = originals.get(attribute);
+      if (originalEn && /[\u0600-\u06FF]/.test(originalEn)) {
+        originalEn = this.translationFor(originalEn, 'en') ?? originalEn;
+        originals.set(attribute, originalEn);
+      }
+
+      if (originalEn !== undefined) {
+        if (currentVal !== originalEn) {
+          this.isTranslating = true;
+          try {
+            element.setAttribute(attribute, originalEn);
+          } finally {
+            this.isTranslating = false;
+          }
+        }
+      } else if (/[\u0600-\u06FF]/.test(currentVal)) {
+        const backToEn = this.translationFor(currentVal, 'en');
+        if (backToEn && currentVal !== backToEn) {
+          this.isTranslating = true;
+          try {
+            element.setAttribute(attribute, backToEn);
+          } finally {
+            this.isTranslating = false;
+          }
+          originals.set(attribute, backToEn);
+        }
+      } else {
+        originals.set(attribute, currentVal);
+      }
+      return;
+    }
+
+    // Locale is 'ar'
+    if (!originals.has(attribute) && !/[\u0600-\u06FF]/.test(currentVal)) {
+      originals.set(attribute, currentVal);
+    }
+
+    const source = originals.get(attribute) ?? currentVal;
+    const arabic = this.translationFor(source, 'ar');
+    if (arabic !== undefined && currentVal !== arabic) {
+      this.isTranslating = true;
+      try {
+        element.setAttribute(attribute, arabic);
+      } finally {
+        this.isTranslating = false;
+      }
     }
   }
 
-  private translationFor(original: string): string | undefined {
-    const map = this.currentLocale === 'ar' ? this.translations : this.reverseTranslations;
+  private translationFor(original: string, lang: LanguageCode = this.currentLocale): string | undefined {
+    const map = lang === 'ar' ? this.translations : this.reverseTranslations;
     let translated = original;
     let changed = false;
     const entries = Object.entries(map).sort(([left], [right]) => right.length - left.length);
     for (const [source, target] of entries) {
-      if (/^[A-Za-z]+$/.test(source)) {
+      if (/^[A-Za-z0-9_-]+$/.test(source)) {
         const escapedSource = source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const wordPattern = new RegExp(`\\b${escapedSource}\\b`, 'g');
         if (wordPattern.test(translated)) {

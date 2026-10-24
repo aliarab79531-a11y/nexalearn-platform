@@ -135,6 +135,40 @@ export class PlatformPageComponent implements OnInit {
     },
   ];
 
+  activeFaqIndex: number | null = 0;
+
+  readonly homeFaqs = [
+    {
+      q: 'How does the AI Tutor differ from standard chatbot responses?',
+      a: 'Unlike generic LLMs, NexaLearn’s AI Tutor is context-aware: it understands your exact course progress, performs AST (Abstract Syntax Tree) code inspections, and guides you through socratic hints and diagnostics rather than dumping raw answers.',
+      icon: 'psychology'
+    },
+    {
+      q: 'Can I jump between the Student Learning Hub and Instructor Studio?',
+      a: 'Yes! NexaLearn supports specialized roles. Students get adaptive roadmaps and instant code sandboxes, while instructors get an AI-assisted curriculum builder, automated rubric grading, and cohort telemetry. You can test both with 1-click in the top bar.',
+      icon: 'swap_horiz'
+    },
+    {
+      q: 'Are the practice challenges and projects runnable in the browser?',
+      a: 'Absolutely. Every lesson includes interactive web sandboxes and code playgrounds. You don’t need to configure local toolchains, Docker, or compilers to build production-grade projects.',
+      icon: 'terminal'
+    },
+    {
+      q: 'What AI model powers NexaLearn’s intelligence engine?',
+      a: 'NexaLearn is backed by Google Gemini 2.5 Flash, providing lightning-fast multimodal reasoning, code synthesis, and realtime explanation breakdowns with sub-second latency.',
+      icon: 'bolt'
+    },
+    {
+      q: 'Is there a free tier to test the platform before committing?',
+      a: 'Yes, full free access is provided to sample modules, the interactive AI Tutor playground, and the course catalog. Click "Student Demo" or "Instructor Demo" to experience the platform instantly.',
+      icon: 'verified'
+    }
+  ];
+
+  toggleFaq(index: number): void {
+    this.activeFaqIndex = this.activeFaqIndex === index ? null : index;
+  }
+
   selectHomeTutorTopic(topic: 'signals' | 'closure' | 'challenge' | 'bigo'): void {
     this.homeInteractiveTutorTopic = topic;
   }

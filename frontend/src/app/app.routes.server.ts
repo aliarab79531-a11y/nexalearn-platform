@@ -1,10 +1,14 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
-  { path: 'course/:id', renderMode: RenderMode.Server },
-  { path: 'learning/:id', renderMode: RenderMode.Server },
+  { path: '', renderMode: RenderMode.Prerender },
+  { path: 'home', renderMode: RenderMode.Prerender },
+  { path: 'about', renderMode: RenderMode.Prerender },
+  { path: 'auth/login', renderMode: RenderMode.Prerender },
+  { path: 'auth/register', renderMode: RenderMode.Prerender },
+  { path: 'auth/logout', renderMode: RenderMode.Prerender },
   {
     path: '**',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   }
 ];

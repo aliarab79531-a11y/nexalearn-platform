@@ -235,18 +235,48 @@ describe('App', () => {
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
   });
 
-  it('should apply and persist Arabic right-to-left language settings', () => {
+  it('should apply and persist Arabic right-to-left language settings and translate DOM elements', async () => {
+    const fixture = TestBed.createComponent(App);
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
     const translation = TestBed.inject(TranslationService);
 
-    translation.setLanguage('ar');
-    expect(document.documentElement.lang).toBe('ar');
-    expect(document.documentElement.dir).toBe('rtl');
-    expect(localStorage.getItem('nexalearn-language')).toBe('ar');
-    expect(translation.translate('Sign in')).toBe('تسجيل الدخول');
-
+    // Initial state: English LTR
     translation.setLanguage('en');
+    fixture.detectChanges();
     expect(document.documentElement.lang).toBe('en');
     expect(document.documentElement.dir).toBe('ltr');
+    expect(document.body.dir).toBe('ltr');
+    expect(fixture.nativeElement.textContent).toContain('Master Ambitious Tech.');
+
+    // Switch to Arabic RTL
+    translation.setLanguage('ar');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(document.documentElement.lang).toBe('ar');
+    expect(document.documentElement.dir).toBe('rtl');
+    expect(document.body.dir).toBe('rtl');
+    expect(document.documentElement.classList.contains('rtl-mode')).toBeTrue();
+    expect(localStorage.getItem('nexalearn-language')).toBe('ar');
+    expect(fixture.nativeElement.textContent).toContain('أتقن أحدث التقنيات البرمجية.');
+    expect(fixture.nativeElement.textContent).toContain('استكشف الدورات');
+
+    // Switch back to English LTR
+    translation.setLanguage('en');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(document.documentElement.lang).toBe('en');
+    expect(document.documentElement.dir).toBe('ltr');
+    expect(document.body.dir).toBe('ltr');
+    expect(document.documentElement.classList.contains('ltr-mode')).toBeTrue();
+    expect(localStorage.getItem('nexalearn-language')).toBe('en');
+    expect(fixture.nativeElement.textContent).toContain('Master Ambitious Tech.');
+    expect(fixture.nativeElement.textContent).toContain('Explore Courses');
   });
 
   it('should support student interactive actions: AI tutor, lesson runner, assignments, and roadmap', async () => {

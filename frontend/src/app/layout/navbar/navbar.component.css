@@ -917,3 +917,23 @@ html[dir="rtl"] .user-dropdown {
   right: auto;
   left: 0;
 }
+
+html[dir="rtl"] .ai-dropdown-item {
+  text-align: right;
+}
+
+html[dir="rtl"] .user-dropdown-nav a {
+  text-align: right;
+}
+
+html[dir="rtl"] .dropdown-signout-btn {
+  text-align: right;
+}
+
+html[dir="rtl"] .signup-button .arrow {
+  transform: scaleX(-1);
+}
+
+html[dir="rtl"] .signup-button:hover .arrow {
+  transform: scaleX(-1) translateX(3px);
+}
