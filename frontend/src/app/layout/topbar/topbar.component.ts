@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, output, HostListener } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
@@ -22,6 +22,15 @@ export class TopbarComponent {
 
   searchQuery = '';
   userMenuOpen = false;
+
+  @HostListener('window:keydown', ['$event'])
+  handleGlobalShortcut(event: KeyboardEvent): void {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      const input = document.querySelector<HTMLInputElement>('.topbar-search input');
+      input?.focus();
+    }
+  }
 
   get currentLanguageLabel(): string {
     return this.translation.currentLanguage === 'en' ? 'العربية' : 'English';

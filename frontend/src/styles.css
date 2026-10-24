@@ -464,8 +464,8 @@ input[type="reset"],
   --button-border-start: rgba(31, 94, 255, 0.42);
   --button-border-end: rgba(124, 77, 255, 0.9);
   --button-glow: rgba(124, 77, 255, 0.18);
-  border-width: 1px !important;
-  border-style: solid !important;
+  border-width: 1px;
+  border-style: solid;
   border-color: var(--button-border-start);
   transition: border-color 260ms ease, box-shadow 260ms ease, background-color 260ms ease;
 }
@@ -843,13 +843,19 @@ input[type="reset"]:focus-visible,
 
 .hero-copy h1 {
   margin: 18px 0 16px;
-  font: 800 clamp(3.1rem, 5vw, 5rem) / 1.02 'Manrope', sans-serif;
-  letter-spacing: -0.06em;
+  font-family: 'Plus Jakarta Sans', 'Manrope', sans-serif;
+  font-weight: 850;
+  font-size: clamp(3.2rem, 5.5vw, 5.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+  color: #0f172a;
 }
 
 .hero-copy h1 span {
   display: block;
-  color: var(--primary);
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-copy p {

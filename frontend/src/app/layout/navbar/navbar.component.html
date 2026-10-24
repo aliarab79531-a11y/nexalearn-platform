@@ -1,13 +1,13 @@
-<header class="site-header">
+<header class="site-header" (window:keydown.escape)="closeMobileMenu(); closeAllDropdowns()">
   <div class="navbar-shell">
     <!-- Brand Logo -->
-    <a class="brand" routerLink="/" (click)="closeMobileMenu()" aria-label="NexaLearn AI Home">
+    <a class="brand" routerLink="/" (click)="closeMobileMenu(); closeAllDropdowns()" aria-label="NexaLearn AI Home">
       <span class="brand-mark" aria-hidden="true">
         <span class="material-symbols-outlined">auto_awesome</span>
       </span>
       <span class="brand-copy">
-        <strong>NexaLearn</strong>
-        <span class="brand-subtitle">AI PLATFORM</span>
+        <strong class="brand-title">NexaLearn</strong>
+        <span class="brand-subtitle">AI ECOSYSTEM</span>
       </span>
     </a>
 
@@ -19,7 +19,6 @@
       aria-controls="public-navigation"
       [attr.aria-label]="mobileMenuOpen ? 'Close menu' : 'Open menu'"
       (click)="toggleMobileMenu()"
-      (window:keydown.escape)="closeMobileMenu()"
     >
       <span class="material-symbols-outlined" aria-hidden="true">
         {{ mobileMenuOpen ? 'close' : 'menu' }}
@@ -30,19 +29,82 @@
     <div class="navbar-panel" [class.menu-open]="mobileMenuOpen" id="public-navigation">
       <nav class="desktop-nav" aria-label="Main navigation">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMobileMenu()">
+          <span class="material-symbols-outlined nav-item-icon">home</span>
           <span>Home</span>
         </a>
         <a routerLink="/courses" routerLinkActive="active" (click)="closeMobileMenu()">
+          <span class="material-symbols-outlined nav-item-icon">auto_stories</span>
           <span>Courses</span>
         </a>
         <a routerLink="/learning-paths" routerLinkActive="active" (click)="closeMobileMenu()">
+          <span class="material-symbols-outlined nav-item-icon">alt_route</span>
           <span>Learning Paths</span>
         </a>
-        <a routerLink="/ai-tutor" routerLinkActive="active" (click)="closeMobileMenu()" class="nav-ai-link">
-          <span>AI Tutor</span>
-          <span class="nav-ai-pill">AI</span>
-        </a>
+
+        <!-- AI Studio Mega Dropdown -->
+        <div class="nav-dropdown-wrapper" (mouseleave)="closeAiDropdown()">
+          <button
+            type="button"
+            class="nav-dropdown-trigger nav-ai-link"
+            [class.active]="aiDropdownOpen"
+            (click)="toggleAiDropdown($event)"
+            [attr.aria-expanded]="aiDropdownOpen"
+            aria-haspopup="true"
+          >
+            <span class="material-symbols-outlined nav-item-icon ai-sparkle">psychology</span>
+            <span>AI Studio</span>
+            <span class="nav-ai-pill">SMART</span>
+            <span class="material-symbols-outlined dropdown-chevron">expand_more</span>
+          </button>
+
+          @if (aiDropdownOpen) {
+            <div class="nav-dropdown-menu ai-dropdown" (click)="$event.stopPropagation()">
+              <div class="dropdown-category-title">
+                <span class="material-symbols-outlined">smart_toy</span>
+                <span>NEURAL AI SUITE (GEMINI 2.5)</span>
+              </div>
+              <a routerLink="/ai-tutor" class="ai-dropdown-item" (click)="closeMobileMenu(); closeAiDropdown()">
+                <div class="ai-item-icon tutor-tone">
+                  <span class="material-symbols-outlined">psychology</span>
+                </div>
+                <div class="ai-item-copy">
+                  <div class="ai-item-head">
+                    <strong>AI Tutor Companion</strong>
+                    <span class="badge-smart">Interactive</span>
+                  </div>
+                  <small>Personalized 24/7 adaptive tutoring with AST code insight</small>
+                </div>
+              </a>
+              <a routerLink="/ai/quiz-generator" class="ai-dropdown-item" (click)="closeMobileMenu(); closeAiDropdown()">
+                <div class="ai-item-icon quiz-tone">
+                  <span class="material-symbols-outlined">quiz</span>
+                </div>
+                <div class="ai-item-copy">
+                  <div class="ai-item-head">
+                    <strong>AI Quiz Generator</strong>
+                    <span class="badge-smart">Adaptive</span>
+                  </div>
+                  <small>Instant custom assessments with comprehensive explanations</small>
+                </div>
+              </a>
+              <a routerLink="/ai/code-explainer" class="ai-dropdown-item" (click)="closeMobileMenu(); closeAiDropdown()">
+                <div class="ai-item-icon code-tone">
+                  <span class="material-symbols-outlined">terminal</span>
+                </div>
+                <div class="ai-item-copy">
+                  <div class="ai-item-head">
+                    <strong>AI Code Explainer</strong>
+                    <span class="badge-smart">Diagnostics</span>
+                  </div>
+                  <small>Deep AST analysis, algorithmic optimization & debugging</small>
+                </div>
+              </a>
+            </div>
+          }
+        </div>
+
         <a routerLink="/about" routerLinkActive="active" (click)="closeMobileMenu()">
+          <span class="material-symbols-outlined nav-item-icon">info</span>
           <span>About</span>
         </a>
       </nav>
@@ -64,7 +126,7 @@
           class="portal-chip teacher-chip"
           routerLinkActive="active-chip"
           (click)="closeMobileMenu()"
-          title="Instructor Teaching Console & Grading Queue"
+          title="Instructor Teaching Console & Course Builder"
         >
           <span class="material-symbols-outlined portal-icon">cast_for_education</span>
           <span>Instructor Hub</span>
@@ -72,6 +134,33 @@
       </div>
 
       <div class="nav-actions">
+        <!-- 1-Click Fast Demo Pill (Guest state) -->
+        @if (!auth.currentAccount()) {
+          <div class="demo-pills-wrap" title="Test drive the platform in 1 click">
+            <span class="demo-label">1-Click Test:</span>
+            <button
+              type="button"
+              class="demo-chip demo-student"
+              [disabled]="authPending"
+              (click)="quickLogin('student')"
+              title="Instant Demo Student Login"
+            >
+              <span class="material-symbols-outlined">school</span>
+              <span>Student</span>
+            </button>
+            <button
+              type="button"
+              class="demo-chip demo-teacher"
+              [disabled]="authPending"
+              (click)="quickLogin('teacher')"
+              title="Instant Demo Instructor Login"
+            >
+              <span class="material-symbols-outlined">cast_for_education</span>
+              <span>Instructor</span>
+            </button>
+          </div>
+        }
+
         <!-- Language Switcher -->
         <button
           class="language-button"
@@ -85,28 +174,112 @@
         </button>
 
         @if (auth.currentAccount(); as account) {
-          <!-- Authenticated User State -->
-          <a class="workspace-btn" [class.teacher-mode]="isTeacher" [class.student-mode]="isStudent" [routerLink]="accountHome" (click)="closeMobileMenu()">
-            <span class="account-avatar" aria-hidden="true">{{ accountInitials }}</span>
-            <span class="account-meta">
-              <strong class="account-name">{{ account.name }}</strong>
-              <small class="account-role">{{ isTeacher ? '👨‍🏫 Instructor' : isStudent ? '🎓 Student' : accountRole }}</small>
-            </span>
-            <span class="material-symbols-outlined arrow-icon" aria-hidden="true">arrow_forward</span>
-          </a>
+          <!-- Authenticated User Dropdown Menu -->
+          <div class="user-profile-wrapper" (mouseleave)="closeUserDropdown()">
+            <button
+              type="button"
+              class="workspace-btn"
+              [class.teacher-mode]="isTeacher"
+              [class.student-mode]="isStudent"
+              [class.admin-mode]="isAdmin"
+              (click)="toggleUserDropdown($event)"
+              [attr.aria-expanded]="userDropdownOpen"
+              aria-haspopup="true"
+            >
+              <span class="account-avatar-wrap">
+                <span class="account-avatar" aria-hidden="true">{{ accountInitials }}</span>
+                <span class="status-online-dot"></span>
+              </span>
+              <span class="account-meta">
+                <strong class="account-name">{{ account.name }}</strong>
+                <small class="account-role">{{ isTeacher ? '👨‍🏫 Instructor' : isStudent ? '🎓 Student' : accountRole }}</small>
+              </span>
+              <span class="material-symbols-outlined arrow-icon" aria-hidden="true">
+                {{ userDropdownOpen ? 'expand_less' : 'expand_more' }}
+              </span>
+            </button>
 
-          <button class="signout-button" type="button" [disabled]="signingOut" (click)="signOut()" title="Sign Out">
-            <span class="material-symbols-outlined" aria-hidden="true">logout</span>
-            <span class="signout-text">{{ signingOut ? 'Signing out…' : 'Sign Out' }}</span>
-          </button>
+            @if (userDropdownOpen) {
+              <div class="nav-dropdown-menu user-dropdown" (click)="$event.stopPropagation()">
+                <div class="user-dropdown-header">
+                  <div class="user-header-left">
+                    <span class="account-avatar lg">{{ accountInitials }}</span>
+                    <div>
+                      <strong>{{ account.name }}</strong>
+                      <small>{{ accountEmail }}</small>
+                    </div>
+                  </div>
+                  <span class="role-badge" [class.teacher]="isTeacher" [class.student]="isStudent" [class.admin]="isAdmin">
+                    {{ accountRole }}
+                  </span>
+                </div>
+
+                <div class="dropdown-divider"></div>
+
+                <div class="user-dropdown-nav">
+                  <a [routerLink]="accountHome" (click)="closeMobileMenu(); closeUserDropdown()">
+                    <span class="material-symbols-outlined">space_dashboard</span>
+                    <span>Dashboard</span>
+                  </a>
+                  @if (isStudent) {
+                    <a routerLink="/my-courses" (click)="closeMobileMenu(); closeUserDropdown()">
+                      <span class="material-symbols-outlined">menu_book</span>
+                      <span>My Enrolled Courses</span>
+                    </a>
+                    <a routerLink="/learning-paths" (click)="closeMobileMenu(); closeUserDropdown()">
+                      <span class="material-symbols-outlined">alt_route</span>
+                      <span>Learning Roadmap</span>
+                    </a>
+                    <a routerLink="/assignments" (click)="closeMobileMenu(); closeUserDropdown()">
+                      <span class="material-symbols-outlined">assignment</span>
+                      <span>Assignments</span>
+                    </a>
+                    <a routerLink="/progress" (click)="closeMobileMenu(); closeUserDropdown()">
+                      <span class="material-symbols-outlined">insights</span>
+                      <span>Progress Analytics</span>
+                    </a>
+                  }
+                  @if (isTeacher) {
+                    <a routerLink="/instructor" (click)="closeMobileMenu(); closeUserDropdown()">
+                      <span class="material-symbols-outlined">cast_for_education</span>
+                      <span>Instructor Studio</span>
+                    </a>
+                    <a routerLink="/instructor/course-builder" (click)="closeMobileMenu(); closeUserDropdown()">
+                      <span class="material-symbols-outlined">edit_note</span>
+                      <span>Curriculum Builder</span>
+                    </a>
+                  }
+                  @if (isAdmin) {
+                    <a routerLink="/admin" (click)="closeMobileMenu(); closeUserDropdown()">
+                      <span class="material-symbols-outlined">admin_panel_settings</span>
+                      <span>Admin Governance</span>
+                    </a>
+                  }
+                  <a routerLink="/ai-tutor" (click)="closeMobileMenu(); closeUserDropdown()">
+                    <span class="material-symbols-outlined">psychology</span>
+                    <span>AI Tutor Companion</span>
+                  </a>
+                </div>
+
+                <div class="dropdown-divider"></div>
+
+                <button class="dropdown-signout-btn" type="button" [disabled]="signingOut" (click)="signOut()">
+                  <span class="material-symbols-outlined">logout</span>
+                  <span>{{ signingOut ? 'Signing out…' : 'Sign Out' }}</span>
+                </button>
+              </div>
+            }
+          </div>
         } @else {
           <!-- Guest State -->
           <a class="signin-link" routerLink="/auth/login" (click)="closeMobileMenu()">
-            Sign In
+            <span class="material-symbols-outlined btn-icon">login</span>
+            <span>Sign In</span>
           </a>
           <a class="signup-button" routerLink="/auth/register" (click)="closeMobileMenu()">
+            <span class="material-symbols-outlined btn-icon">rocket_launch</span>
             <span>Get Started</span>
-            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+            <span class="material-symbols-outlined arrow" aria-hidden="true">arrow_forward</span>
           </a>
         }
       </div>
@@ -115,6 +288,7 @@
 
   @if (logoutError) {
     <div class="navbar-error-banner" role="alert">
+      <span class="material-symbols-outlined">error</span>
       <span>{{ logoutError }}</span>
     </div>
   }

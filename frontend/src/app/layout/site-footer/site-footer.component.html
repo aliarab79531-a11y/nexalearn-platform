@@ -1,38 +1,51 @@
-﻿<footer class="site-footer">
+<footer class="site-footer">
   <div class="footer-content">
     <div class="footer-main">
       <div class="footer-brand">
         <a class="footer-logo" routerLink="/" aria-label="NexaLearn AI home">
           <span class="brand-mark"><span class="material-symbols-outlined">auto_awesome</span></span>
-          <span>NexaLearn AI</span>
+          <span class="brand-name">NexaLearn AI</span>
         </a>
-        <p>Build skills for what comes next. Learn with expert-led courses and an AI companion that adapts to you.</p>
+        <p>Build future-ready technical skills with personalized adaptive curricula, real-time code synthesis, and an intelligent AI tutor.</p>
+        <div class="footer-ai-badge">
+          <span class="pulse-dot"></span>
+          <span>Gemini 2.5 Engine Active</span>
+        </div>
       </div>
 
       <nav class="footer-links" aria-label="Explore NexaLearn">
-        <h2>Explore</h2>
-        <a routerLink="/courses">All courses</a>
-        <a routerLink="/learning-paths">Learning paths</a>
-        <a routerLink="/about">About NexaLearn</a>
+        <h2>Curricula & Catalog</h2>
+        <a routerLink="/courses"><span class="material-symbols-outlined footer-icon">auto_stories</span> All Courses</a>
+        <a routerLink="/learning-paths"><span class="material-symbols-outlined footer-icon">alt_route</span> Learning Roadmaps</a>
+        <a routerLink="/about"><span class="material-symbols-outlined footer-icon">info</span> Platform Mission</a>
       </nav>
 
-      <nav class="footer-links" aria-label="Your learning">
-        <h2>Your learning</h2>
-        <a routerLink="/dashboard">Dashboard</a>
-        <a routerLink="/my-courses">My courses</a>
-        <a routerLink="/ai-tutor">AI Tutor</a>
+      <nav class="footer-links" aria-label="AI Studio Suite">
+        <h2>AI Studio Suite</h2>
+        <a routerLink="/ai-tutor"><span class="material-symbols-outlined footer-icon">psychology</span> AI Tutor Companion</a>
+        <a routerLink="/ai/quiz-generator"><span class="material-symbols-outlined footer-icon">quiz</span> AI Quiz Generator</a>
+        <a routerLink="/ai/code-explainer"><span class="material-symbols-outlined footer-icon">terminal</span> AI Code Explainer</a>
       </nav>
 
-      <div class="footer-cta">
-        <span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span>
-        <h2>Your next breakthrough starts here.</h2>
-        <a routerLink="/courses">Find your next course <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
-      </div>
+      <nav class="footer-links" aria-label="Dedicated Portals">
+        <h2>Specialized Hubs</h2>
+        <a routerLink="/dashboard"><span class="material-symbols-outlined footer-icon">school</span> Student Hub</a>
+        <a routerLink="/instructor"><span class="material-symbols-outlined footer-icon">cast_for_education</span> Instructor Studio</a>
+        <a routerLink="/instructor/course-builder"><span class="material-symbols-outlined footer-icon">edit_note</span> Curriculum Builder</a>
+      </nav>
     </div>
 
     <div class="footer-bottom">
-      <span>© {{ year }} NexaLearn AI. Learn something remarkable.</span>
-      <a routerLink="/">Made for curious minds <span aria-hidden="true">✦</span></a>
+      <span>© {{ year }} NexaLearn AI Ecosystem. Continuous adaptive learning.</span>
+      <div class="footer-bottom-links">
+        <a routerLink="/courses">Courses</a>
+        <span class="dot-sep">·</span>
+        <a routerLink="/ai-tutor">AI Tutor</a>
+        <span class="dot-sep">·</span>
+        <a routerLink="/dashboard">Student Hub</a>
+        <span class="dot-sep">·</span>
+        <a routerLink="/instructor">Instructor Hub</a>
+      </div>
     </div>
   </div>
 </footer>
