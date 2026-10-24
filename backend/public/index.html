@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexaLearn API</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 650px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+      color: #0f172a;
+      background: #f8fafc;
+      line-height: 1.6;
+    }
+    .card {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e2e8f0;
+    }
+    h1 {
+      color: #0284c7;
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 9999px;
+      background: #dcfce7;
+      color: #166534;
+    }
+    ul {
+      padding-left: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    li {
+      margin-bottom: 0.75rem;
+    }
+    a {
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    code {
+      background: #f1f5f9;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🚀 NexaLearn Backend API <span class="badge">Live</span></h1>
+    <p>The backend service is running live on Vercel Serverless Functions.</p>
+    
+    <h3>API Endpoints:</h3>
+    <ul>
+      <li>
+        <a href="/api/health/live" target="_blank">GET /api/health/live</a>
+        <br><small style="color: #64748b;">Healthcheck endpoint</small>
+      </li>
+      <li>
+        <a href="/api/courses" target="_blank">GET /api/courses</a>
+        <br><small style="color: #64748b;">List available courses</small>
+      </li>
+      <li>
+        <code>POST /api/auth/login</code>
+        <br><small style="color: #64748b;">User login endpoint</small>
+      </li>
+      <li>
+        <code>POST /api/auth/register</code>
+        <br><small style="color: #64748b;">User registration endpoint</small>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,8 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": null,
-  "buildCommand": null,
-  "outputDirectory": null,
+  "outputDirectory": "public",
   "regions": ["dub1"],
   "functions": {
     "api/*.ts": {
@@ -12,6 +10,6 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/api", "destination": "/api" },
-    { "source": "/(.*)", "destination": "/api" }
+    { "source": "/health/(.*)", "destination": "/api" }
   ]
 }
