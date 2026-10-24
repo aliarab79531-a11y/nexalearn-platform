@@ -22,20 +22,20 @@ export class NavbarComponent {
   mobileMenuOpen = false;
   aiDropdownOpen = false;
   userDropdownOpen = false;
+  portalsDropdownOpen = false;
+  demoDropdownOpen = false;
   authPending = false;
 
   toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;
     if (this.mobileMenuOpen) {
-      this.aiDropdownOpen = false;
-      this.userDropdownOpen = false;
+      this.closeAllDropdowns();
     }
   }
 
   closeMobileMenu(): void {
     this.mobileMenuOpen = false;
-    this.aiDropdownOpen = false;
-    this.userDropdownOpen = false;
+    this.closeAllDropdowns();
   }
 
   toggleAiDropdown(event?: Event): void {
@@ -45,11 +45,45 @@ export class NavbarComponent {
     this.aiDropdownOpen = !this.aiDropdownOpen;
     if (this.aiDropdownOpen) {
       this.userDropdownOpen = false;
+      this.portalsDropdownOpen = false;
+      this.demoDropdownOpen = false;
     }
   }
 
   closeAiDropdown(): void {
     this.aiDropdownOpen = false;
+  }
+
+  togglePortalsDropdown(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.portalsDropdownOpen = !this.portalsDropdownOpen;
+    if (this.portalsDropdownOpen) {
+      this.aiDropdownOpen = false;
+      this.userDropdownOpen = false;
+      this.demoDropdownOpen = false;
+    }
+  }
+
+  closePortalsDropdown(): void {
+    this.portalsDropdownOpen = false;
+  }
+
+  toggleDemoDropdown(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.demoDropdownOpen = !this.demoDropdownOpen;
+    if (this.demoDropdownOpen) {
+      this.aiDropdownOpen = false;
+      this.userDropdownOpen = false;
+      this.portalsDropdownOpen = false;
+    }
+  }
+
+  closeDemoDropdown(): void {
+    this.demoDropdownOpen = false;
   }
 
   toggleUserDropdown(event?: Event): void {
@@ -59,6 +93,8 @@ export class NavbarComponent {
     this.userDropdownOpen = !this.userDropdownOpen;
     if (this.userDropdownOpen) {
       this.aiDropdownOpen = false;
+      this.portalsDropdownOpen = false;
+      this.demoDropdownOpen = false;
     }
   }
 
@@ -69,6 +105,8 @@ export class NavbarComponent {
   closeAllDropdowns(): void {
     this.aiDropdownOpen = false;
     this.userDropdownOpen = false;
+    this.portalsDropdownOpen = false;
+    this.demoDropdownOpen = false;
   }
 
   toggleLanguage(): void {

@@ -7,13 +7,13 @@
       </span>
       <span class="brand-copy">
         <strong class="brand-title">NexaLearn</strong>
-        <span class="brand-subtitle">AI ECOSYSTEM</span>
+        <span class="brand-badge">AI</span>
       </span>
     </a>
 
     <!-- Mobile Hamburger Toggle -->
     <button
-      class="mobile-menu mobile-menu-btn"
+      class="mobile-menu-btn"
       type="button"
       [attr.aria-expanded]="mobileMenuOpen"
       aria-controls="public-navigation"
@@ -25,23 +25,20 @@
       </span>
     </button>
 
-    <!-- Navigation Bar Desktop & Mobile -->
+    <!-- Navigation Panel Desktop & Mobile -->
     <div class="navbar-panel" [class.menu-open]="mobileMenuOpen" id="public-navigation">
       <nav class="desktop-nav" aria-label="Main navigation">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMobileMenu()">
-          <span class="material-symbols-outlined nav-item-icon">home</span>
           <span>Home</span>
         </a>
         <a routerLink="/courses" routerLinkActive="active" (click)="closeMobileMenu()">
-          <span class="material-symbols-outlined nav-item-icon">auto_stories</span>
           <span>Courses</span>
         </a>
         <a routerLink="/learning-paths" routerLinkActive="active" (click)="closeMobileMenu()">
-          <span class="material-symbols-outlined nav-item-icon">alt_route</span>
           <span>Learning Paths</span>
         </a>
 
-        <!-- AI Studio Mega Dropdown -->
+        <!-- AI Studio Dropdown -->
         <div class="nav-dropdown-wrapper" (mouseleave)="closeAiDropdown()">
           <button
             type="button"
@@ -103,61 +100,111 @@
           }
         </div>
 
+        <!-- Workspaces Dropdown -->
+        <div class="nav-dropdown-wrapper" (mouseleave)="closePortalsDropdown()">
+          <button
+            type="button"
+            class="nav-dropdown-trigger"
+            [class.active]="portalsDropdownOpen"
+            (click)="togglePortalsDropdown($event)"
+            [attr.aria-expanded]="portalsDropdownOpen"
+            aria-haspopup="true"
+          >
+            <span class="material-symbols-outlined nav-item-icon">dashboard</span>
+            <span>Workspaces</span>
+            <span class="material-symbols-outlined dropdown-chevron">expand_more</span>
+          </button>
+
+          @if (portalsDropdownOpen) {
+            <div class="nav-dropdown-menu portals-dropdown" (click)="$event.stopPropagation()">
+              <div class="dropdown-category-title">
+                <span class="material-symbols-outlined">layers</span>
+                <span>LEARNING & TEACHING CONSOLES</span>
+              </div>
+              <a routerLink="/dashboard" class="portal-dropdown-item student-portal" (click)="closeMobileMenu(); closePortalsDropdown()">
+                <div class="portal-item-icon student-tone">
+                  <span class="material-symbols-outlined">school</span>
+                </div>
+                <div class="portal-item-copy">
+                  <div class="portal-item-head">
+                    <strong>Student Workspace</strong>
+                    <span class="badge-portal student">Active</span>
+                  </div>
+                  <small>Personalized curriculum, active tasks & progress tracking</small>
+                </div>
+              </a>
+              <a routerLink="/instructor" class="portal-dropdown-item teacher-portal" (click)="closeMobileMenu(); closePortalsDropdown()">
+                <div class="portal-item-icon teacher-tone">
+                  <span class="material-symbols-outlined">cast_for_education</span>
+                </div>
+                <div class="portal-item-copy">
+                  <div class="portal-item-head">
+                    <strong>Instructor Studio</strong>
+                    <span class="badge-portal teacher">Faculty</span>
+                  </div>
+                  <small>Curriculum builder, grading pipeline & student performance</small>
+                </div>
+              </a>
+            </div>
+          }
+        </div>
+
         <a routerLink="/about" routerLinkActive="active" (click)="closeMobileMenu()">
-          <span class="material-symbols-outlined nav-item-icon">info</span>
           <span>About</span>
         </a>
       </nav>
 
-      <!-- Dual Portals Quick Switcher -->
-      <div class="portals-switcher" aria-label="Portal shortcuts">
-        <a
-          routerLink="/dashboard"
-          class="portal-chip student-chip"
-          routerLinkActive="active-chip"
-          (click)="closeMobileMenu()"
-          title="Student Learning Workspace & AI Companion"
-        >
-          <span class="material-symbols-outlined portal-icon">school</span>
-          <span>Student Hub</span>
-        </a>
-        <a
-          routerLink="/instructor"
-          class="portal-chip teacher-chip"
-          routerLinkActive="active-chip"
-          (click)="closeMobileMenu()"
-          title="Instructor Teaching Console & Course Builder"
-        >
-          <span class="material-symbols-outlined portal-icon">cast_for_education</span>
-          <span>Instructor Hub</span>
-        </a>
-      </div>
-
       <div class="nav-actions">
-        <!-- 1-Click Fast Demo Pill (Guest state) -->
+        <!-- Sleek Quick Demo Dropdown (Guest only) -->
         @if (!auth.currentAccount()) {
-          <div class="demo-pills-wrap" title="Test drive the platform in 1 click">
-            <span class="demo-label">1-Click Test:</span>
+          <div class="nav-dropdown-wrapper demo-dropdown-wrap" (mouseleave)="closeDemoDropdown()">
             <button
               type="button"
-              class="demo-chip demo-student"
-              [disabled]="authPending"
-              (click)="quickLogin('student')"
-              title="Instant Demo Student Login"
+              class="demo-fast-btn"
+              [class.active]="demoDropdownOpen"
+              (click)="toggleDemoDropdown($event)"
+              [attr.aria-expanded]="demoDropdownOpen"
+              title="1-Click Instant Demo Login"
             >
-              <span class="material-symbols-outlined">school</span>
-              <span>Student</span>
+              <span class="material-symbols-outlined demo-bolt-icon">bolt</span>
+              <span>1-Click Test</span>
+              <span class="material-symbols-outlined dropdown-chevron">expand_more</span>
             </button>
-            <button
-              type="button"
-              class="demo-chip demo-teacher"
-              [disabled]="authPending"
-              (click)="quickLogin('teacher')"
-              title="Instant Demo Instructor Login"
-            >
-              <span class="material-symbols-outlined">cast_for_education</span>
-              <span>Instructor</span>
-            </button>
+
+            @if (demoDropdownOpen) {
+              <div class="nav-dropdown-menu demo-dropdown-menu" (click)="$event.stopPropagation()">
+                <div class="dropdown-category-title">
+                  <span class="material-symbols-outlined">flash_on</span>
+                  <span>INSTANT DEMO CREDENTIALS</span>
+                </div>
+                <button
+                  type="button"
+                  class="demo-menu-item student-demo"
+                  [disabled]="authPending"
+                  (click)="quickLogin('student')"
+                >
+                  <span class="material-symbols-outlined demo-avatar-icon student">school</span>
+                  <div class="demo-meta">
+                    <strong>Demo Student</strong>
+                    <small>demo.student&#64;nexalearn.test</small>
+                  </div>
+                  <span class="demo-arrow material-symbols-outlined">arrow_forward</span>
+                </button>
+                <button
+                  type="button"
+                  class="demo-menu-item teacher-demo"
+                  [disabled]="authPending"
+                  (click)="quickLogin('teacher')"
+                >
+                  <span class="material-symbols-outlined demo-avatar-icon teacher">cast_for_education</span>
+                  <div class="demo-meta">
+                    <strong>Demo Instructor</strong>
+                    <small>demo.teacher&#64;nexalearn.test</small>
+                  </div>
+                  <span class="demo-arrow material-symbols-outlined">arrow_forward</span>
+                </button>
+              </div>
+            }
           </div>
         }
 
@@ -169,7 +216,7 @@
           [title]="'Switch language to ' + currentLanguageFull"
           aria-label="Switch language"
         >
-          <span class="material-symbols-outlined" aria-hidden="true">translate</span>
+          <span class="material-symbols-outlined lang-icon" aria-hidden="true">translate</span>
           <span class="lang-text">{{ currentLanguageLabel }}</span>
         </button>
 
@@ -271,13 +318,11 @@
             }
           </div>
         } @else {
-          <!-- Guest State -->
+          <!-- Guest State: Sleek Sign In & Primary Get Started (Guaranteed Visible) -->
           <a class="signin-link" routerLink="/auth/login" (click)="closeMobileMenu()">
-            <span class="material-symbols-outlined btn-icon">login</span>
             <span>Sign In</span>
           </a>
           <a class="signup-button" routerLink="/auth/register" (click)="closeMobileMenu()">
-            <span class="material-symbols-outlined btn-icon">rocket_launch</span>
             <span>Get Started</span>
             <span class="material-symbols-outlined arrow" aria-hidden="true">arrow_forward</span>
           </a>
