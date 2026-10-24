@@ -337,8 +337,8 @@ async function connect(): Promise<MongoDatabase> {
     const uri = process.env['MONGO_URI'];
     if (!uri) throw new ApiError(503, 'The data service is not configured. Set MONGO_URI.', 'DATABASE_NOT_CONFIGURED');
     
-    // Serverless functions have 10-15s timeouts; connect timeout default 9s
-    const timeoutMs = Math.min(Number(process.env['MONGO_TIMEOUT_MS'] || 9000), 12000);
+    // Serverless functions have 10-15s timeouts; connect timeout default 4s
+    const timeoutMs = Math.min(Number(process.env['MONGO_TIMEOUT_MS'] || 4000), 12000);
     const mongoClient = new MongoClient(uri, {
       maxPoolSize: Number(process.env['MONGO_POOL_SIZE'] || 5),
       serverSelectionTimeoutMS: timeoutMs,

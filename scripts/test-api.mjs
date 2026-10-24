@@ -1,4 +1,4 @@
-import app from '../api/index.ts';
+import app from '../api/index.js';
 import http from 'node:http';
 
 const server = http.createServer(app);

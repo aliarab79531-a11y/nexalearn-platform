@@ -2,11 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "angular",
   "installCommand": "npm ci --include=dev",
-  "buildCommand": "npm --prefix frontend run build:static",
+  "buildCommand": "npm run build:vercel",
   "outputDirectory": "frontend/dist/ai-learning-platform/browser",
   "regions": ["dub1"],
   "functions": {
-    "api/*.ts": {
+    "api/*.js": {
       "maxDuration": 15
     }
   },
