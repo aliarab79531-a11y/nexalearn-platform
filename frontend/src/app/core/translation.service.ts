@@ -1268,7 +1268,10 @@ export class TranslationService {
 
   private translateTextNode(node: Text): void {
     const parent = node.parentElement;
-    if (!parent || parent.closest('script, style, code, pre, .material-symbols-outlined, [dir="ltr"]')) {
+    if (!parent || parent.closest('script, style, code, pre, .material-symbols-outlined')) {
+      return;
+    }
+    if (this.currentLocale === 'ar' && parent.closest(':not(html):not(body)[dir="ltr"]')) {
       return;
     }
 
