@@ -1,0 +1,8 @@
+{
+  "name": "backend-frontend-shim",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:static": "node -e \"console.log('[NexaLearn Backend] Standalone backend deployment active - frontend build bypassed.')\""
+  }
+}

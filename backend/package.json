@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "echo 'Backend ready'",
     "start": "node --import tsx --env-file-if-exists=.env src/server.ts",
     "dev": "node --import tsx --watch --env-file-if-exists=.env src/server.ts",
     "test": "node --import tsx --test tests/validation.spec.ts tests/http.spec.ts",
